@@ -55,19 +55,22 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: 100),
-                FlutterLogo(size: 150),
+                Image.asset("Assets/logo.png"),
                 SizedBox(height: 100),
                 BaseTextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   hintText: 'email',
+                  prefixIcon: const Icon(Icons.email_outlined, size: 19),
                 ),
                 BaseTextFormField(
                   controller: _passwordController,
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
                   hintText: 'password',
+                  prefixIcon: const Icon(Icons.lock_outline, size: 19),
                 ),
+                const SizedBox(height: 90),
                 DefaultElevatedButton(
                   title: 'Логин',
                   onPressed: () {

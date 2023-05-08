@@ -78,7 +78,7 @@ class AppTypography {
   );
 
   static final font17 = _font.copyWith(
-    color: _color,
+    color: AppColors.lightGrey,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.normal,
     fontSize: 17,

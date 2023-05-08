@@ -10,9 +10,9 @@ class DefaultElevatedButton extends StatelessWidget {
     required this.title,
     required this.onPressed,
     this.height = 70,
-    this.width = double.infinity,
+    this.width = 320,
     this.padding = const EdgeInsets.all(10),
-    this.borderRadius = 10,
+    this.borderRadius = 5,
   }) : super(key: key);
 
   final String title;
@@ -32,8 +32,8 @@ class DefaultElevatedButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(title),
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.blue,
-          textStyle: AppTypography.font22,
+          backgroundColor: AppColors.buttonsColor,
+          textStyle: AppTypography.font20,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius)),
         ),
