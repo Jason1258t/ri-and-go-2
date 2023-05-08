@@ -28,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<StartAuthEvent>(_startAuth);
   }
 
+
   FutureOr<void> _initialAuthEmit(InitialAuthEvent event, emit) =>
       emit(AuthInitialState());
 
@@ -56,6 +57,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _startAuth(StartAuthEvent event, emit) async {
     await _appRepository.auth(login: event.login, password: event.password);
   }
+
+
 
   @override
   Future<void> close() {
