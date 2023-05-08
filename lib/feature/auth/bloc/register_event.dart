@@ -22,3 +22,5 @@ class StartRegisterEvent extends RegisterEvent {
 
 
 class SuccessRegisterEvent extends RegisterEvent {}
+class RegisterLoadingEvent extends RegisterEvent {}
+class RegisterFailEvent extends RegisterEvent {}

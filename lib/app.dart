@@ -1,5 +1,3 @@
-
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -9,7 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // Project imports:
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/auth_bloc.dart';
+import 'package:riandgo2/feature/auth/bloc/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/login_screen.dart';
+import 'package:riandgo2/feature/auth/ui/registration_screen_first.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
 import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';
@@ -59,6 +59,12 @@ class MyBlocProviders extends StatelessWidget {
             create: (_) => AuthBloc(
               appRepository: RepositoryProvider.of<AppRepository>(context),
             )..add(SubscripeAuthEvent()),
+            lazy: false,
+          ),
+          BlocProvider<RegisterBloc>(
+            create: (_) => RegisterBloc(
+              appRepository: RepositoryProvider.of<AppRepository>(context),
+            ),
             lazy: false,
           ),
         ],

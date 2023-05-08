@@ -23,6 +23,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<StartRegisterEvent>(_startRegistration);
     on<CollectingRegistrationInfoEvent>(_addRegisterInfo);
     on<SuccessRegisterEvent>(_successRegisterEmit);
+    on<RegisterLoadingEvent>(_addRegisterLoading);
+    on<RegisterFailEvent>(_addRegisterFail);
   }
 
   Future<void> _startRegistration(
@@ -42,6 +44,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   _addRegisterInfo(
       CollectingRegistrationInfoEvent event, Emitter<RegisterState> emit) {
     emit(state.copyWith(email: event.email, phone: event.phone));
+  }
+
+  _addRegisterFail(RegisterFailEvent event, Emitter<RegisterState> emit) {
+    emit(RegisterFailState());
+  }
+  _addRegisterLoading(RegisterLoadingEvent event, Emitter<RegisterState> emit) {
+    emit(RegisterLoadingState());
   }
 
   @override

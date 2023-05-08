@@ -174,4 +174,11 @@ class AppTypography {
     fontWeight: FontWeight.normal,
     fontSize: 13,
   );
+
+  static final font12orange = _font.copyWith(
+    color: AppColors.orangeF28C34,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.normal,
+    fontSize: 12,
+  );
 }

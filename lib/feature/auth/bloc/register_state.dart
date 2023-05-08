@@ -15,12 +15,14 @@ class RegisterState {
       {String? name, String? email, String? phone, String? password}) {
     return RegisterState(
       name: name ?? this.name,
-      phone: name ?? this.phone,
-      email: name ?? this.email,
-      password: name ?? this.password,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+      password: password ?? this.password,
     );
   }
 }
 
 class RegisterInitialState extends RegisterState {}
 class RegisterSuccessState extends RegisterState {}
+class RegisterFailState extends RegisterState {}
+class RegisterLoadingState extends RegisterState {}
