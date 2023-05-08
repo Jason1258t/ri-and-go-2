@@ -6,10 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Project imports:
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
-import 'package:riandgo2/feature/auth/bloc/auth_bloc.dart';
-import 'package:riandgo2/feature/auth/bloc/register_bloc.dart';
-import 'package:riandgo2/feature/auth/ui/login_screen.dart';
-import 'package:riandgo2/feature/auth/ui/registration_screen_first.dart';
+import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
+import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
+import 'package:riandgo2/feature/auth/ui/ui_login/login_screen.dart';
+import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
 import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';

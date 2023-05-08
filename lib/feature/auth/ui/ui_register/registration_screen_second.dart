@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:riandgo2/feature/auth/bloc/auth_bloc.dart';
-import 'package:riandgo2/feature/auth/bloc/register_bloc.dart';
+import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
+import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';

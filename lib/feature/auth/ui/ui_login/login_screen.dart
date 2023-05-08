@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Project imports:
-import 'package:riandgo2/feature/auth/bloc/auth_bloc.dart';
-import 'package:riandgo2/feature/auth/ui/registration_screen_first.dart';
+import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
+import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/small_text_button.dart';
