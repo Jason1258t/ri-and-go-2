@@ -58,7 +58,7 @@ class AppRepository {
     try {
       authState.add(AuthStateEnum.loading);
       final authToken =
-          await apiService.loginUser(login: login, password: password);
+          await apiService.loginUser(email: login, password: password);
 
       await Future.delayed(Duration(seconds: 3));
       final prefs = await SharedPreferences.getInstance();
