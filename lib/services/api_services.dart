@@ -11,63 +11,70 @@ import 'package:riandgo2/services/exceptions/exceptions.dart';
 class ApiService {
   final Dio _dio = Dio(
     BaseOptions(
-      //baseUrl: 'http://194.67.105.79:5101',
-      baseUrl: '',
+      baseUrl: 'http://194.67.105.79:5101',
+      // baseUrl: '',
     ),
   )..interceptors.add(dioLoggerInterceptor);
 
   static const String auth = '/auth';
   static const String login = '/Users/Login';
   static const String users = '/users';
-  static const String register = '/register';
+  static const String register = '/Users/AddNew';
 
-
-  Future<dynamic> loginUser({required String email, required String password}) async {
+  Future<dynamic> loginUser(
+      {required String email, required String password}) async {
     try {
       print('${login}/$email/$password');
-      final userToken = await _dio.get(
-          '${login}/$email/$password'
-        // auth + login + '?email=$login&password=$password',
-      );
-      return userToken.data;
+      final userToken = await _dio.get('${login}/$email/$password'
+          // auth + login + '?email=$login&password=$password',
+          );
+      return true;
     } on DioError catch (e) {
-      if(e.response?.statusCode == 401){
-        throw(UnAuthorizedException);
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
       }
-      if(e.response?.statusCode == 403){
-        throw(BadGateWayException);
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
       }
-      if(e.response?.statusCode == 404){
-        throw(NotFoundException);
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
       }
-      if(e.response?.statusCode == 500){
-        throw(ServerException);
-      }
-      throw Exception('un known exception');
-    }
-  }
-  Future<dynamic> registerUser({required String login, required String password, required String phone, required String name}) async {
-    try {
-      final userToken = await _dio.get(
-          '$register?emial=$login&password=$password&phone=$phone&name=$name'
-        // auth + login + '?email=$login&password=$password',
-      );
-      return userToken.data;
-    } on DioError catch (e) {
-      if(e.response?.statusCode == 401){
-        throw(UnAuthorizedException);
-      }
-      if(e.response?.statusCode == 403){
-        throw(BadGateWayException);
-      }
-      if(e.response?.statusCode == 404){
-        throw(NotFoundException);
-      }
-      if(e.response?.statusCode == 500){
-        throw(ServerException);
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
       }
       throw Exception('un known exception');
     }
   }
 
+  Future<dynamic> registerUser(
+      {required String email,
+      required String password,
+      required String phone,
+      required String name}) async {
+    try {
+      final userToken = await _dio.post(register, data: {
+        'email': email,
+        'phoneNumber': phone,
+        'name': name,
+        'password': password,
+      }
+          // auth + login + '?email=$login&password=$password',
+          );
+      return true;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
+      }
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
+      }
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
+      }
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
+      }
+      throw Exception('un known exception');
+    }
+  }
 }

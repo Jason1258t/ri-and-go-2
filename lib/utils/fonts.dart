@@ -175,10 +175,17 @@ class AppTypography {
     fontSize: 13,
   );
 
-  static final font12orange = _font.copyWith(
+  static final font20orange = _font.copyWith(
     color: AppColors.orangeF28C34,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.normal,
-    fontSize: 12,
+    fontSize: 20,
+  );
+
+  static final font20grey = _font.copyWith(
+    color: AppColors.grey707070,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.normal,
+    fontSize: 20,
   );
 }

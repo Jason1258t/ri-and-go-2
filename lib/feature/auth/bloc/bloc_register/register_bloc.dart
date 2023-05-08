@@ -14,7 +14,7 @@ part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AppRepository _appRepository;
-  late final StreamSubscription authStateSubscription;
+  late final StreamSubscription registerStateSubscription;
 
   RegisterBloc({
     required AppRepository appRepository,
@@ -25,6 +25,20 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<SuccessRegisterEvent>(_successRegisterEmit);
     on<RegisterLoadingEvent>(_addRegisterLoading);
     on<RegisterFailEvent>(_addRegisterFail);
+    on<SubscripeRegisterEvent>(_subscribe);
+  }
+
+  Future<void> _subscribe(SubscripeRegisterEvent event, emit) async {
+    registerStateSubscription =
+        _appRepository.authState.stream.listen((AuthStateEnum event) {
+          if (event == AuthStateEnum.wait) add(InitialRegisterEvent());
+          if (event == AuthStateEnum.loading) add(RegisterLoadingEvent());
+          if (event == AuthStateEnum.success) {
+            _appRepository.checkLogin();
+            add(SuccessRegisterEvent());
+          }
+          if (event == AuthStateEnum.fail) add(RegisterFailEvent());
+        });
   }
 
   Future<void> _startRegistration(
@@ -35,7 +49,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         password: event.password,
         phone: state.phone,
         name: event.name);
-    await _appRepository.auth(login: state.email, password: event.password);
+    //await _appRepository.auth(login: state.email, password: event.password);
   }
 
   _successRegisterEmit(SuccessRegisterEvent event, emit) =>
@@ -55,7 +69,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   @override
   Future<void> close() {
-    authStateSubscription.cancel();
+    registerStateSubscription.cancel();
     return super.close();
   }
 }

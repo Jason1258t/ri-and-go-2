@@ -64,7 +64,7 @@ class MyBlocProviders extends StatelessWidget {
           BlocProvider<RegisterBloc>(
             create: (_) => RegisterBloc(
               appRepository: RepositoryProvider.of<AppRepository>(context),
-            ),
+            )..add(SubscripeRegisterEvent()),
             lazy: false,
           ),
         ],

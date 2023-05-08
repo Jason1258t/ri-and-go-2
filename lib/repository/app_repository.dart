@@ -72,15 +72,19 @@ class AppRepository {
   Future<void> register({required String login, required String password, required String phone, required String name}) async {
     try {
       authState.add(AuthStateEnum.loading);
-      final registrationData =
-          await apiService.registerUser(login: login, password: password, phone: phone, name: name);
+      final registration =
+          await apiService.registerUser(email: login, password: password, phone: phone, name: name);
 
       await Future.delayed(Duration(seconds: 3));
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('auth_token', registrationData['id']);
-      prefs.setString('login', registrationData['login']);
-      prefs.setString('password', registrationData['password']);
-      authState.add(AuthStateEnum.success);
+      if (registration) {
+        final registrationData =
+          await apiService.loginUser(email: login, password: password);
+        await Future.delayed(Duration(seconds: 3));
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('auth_token', 'any_auth_token');
+        authState.add(AuthStateEnum.success);
+      }
+
     } catch (e) {
       authState.add(AuthStateEnum.fail);
       throw e;

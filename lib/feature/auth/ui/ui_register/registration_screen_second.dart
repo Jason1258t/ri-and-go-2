@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
+import 'package:riandgo2/feature/home/ui/home_page.dart';
 import 'package:riandgo2/utils/dialogs.dart';
+import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
+import 'package:riandgo2/widgets/buttons/small_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
 class SecondRegistrationScreen extends StatelessWidget {
   SecondRegistrationScreen({Key? key}) : super(key: key);
-
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordControllerFirst = TextEditingController();
+  final TextEditingController _passwordControllerSecond = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,9 @@ class SecondRegistrationScreen extends StatelessWidget {
     return Scaffold(
         body: BlocConsumer<RegisterBloc, RegisterState>(
           listener: (context, state) {
-            // TODO: implement listener
+              if (state is RegisterSuccessState) {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => MyHomePage()));
+              }
           },
           builder: (context, state) {
             return SingleChildScrollView(
@@ -29,7 +34,19 @@ class SecondRegistrationScreen extends StatelessWidget {
                 children: [
                   SizedBox(height: 100),
                   Image.asset("Assets/logo.png"),
-                  SizedBox(height: 100),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DefaultTextButton(
+                        width: 150,
+                        height: 60,
+                        title: 'Регестрация',
+                        textStyle: AppTypography.font20grey,
+                        onPressed: () { },
+                      ),
+                    ],
+                  ),
                   BaseTextFormField(
                     controller: _nameController,
                     keyboardType: TextInputType.emailAddress,
@@ -37,7 +54,17 @@ class SecondRegistrationScreen extends StatelessWidget {
                     prefixIcon: const Icon(Icons.email_outlined, size: 19),
                   ),
                   BaseTextFormField(
-                    controller: _passwordController,
+                    controller: _passwordControllerFirst,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    hintText: 'password',
+                    prefixIcon: Icon(
+                      Icons.lock_outline,
+                      size: 19,
+                    ),
+                  ),
+                  BaseTextFormField(
+                    controller: _passwordControllerSecond,
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     hintText: 'password',
@@ -49,7 +76,7 @@ class SecondRegistrationScreen extends StatelessWidget {
                     onPressed: () {
                       bloc.add(StartRegisterEvent(
                         name: _nameController.text,
-                        password: _passwordController.text,
+                        password: _passwordControllerFirst.text,
                       ));
                       // Navigator.push(
                       //     context,

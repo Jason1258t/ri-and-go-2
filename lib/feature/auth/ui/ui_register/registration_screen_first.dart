@@ -6,8 +6,11 @@ import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_second.dart';
 import 'package:riandgo2/utils/dialogs.dart';
+import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
+
+import '../../../../widgets/buttons/small_text_button.dart';
 
 class FirstRegistrationScreen extends StatelessWidget {
   FirstRegistrationScreen({Key? key}) : super(key: key);
@@ -34,13 +37,13 @@ class FirstRegistrationScreen extends StatelessWidget {
               }
               if (state is RegisterSuccessState) {
                 const snackBar = SnackBar(
-                  content: Text('Auth complete'),
+                  content: Text('reg complete'),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
               if (state is RegisterFailState) {
                 const snackBar = SnackBar(
-                  content: Text('Auth fail'),
+                  content: Text('reg fail'),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
@@ -52,7 +55,19 @@ class FirstRegistrationScreen extends StatelessWidget {
                     children: [
                       SizedBox(height: 100),
                       Image.asset("Assets/logo.png"),
-                      SizedBox(height: 100),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          DefaultTextButton(
+                            width: 150,
+                            height: 60,
+                            title: 'Регестрация',
+                            textStyle: AppTypography.font20grey,
+                            onPressed: () { },
+                          ),
+                        ],
+                      ),
                       BaseTextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,

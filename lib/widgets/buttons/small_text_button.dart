@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:riandgo2/utils/utils.dart';
 
-class SmallTextButton extends StatelessWidget {
-  const SmallTextButton({
+class DefaultTextButton extends StatelessWidget {
+  const DefaultTextButton({
     Key? key,
     required this.title,
     required this.onPressed,
     this.height = 70,
     this.width = 320,
+    required this.textStyle,
   }) : super(key: key);
 
   final String title;
   final VoidCallback onPressed;
   final double height;
   final double width;
+  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class SmallTextButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           title,
-          style: AppTypography.font12orange,
+          style: textStyle,
         ),
       ),
     );

@@ -12,6 +12,7 @@ import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/utils/dialogs.dart';
+import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/small_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
@@ -60,13 +61,24 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(height: 50,),
+                  Image.asset("Assets/logo.png"),
+                  SizedBox(height: 20),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SmallTextButton(
-                        width: 120,
+                      DefaultTextButton(
+                        width: 150,
                         height: 60,
-                        title: 'регестрация',
+                        title: 'Вход',
+                        textStyle: AppTypography.font20grey,
+                        onPressed: () { },
+                      ),
+                      DefaultTextButton(
+                        width: 150,
+                        height: 60,
+                        textStyle: AppTypography.font20orange,
+                        title: 'Регестрация',
                         onPressed: () {
                           Navigator.push(
                               context, MaterialPageRoute(builder: (_) =>
@@ -78,10 +90,7 @@ class LoginScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(height: 50,),
 
-                  Image.asset("Assets/logo.png"),
-                  SizedBox(height: 100),
                   BaseTextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,

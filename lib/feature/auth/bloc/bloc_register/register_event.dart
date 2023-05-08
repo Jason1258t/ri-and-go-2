@@ -5,6 +5,8 @@ abstract class RegisterEvent {}
 
 class InitialRegisterEvent extends RegisterEvent {}
 
+class SubscripeRegisterEvent extends RegisterEvent {}
+
 class CollectingRegistrationInfoEvent extends RegisterEvent {
   final String email;
   final String phone;
