@@ -9,6 +9,7 @@ import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/small_text_button.dart';
+import 'package:riandgo2/widgets/text_fields/base_password_field.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
 class SecondRegistrationScreen extends StatelessWidget {
@@ -53,20 +54,18 @@ class SecondRegistrationScreen extends StatelessWidget {
                     hintText: 'name',
                     prefixIcon: const Icon(Icons.email_outlined, size: 19),
                   ),
-                  BaseTextFormField(
+                  BasePasswordField(
                     controller: _passwordControllerFirst,
                     keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
                     hintText: 'password',
                     prefixIcon: Icon(
                       Icons.lock_outline,
                       size: 19,
                     ),
                   ),
-                  BaseTextFormField(
+                  BasePasswordField(
                     controller: _passwordControllerSecond,
                     keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
                     hintText: 'password',
                     prefixIcon: const Icon(Icons.lock_outline, size: 19),
                   ),
@@ -74,15 +73,15 @@ class SecondRegistrationScreen extends StatelessWidget {
                   DefaultElevatedButton(
                     title: 'далее',
                     onPressed: () {
-                      bloc.add(StartRegisterEvent(
-                        name: _nameController.text,
-                        password: _passwordControllerFirst.text,
-                      ));
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (_) => BlocProvider.value(
-                      //             value: bloc, child: Text('fewfwe'))));
+                      bloc.add(CollectingRegistrationInfoEvent(name: _nameController.text, password: _passwordControllerFirst.text));
+                      bloc.add(StartRegisterEvent(password: bloc.state.password, email: bloc.state.email, name: bloc.state.name, phone: bloc.state.phone,));
+                    },
+                  ),
+                  DefaultElevatedButton(
+                    title: 'назад',
+                    onPressed: () {
+                      bloc.add(CollectingRegistrationInfoEvent(name: _nameController.text, password: _passwordControllerFirst.text));
+                      Navigator.pop(context);
                     },
                   ),
                 ],

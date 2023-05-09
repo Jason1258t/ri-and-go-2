@@ -31,7 +31,7 @@ class FirstRegistrationScreen extends StatelessWidget {
               if (state is RegisterLoadingState) {
                 Dialogs.showModal(
                     context,
-                    Center(
+                    const Center(
                       child: CircularProgressIndicator(),
                     ));
               }
@@ -53,6 +53,12 @@ class FirstRegistrationScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          DefaultTextButton(title: 'войти', onPressed: () {Navigator.pop(context);}, textStyle: AppTypography.font20orange)
+                        ],
+                      ),
                       SizedBox(height: 100),
                       Image.asset("Assets/logo.png"),
                       SizedBox(height: 20),

@@ -53,6 +53,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
 
             // fillColor: AppColors.grey8E8E93,
             prefixIcon: widget.prefixIcon,
+
             filled: false,
             hintText: widget.hintText,
             label: widget.controller.text != '' ? Text(widget.hintText) : null,
@@ -83,3 +84,5 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
     );
   }
 }
+
+//suffixIcon: IconButton(icon: Icon(Icons.panorama_fish_eye), onPressed: () {visible = !visible;},),

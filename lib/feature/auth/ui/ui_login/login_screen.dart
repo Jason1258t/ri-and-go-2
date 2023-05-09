@@ -15,6 +15,7 @@ import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/small_text_button.dart';
+import 'package:riandgo2/widgets/text_fields/base_password_field.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -97,10 +98,9 @@ class LoginScreen extends StatelessWidget {
                     hintText: 'email',
                     prefixIcon: const Icon(Icons.email_outlined, size: 19),
                   ),
-                  BaseTextFormField(
+                  BasePasswordField(
                     controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
                     hintText: 'password',
                     prefixIcon: const Icon(Icons.lock_outline, size: 19),
                   ),

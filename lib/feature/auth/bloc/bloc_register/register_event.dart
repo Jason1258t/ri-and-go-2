@@ -8,18 +8,23 @@ class InitialRegisterEvent extends RegisterEvent {}
 class SubscripeRegisterEvent extends RegisterEvent {}
 
 class CollectingRegistrationInfoEvent extends RegisterEvent {
-  final String email;
-  final String phone;
+  final String? email;
+  final String? phone;
+  final String? name;
+  final String? password;
 
-  CollectingRegistrationInfoEvent({required this.email, required this.phone});
+  CollectingRegistrationInfoEvent(
+      {this.email, this.phone, this.name, this.password});
 }
 
 
 class StartRegisterEvent extends RegisterEvent {
-  final String password;
+  final String email;
+  final String phone;
   final String name;
+  final String password;
 
-  StartRegisterEvent({required this.password, required this.name});
+  StartRegisterEvent({required this.password, required this.name, required this.email, required this.phone});
 }
 
 
