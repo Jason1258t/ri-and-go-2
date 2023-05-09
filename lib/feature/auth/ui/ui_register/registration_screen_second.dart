@@ -11,6 +11,8 @@ import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/small_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
+import '../../../../widgets/text_fields/base_password_field.dart';
+
 class SecondRegistrationScreen extends StatelessWidget {
   SecondRegistrationScreen({Key? key}) : super(key: key);
   final TextEditingController _nameController = TextEditingController();
