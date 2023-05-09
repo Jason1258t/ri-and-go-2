@@ -57,7 +57,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   _addRegisterInfo(
       CollectingRegistrationInfoEvent event, Emitter<RegisterState> emit) {
-    emit(state.copyWith(email: event.email, phone: event.phone));
+    emit(state.copyWith(email: event.email, phone: event.phone, name: event.name, password: event.password));
   }
 
   _addRegisterFail(RegisterFailEvent event, Emitter<RegisterState> emit) {

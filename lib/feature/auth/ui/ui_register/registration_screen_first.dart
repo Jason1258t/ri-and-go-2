@@ -18,12 +18,16 @@ class FirstRegistrationScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
+  bool checkFields() {
+    return (_emailController.text != '' && _phoneController.text != '');
+  }
+
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<RegisterBloc>(context);
     return Scaffold(
         body: BlocConsumer<RegisterBloc, RegisterState>(
-          //create: (context) => bloc,
+            //create: (context) => bloc,
             listener: (context, state) {
               log(state.toString(), name: 'BlocConsumer state');
               Dialogs.hide(context);
@@ -48,15 +52,19 @@ class FirstRegistrationScreen extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             },
-            builder: (context, state) =>
-                SingleChildScrollView(
+            builder: (context, state) => SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          DefaultTextButton(title: 'войти', onPressed: () {Navigator.pop(context);}, textStyle: AppTypography.font20orange)
+                          DefaultTextButton(
+                              title: 'войти',
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              textStyle: AppTypography.font20orange)
                         ],
                       ),
                       SizedBox(height: 100),
@@ -70,7 +78,7 @@ class FirstRegistrationScreen extends StatelessWidget {
                             height: 60,
                             title: 'Регестрация',
                             textStyle: AppTypography.font20grey,
-                            onPressed: () { },
+                            onPressed: () {},
                           ),
                         ],
                       ),
@@ -82,26 +90,34 @@ class FirstRegistrationScreen extends StatelessWidget {
                       ),
                       BaseTextFormField(
                         controller: _phoneController,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
+                        keyboardType: TextInputType.phone,
+                        obscureText: false,
                         hintText: 'phone',
-                        prefixIcon: const Icon(Icons.lock_outline, size: 19),
+                        prefixIcon: const Icon(Icons.phone, size: 19),
                       ),
                       const SizedBox(height: 90),
                       DefaultElevatedButton(
                         title: 'далее',
                         onPressed: () {
-                          bloc.add(CollectingRegistrationInfoEvent(
-                            email: _emailController.text,
-                            phone: _phoneController.text,
-                          ));
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) =>
-                                  BlocProvider(
-                                    create: (context) => bloc,
-                                    child: SecondRegistrationScreen(),
-                                  )));
+                          if (checkFields()) {
+                            bloc.add(CollectingRegistrationInfoEvent(
+                              email: _emailController.text,
+                              phone: _phoneController.text,
+                            ));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => BlocProvider.value(
+                                          value: bloc,
+                                          child: SecondRegistrationScreen(),
+                                        )));
+                          } else {
+                            const snackBar = SnackBar(
+                              content: Text('поля не заполнены'),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
                         },
                       ),
                     ],

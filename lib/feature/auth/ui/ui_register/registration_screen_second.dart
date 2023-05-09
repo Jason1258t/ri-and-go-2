@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
+import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
 import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/utils/utils.dart';
@@ -15,10 +16,6 @@ import '../../../../widgets/text_fields/base_password_field.dart';
 
 class SecondRegistrationScreen extends StatelessWidget {
   SecondRegistrationScreen({Key? key}) : super(key: key);
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _passwordControllerFirst = TextEditingController();
-  final TextEditingController _passwordControllerSecond = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<RegisterBloc>(context);
@@ -30,6 +27,12 @@ class SecondRegistrationScreen extends StatelessWidget {
               }
           },
           builder: (context, state) {
+            TextEditingController _nameController = TextEditingController();
+            TextEditingController _passwordControllerFirst = TextEditingController();
+            TextEditingController _passwordControllerSecond = TextEditingController();
+            _nameController.text = state.name;
+            _passwordControllerFirst.text = state.password;
+            print('---------------------------- ${state.name}---------------');
             return SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

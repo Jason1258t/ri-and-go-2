@@ -83,8 +83,8 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                               context, MaterialPageRoute(builder: (_) =>
-                              BlocProvider(
-                                create: (context) => bloc,
+                              BlocProvider.value(
+                                value: bloc,
                                 child: FirstRegistrationScreen(),
                               )));
                         },
