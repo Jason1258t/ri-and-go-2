@@ -14,7 +14,7 @@ import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.d
 import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
-import 'package:riandgo2/widgets/buttons/small_text_button.dart';
+import 'package:riandgo2/widgets/buttons/default_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_password_field.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
@@ -79,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                         width: 150,
                         height: 60,
                         textStyle: AppTypography.font20orange,
-                        title: 'Регестрация',
+                        title: 'Регистрация',
                         onPressed: () {
                           Navigator.push(
                               context, MaterialPageRoute(builder: (_) =>
@@ -106,7 +106,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 90),
                   DefaultElevatedButton(
-                    title: 'Логин',
+                    title: 'Войти',
                     onPressed: () {
                       BlocProvider.of<AuthBloc>(context).add(StartAuthEvent(
                         login: _emailController.text,
