@@ -24,6 +24,8 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  bool checkFields() => _emailController.text != '' && _passwordController.text != '';
+
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<RegisterBloc>(context);
@@ -108,10 +110,19 @@ class LoginScreen extends StatelessWidget {
                   DefaultElevatedButton(
                     title: 'Войти',
                     onPressed: () {
-                      BlocProvider.of<AuthBloc>(context).add(StartAuthEvent(
-                        login: _emailController.text,
-                        password: _passwordController.text,
-                      ));
+                      if(checkFields()) {
+                        BlocProvider.of<AuthBloc>(context).add(StartAuthEvent(
+                          login: _emailController.text,
+                          password: _passwordController.text,
+                        ));
+                      }
+                      else{
+                        const snackBar = SnackBar(
+                          content: Text('поля не заполнены'),
+                        );
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(snackBar);
+                      }
                     },
                   ),
                 ],

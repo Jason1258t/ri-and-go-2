@@ -18,9 +18,7 @@ class FirstRegistrationScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  bool checkFields() {
-    return (_emailController.text != '' && _phoneController.text != '');
-  }
+  bool checkFields() =>  _emailController.text != '' && _phoneController.text != '';
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +98,7 @@ class FirstRegistrationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 90),
                         DefaultElevatedButton(
-                          title: 'далее',
+                          title: 'Далее',
                           onPressed: () {
                             if (checkFields()) {
                               bloc.add(CollectingRegistrationInfoEvent(
