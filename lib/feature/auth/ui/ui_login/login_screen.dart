@@ -18,6 +18,8 @@ import 'package:riandgo2/widgets/buttons/default_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_password_field.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
+import '../../../profile/ui/profile_screen.dart';
+
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -111,10 +113,11 @@ class LoginScreen extends StatelessWidget {
                     title: 'Войти',
                     onPressed: () {
                       if(checkFields()) {
-                        BlocProvider.of<AuthBloc>(context).add(StartAuthEvent(
-                          login: _emailController.text,
-                          password: _passwordController.text,
-                        ));
+                        // BlocProvider.of<AuthBloc>(context).add(StartAuthEvent(
+                        //   login: _emailController.text,
+                        //   password: _passwordController.text,
+                        // ));
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=> Profile()));
                       }
                       else{
                         const snackBar = SnackBar(

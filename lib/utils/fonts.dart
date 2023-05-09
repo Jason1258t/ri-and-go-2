@@ -188,4 +188,9 @@ class AppTypography {
     fontWeight: FontWeight.normal,
     fontSize: 20,
   );
+
+  static final font20_0xff929292 = _font.copyWith(
+    fontSize: 20,
+    color: Color(0xff929292),
+  );
 }
