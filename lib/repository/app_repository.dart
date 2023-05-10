@@ -17,6 +17,8 @@ enum AppStateEnum { auth, unAuth, loading }
 
 enum AuthStateEnum { wait, loading, success, fail }
 
+enum ProfileStateEnum { loading, success, fail }
+
 class AppRepository {
   final ApiService apiService;
 
@@ -24,8 +26,13 @@ class AppRepository {
   BehaviorSubject<String> token = BehaviorSubject<String>.seeded('');
   BehaviorSubject<AppStateEnum> appState =
       BehaviorSubject<AppStateEnum>.seeded(AppStateEnum.unAuth);
+  BehaviorSubject<ProfileStateEnum> profileState =
+      BehaviorSubject<ProfileStateEnum>.seeded(ProfileStateEnum.loading);
 
   AppRepository({required this.apiService});
+
+  dynamic profileInfo;
+  late final int userId;
 
   checkLogin() async {
     try {
@@ -36,6 +43,7 @@ class AppRepository {
       if (authToken != null && authToken.isNotEmpty) {
         token.add(authToken);
         appState.add(AppStateEnum.auth);
+        userId = prefs.getInt('id') ?? 0;
       } else {
         appState.add(AppStateEnum.unAuth);
       }
@@ -63,30 +71,48 @@ class AppRepository {
       await Future.delayed(Duration(seconds: 3));
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('auth_token', 'any_auth_token');
+      prefs.setInt('id', authToken);
+      userId = authToken;
       authState.add(AuthStateEnum.success);
     } catch (e) {
       authState.add(AuthStateEnum.fail);
       throw e;
     }
   }
-  Future<void> register({required String login, required String password, required String phone, required String name}) async {
+
+  Future<void> register(
+      {required String login,
+      required String password,
+      required String phone,
+      required String name}) async {
     try {
       authState.add(AuthStateEnum.loading);
-      final registration =
-          await apiService.registerUser(email: login, password: password, phone: phone, name: name);
+      final registration = await apiService.registerUser(
+          email: login, password: password, phone: phone, name: name);
 
       await Future.delayed(Duration(seconds: 3));
       if (registration) {
         final registrationData =
-          await apiService.loginUser(email: login, password: password);
+            await apiService.loginUser(email: login, password: password);
         await Future.delayed(Duration(seconds: 3));
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('auth_token', 'any_auth_token');
+        prefs.setString('id', registrationData);
+        userId = registrationData;
         authState.add(AuthStateEnum.success);
       }
-
     } catch (e) {
       authState.add(AuthStateEnum.fail);
+      throw e;
+    }
+  }
+
+  Future<dynamic> loadProfile({required int id}) async {
+    try {
+      profileState.add(ProfileStateEnum.loading);
+      profileInfo = await apiService.loadProfile(id: id);
+    } catch (e) {
+      profileState.add(ProfileStateEnum.fail);
       throw e;
     }
   }

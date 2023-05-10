@@ -20,6 +20,7 @@ class ApiService {
   static const String login = '/Users/Login';
   static const String users = '/users';
   static const String register = '/Users/AddNew';
+  static const String profile = '/Users/Get/';
 
   Future<dynamic> loginUser(
       {required String email, required String password}) async {
@@ -28,7 +29,7 @@ class ApiService {
       final userToken = await _dio.get('${login}/$email/$password'
           // auth + login + '?email=$login&password=$password',
           );
-      return true;
+      return userToken.data;
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         throw (UnAuthorizedException);
@@ -61,6 +62,27 @@ class ApiService {
           // auth + login + '?email=$login&password=$password',
           );
       return true;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
+      }
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
+      }
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
+      }
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
+      }
+      throw Exception('un known exception');
+    }
+  }
+
+  Future<dynamic> loadProfile ({required int id}) async {
+    try {
+      final userInfo = await _dio.get(profile + id.toString());
+      return userInfo.data;
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         throw (UnAuthorizedException);

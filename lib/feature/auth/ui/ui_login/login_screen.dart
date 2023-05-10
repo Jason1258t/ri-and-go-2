@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
+import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
 import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
@@ -26,11 +27,13 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  bool checkFields() => _emailController.text != '' && _passwordController.text != '';
+  bool checkFields() =>
+      _emailController.text != '' && _passwordController.text != '';
 
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<RegisterBloc>(context);
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -77,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                         height: 60,
                         title: 'Вход',
                         textStyle: AppTypography.font20grey,
-                        onPressed: () { },
+                        onPressed: () {},
                       ),
                       DefaultTextButton(
                         width: 150,
@@ -112,14 +115,19 @@ class LoginScreen extends StatelessWidget {
                   DefaultElevatedButton(
                     title: 'Войти',
                     onPressed: () {
-                      if(checkFields()) {
+                      if (checkFields()) {
                         // BlocProvider.of<AuthBloc>(context).add(StartAuthEvent(
                         //   login: _emailController.text,
                         //   password: _passwordController.text,
                         // ));
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=> Profile()));
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (_) =>
+                                BlocProvider.value(
+                                  value: profileBloc,
+                                  child: const Profile(),
+                                )));
                       }
-                      else{
+                      else {
                         const snackBar = SnackBar(
                           content: Text('поля не заполнены'),
                         );

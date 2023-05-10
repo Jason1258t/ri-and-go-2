@@ -11,6 +11,7 @@ import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/ui_login/login_screen.dart';
 import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
+import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
 import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';
 
@@ -67,6 +68,10 @@ class MyBlocProviders extends StatelessWidget {
             )..add(SubscripeRegisterEvent()),
             lazy: false,
           ),
+          BlocProvider<ProfileBloc>(
+              create: (_) => ProfileBloc(
+                  appRepository: RepositoryProvider.of<AppRepository>(context))
+                ..add(ProfileSubscribeEvent()))
         ],
         child: const AppStateWidget(),
       ),
