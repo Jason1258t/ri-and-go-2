@@ -23,18 +23,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   _onInitial(ProfileInitialLoadEvent event, emit) {
-    _appRepository.loadProfile(id: _appRepository.userId);
-    emit(ProfileLoadingEvent());
+    _appRepository.loadProfile(id: _appRepository.userId ?? 0);
+    add(ProfileLoadingEvent());
   }
 
   _onSubscribe(ProfileSubscribeEvent event, emit) {
     authStateSubscription =
         _appRepository.profileState.stream.listen((ProfileStateEnum event) {
-      if (event == AuthStateEnum.loading) add(ProfileLoadingEvent());
-      if (event == AuthStateEnum.success) {
+      if (event == ProfileStateEnum.loading) add(ProfileLoadingEvent());
+      if (event == ProfileStateEnum.success) {
+        print("хуй");
         add(ProfileLoadedEvent());
       }
-      if (event == AuthStateEnum.fail) add(ProfileErrorEvent());
+      if (event == ProfileStateEnum.fail) add(ProfileErrorEvent());
     });
   }
 

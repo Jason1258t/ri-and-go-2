@@ -1,0 +1,1 @@
+export 'TripModel.dart';

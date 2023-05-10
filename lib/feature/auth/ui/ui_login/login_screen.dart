@@ -33,7 +33,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<RegisterBloc>(context);
-    final profileBloc = BlocProvider.of<ProfileBloc>(context);
+    final authBloc = BlocProvider.of<AuthBloc>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -120,12 +120,14 @@ class LoginScreen extends StatelessWidget {
                         //   login: _emailController.text,
                         //   password: _passwordController.text,
                         // ));
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (_) =>
-                                BlocProvider.value(
-                                  value: profileBloc,
-                                  child: const Profile(),
-                                )));
+                        authBloc.add(StartAuthEvent(login: _emailController.text, password: _passwordController.text));
+
+                        // Navigator.push(context, MaterialPageRoute(
+                        //     builder: (_) =>
+                        //         BlocProvider.value(
+                        //           value: profileBloc,
+                        //           child: const Profile(),
+                        //         )));
                       }
                       else {
                         const snackBar = SnackBar(

@@ -12,6 +12,7 @@ import 'package:riandgo2/feature/auth/ui/ui_login/login_screen.dart';
 import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
 import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
+import 'package:riandgo2/feature/profile/ui/profile_screen.dart';
 import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';
 
@@ -91,7 +92,7 @@ class AppStateWidget extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is AuthAppState) {
-            return MyHomePage();
+            return const Profile();
           } else if (state is UnAuthAppState) {
             return LoginScreen();
           } else if (state is LoadingAppState) {

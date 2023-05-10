@@ -32,7 +32,7 @@ class AppRepository {
   AppRepository({required this.apiService});
 
   dynamic profileInfo;
-  late final int userId;
+  int? userId;
 
   checkLogin() async {
     try {
@@ -40,10 +40,11 @@ class AppRepository {
       await Future.delayed(Duration(seconds: 2));
       final prefs = await SharedPreferences.getInstance();
       final authToken = prefs.getString('auth_token');
-      if (authToken != null && authToken.isNotEmpty) {
+      final id = prefs.getInt('id') ?? 0;
+      if (authToken != null && authToken.isNotEmpty && id != 0) {
         token.add(authToken);
+        userId = id;
         appState.add(AppStateEnum.auth);
-        userId = prefs.getInt('id') ?? 0;
       } else {
         appState.add(AppStateEnum.unAuth);
       }
@@ -55,6 +56,7 @@ class AppRepository {
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
+    userId = null;
     token.add('');
     appState.add(AppStateEnum.unAuth);
   }
@@ -70,8 +72,8 @@ class AppRepository {
 
       await Future.delayed(Duration(seconds: 3));
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString('auth_token', 'any_auth_token');
-      prefs.setInt('id', authToken);
+      await prefs.setString('auth_token', 'any_auth_token');
+      await prefs.setInt('id', authToken);
       userId = authToken;
       authState.add(AuthStateEnum.success);
     } catch (e) {
@@ -97,7 +99,7 @@ class AppRepository {
         await Future.delayed(Duration(seconds: 3));
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('auth_token', 'any_auth_token');
-        prefs.setString('id', registrationData);
+        prefs.setInt('id', registrationData);
         userId = registrationData;
         authState.add(AuthStateEnum.success);
       }
@@ -108,9 +110,11 @@ class AppRepository {
   }
 
   Future<dynamic> loadProfile({required int id}) async {
+
+    profileState.add(ProfileStateEnum.loading);
     try {
-      profileState.add(ProfileStateEnum.loading);
       profileInfo = await apiService.loadProfile(id: id);
+      profileState.add(ProfileStateEnum.success);
     } catch (e) {
       profileState.add(ProfileStateEnum.fail);
       throw e;

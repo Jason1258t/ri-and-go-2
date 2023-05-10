@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/lable/information_field.dart';
+import 'package:riandgo2/widgets/listView/trips_listView.dart';
 
 import '../../../widgets/buttons/default_text_button.dart';
 
@@ -15,6 +17,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   void logoutShowDialog() {
+    final appBloc = BlocProvider.of<AppBloc>(context);
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -24,7 +27,10 @@ class _ProfileState extends State<Profile> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  TextButton(onPressed: () {}, child: Text('Да')),
+                  TextButton(onPressed: () {
+                    appBloc.add(LogoutAppEvent());
+                    Navigator.of(context).pop();
+                  }, child: Text('Да')),
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -39,71 +45,86 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<ProfileBloc>(context);
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
+
+    profileBloc.add(ProfileInitialLoadEvent());
     return SafeArea(
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           // TODO: implement listener
+          if (state is ProfileLoadedState) {
+            const snack = SnackBar(content: Text('профиль загружен'));
+            ScaffoldMessenger.of(context).showSnackBar(snack);
+          }
         },
         builder: (context, state) {
-          return Scaffold(
-            body: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(padding: EdgeInsets.only(top: 10)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(padding: EdgeInsets.only(top: 15)),
-                      DefaultTextButton(
-                        width: 100,
-                        height: 45,
-                        title: 'log out',
-                        textStyle: AppTypography.font20_0xff929292,
-                        onPressed: logoutShowDialog,
-                      ),
-                      _Avatar(
-                        avatar: null,
-                      ),
-                      DefaultTextButton(
-                        onPressed: () {},
-                        title: 'edit',
-                        width: 100,
-                        height: 45,
-                        textStyle: AppTypography.font20_0xff929292,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                  if (state is ProfileLoadedState)
-                    _Elements(
-                      name: state.name,
-                      phone: state.phone,
-                      email: state.email,
+          if (state is ProfileLoadedState) {
+            return Scaffold(
+              body: Container(
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('Assets/searchBackground.png'),
                     )
-                  else
-                    _Elements(
-                      name: 'нд',
-                      phone: 'нд',
-                      email: "нд",
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Padding(padding: EdgeInsets.only(top: 10)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Padding(padding: EdgeInsets.only(top: 15)),
+                        DefaultTextButton(
+                          width: 100,
+                          height: 45,
+                          title: 'log out',
+                          textStyle: AppTypography.font20_0xff929292,
+                          onPressed: logoutShowDialog,
+                        ),
+                        _Avatar(
+                          avatar: 'Assets/logo.png', // TODO заменить на серверное фото
+                        ),
+                        DefaultTextButton(
+                          onPressed: () {},
+                          title: 'edit',
+                          width: 100,
+                          height: 45,
+                          textStyle: AppTypography.font20_0xff929292,
+                        ),
+                      ],
                     ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                    if (state is ProfileLoadedState)
+                      _Elements(
+                        name: state.name,
+                        phone: state.phone,
+                        email: state.email,
+                      )
+                    else
+                      const _Elements(
+                        name: 'нд',
+                        phone: 'нд',
+                        email: "нд",
+                      ),
 
-                  Text(
-                    'Созданные поездки',
-                    style: TextStyle(
-                        color: Color.fromRGBO(133, 64, 0, 1),
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic),
-                  ),
-                  // TODO доделать лист
-                ],
+                    const Text(
+                      'Созданные поездки',
+                      style: TextStyle(
+                          color: Color.fromRGBO(133, 64, 0, 1),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.italic),
+                    ),
+                    ListViewTrips(trips: [],)
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          }
         },
       ),
     );
@@ -111,7 +132,7 @@ class _ProfileState extends State<Profile> {
 }
 
 class _Avatar extends StatefulWidget {
-  final avatar;
+  String? avatar;
 
   _Avatar({
     Key? key,
@@ -127,11 +148,12 @@ class _AvatarState extends State<_Avatar> {
   Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundColor: Colors.amberAccent,
+      radius: 90,
       child: CircleAvatar(
-        backgroundImage: widget.avatar ?? AssetImage('Assets/logo.png'),
-        radius: 60,
+        backgroundImage: AssetImage(widget.avatar ?? 'Assets/logo.png'),
+        backgroundColor: Colors.white,
+        radius: 80,
       ),
-      radius: 65,
     );
   }
 }
