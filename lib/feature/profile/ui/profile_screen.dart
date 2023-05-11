@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
+import 'package:riandgo2/feature/profile/ui/edit_screen.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/lable/information_field.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
@@ -22,15 +23,17 @@ class _ProfileState extends State<Profile> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Уверены что хотите выйти?'),
+            title: const Text('Уверены что хотите выйти?'),
             actions: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  TextButton(onPressed: () {
-                    appBloc.add(LogoutAppEvent());
-                    Navigator.of(context).pop();
-                  }, child: Text('Да')),
+                  TextButton(
+                      onPressed: () {
+                        appBloc.add(LogoutAppEvent());
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Да')),
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -63,9 +66,8 @@ class _ProfileState extends State<Profile> {
               body: Container(
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('Assets/searchBackground.png'),
-                    )
-                ),
+                  image: AssetImage('Assets/searchBackground.png'),
+                )),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,10 +86,19 @@ class _ProfileState extends State<Profile> {
                           onPressed: logoutShowDialog,
                         ),
                         _Avatar(
-                          avatar: 'Assets/logo.png', // TODO заменить на серверное фото
+                          avatar:
+                              'Assets/logo.png', // TODO заменить на серверное фото
                         ),
                         DefaultTextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => BlocProvider.value(
+                                          value: profileBloc,
+                                          child: const EditProfile(),
+                                        )));
+                          },
                           title: 'edit',
                           width: 100,
                           height: 45,
@@ -108,7 +119,6 @@ class _ProfileState extends State<Profile> {
                         phone: 'нд',
                         email: "нд",
                       ),
-
                     const Text(
                       'Созданные поездки',
                       style: TextStyle(
@@ -117,13 +127,16 @@ class _ProfileState extends State<Profile> {
                           fontWeight: FontWeight.w500,
                           fontStyle: FontStyle.italic),
                     ),
-                    ListViewTrips(trips: [],)
+                    ListViewTrips(
+                      trips: [],
+                    )
                   ],
                 ),
               ),
             );
           } else {
-            return const Scaffold(body: Center(child: CircularProgressIndicator()));
+            return const Scaffold(
+                body: Center(child: CircularProgressIndicator()));
           }
         },
       ),

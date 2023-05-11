@@ -193,4 +193,10 @@ class AppTypography {
     fontSize: 20,
     color: Color(0xff929292),
   );
+
+  static final fontw600_white = _font.copyWith(
+      fontWeight: FontWeight.w600,
+      fontSize: 24,
+      color: Colors.white
+  );
 }

@@ -1,10 +1,10 @@
 
 class User {
   final String name;
-  final String url;
+  final String contactUrl;
   final String imageUrl = '';
   final String email;
-  final String phone;
+  final String phoneNumber;
 
-  User({required this.name, required this.url, required this.email, required this.phone});
+  User({required this.name, required this.contactUrl, required this.email, required this.phoneNumber});
 }

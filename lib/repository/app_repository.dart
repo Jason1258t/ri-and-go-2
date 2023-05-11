@@ -1,6 +1,7 @@
 // Package imports:
 
 // Package imports:
+import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,7 +18,7 @@ enum AppStateEnum { auth, unAuth, loading }
 
 enum AuthStateEnum { wait, loading, success, fail }
 
-enum ProfileStateEnum { loading, success, fail }
+// enum ProfileStateEnum { loading, success, fail }
 
 class AppRepository {
   final ApiService apiService;
@@ -26,12 +27,12 @@ class AppRepository {
   BehaviorSubject<String> token = BehaviorSubject<String>.seeded('');
   BehaviorSubject<AppStateEnum> appState =
       BehaviorSubject<AppStateEnum>.seeded(AppStateEnum.unAuth);
-  BehaviorSubject<ProfileStateEnum> profileState =
-      BehaviorSubject<ProfileStateEnum>.seeded(ProfileStateEnum.loading);
+  // BehaviorSubject<ProfileStateEnum> profileState =
+  //     BehaviorSubject<ProfileStateEnum>.seeded(ProfileStateEnum.loading);
 
   AppRepository({required this.apiService});
 
-  dynamic profileInfo;
+  String? userPassword;
   int? userId;
 
   checkLogin() async {
@@ -44,6 +45,7 @@ class AppRepository {
       if (authToken != null && authToken.isNotEmpty && id != 0) {
         token.add(authToken);
         userId = id;
+        userPassword = prefs.getString('password');
         appState.add(AppStateEnum.auth);
       } else {
         appState.add(AppStateEnum.unAuth);
@@ -74,11 +76,12 @@ class AppRepository {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('auth_token', 'any_auth_token');
       await prefs.setInt('id', authToken);
+      await prefs.setString('password', password);
       userId = authToken;
       authState.add(AuthStateEnum.success);
     } catch (e) {
       authState.add(AuthStateEnum.fail);
-      throw e;
+      rethrow;
     }
   }
 
@@ -100,24 +103,29 @@ class AppRepository {
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('auth_token', 'any_auth_token');
         prefs.setInt('id', registrationData);
+        await prefs.setString('password', password);
         userId = registrationData;
         authState.add(AuthStateEnum.success);
       }
     } catch (e) {
       authState.add(AuthStateEnum.fail);
-      throw e;
+      rethrow;
     }
   }
 
-  Future<dynamic> loadProfile({required int id}) async {
-
-    profileState.add(ProfileStateEnum.loading);
-    try {
-      profileInfo = await apiService.loadProfile(id: id);
-      profileState.add(ProfileStateEnum.success);
-    } catch (e) {
-      profileState.add(ProfileStateEnum.fail);
-      throw e;
-    }
+  int? getUserId() {
+    return userId;
   }
+
+  // Future<dynamic> loadProfile({required int id}) async {
+  //
+  //   profileState.add(ProfileStateEnum.loading);
+  //   try {
+  //     profileInfo = await apiService.loadProfile(id: id);
+  //     profileState.add(ProfileStateEnum.success);
+  //   } catch (e) {
+  //     profileState.add(ProfileStateEnum.fail);
+  //     throw e;
+  //   }
+  // }
 }
