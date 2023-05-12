@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
+import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/feature/profile/ui/edit_screen.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/lable/information_field.dart';
@@ -49,16 +50,19 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
+    final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
 
-    profileBloc.add(ProfileInitialLoadEvent());
+    if (!profileRepository.isProfileLoaded()) {
+      profileBloc.add(ProfileInitialLoadEvent());
+    }
     return SafeArea(
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
-          // TODO: implement listener
-          if (state is ProfileLoadedState) {
-            const snack = SnackBar(content: Text('профиль загружен'));
-            ScaffoldMessenger.of(context).showSnackBar(snack);
-          }
+          // if (state is ProfileLoadedState) {
+          //   const snack = SnackBar(content: Text('профиль загружен'));
+          //   ScaffoldMessenger.of(context).showSnackBar(snack);
+          // }
+
         },
         builder: (context, state) {
           if (state is ProfileLoadedState) {
@@ -94,9 +98,12 @@ class _ProfileState extends State<Profile> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => BlocProvider.value(
-                                          value: profileBloc,
-                                          child: const EditProfile(),
+                                    builder: (_) => RepositoryProvider.value(
+                                          value: profileRepository,
+                                          child: BlocProvider.value(
+                                            value: profileBloc,
+                                            child: const EditProfile(),
+                                          ),
                                         )));
                           },
                           title: 'edit',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
+import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/save_text_button.dart';
 
@@ -43,14 +44,29 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
+    final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
     return SafeArea(
       child: Scaffold(
         body: BlocConsumer<ProfileBloc, ProfileState>(
           listener: (context, state) {
-            // TODO: implement listener
+            if (state is ProfileEditSuccessState) {
+              const snack = SnackBar(content: Text('Изменения внесены'));
+              ScaffoldMessenger.of(context).showSnackBar(snack);
+              Navigator.pop(context);
+            }
+            if (state is ProfileEditFailState) {
+              const snack = SnackBar(content: Text('ошибка, попробуйте позже'));
+              ScaffoldMessenger.of(context).showSnackBar(snack);
+            }
           },
           builder: (context, state) {
-            if (!(state is ProfileLoadingState)) {
+            if (profileRepository.isProfileLoaded() && _nameController.text.isEmpty) {
+              _nameController.text = profileRepository.userInfo.name;
+              _emailController.text = profileRepository.userInfo.email;
+              _telephoneController.text =
+                  profileRepository.userInfo.phoneNumber;
+              _linkController.text = profileRepository.userInfo.contactUrl;
+
               return Container(
                 decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -76,18 +92,21 @@ class _EditProfileState extends State<EditProfile> {
                             Navigator.pop(context);
                           },
                           // TODO сделать нормальную переодресацию
-                          title: 'cancel',
+                          title: 'назад',
                           width: 100,
                           height: 45,
                           textStyle: AppTypography.font20_0xff929292,
                         ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                    SizedBox(height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.03),
                     BaseTextFormField(
                       controller: _nameController,
                       keyboardType: TextInputType.name,
-                      hintText: 'name',
+                      hintText: 'имя пользователя',
                       suffixIcon: const Icon(Icons.edit_outlined),
                     ),
                     BaseTextFormField(
@@ -99,13 +118,13 @@ class _EditProfileState extends State<EditProfile> {
                     BaseTextFormField(
                       controller: _telephoneController,
                       keyboardType: TextInputType.name,
-                      hintText: 'telephone',
+                      hintText: 'телефон',
                       suffixIcon: const Icon(Icons.edit_outlined),
                     ),
                     BaseTextFormField(
                       controller: _linkController,
                       keyboardType: TextInputType.name,
-                      hintText: 'url',
+                      hintText: 'ссылка на соцсети',
                       suffixIcon: const Icon(Icons.edit_outlined),
                     ),
                     const SizedBox(
@@ -113,8 +132,14 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     SaveTextButton(
                       textStyle: AppTypography.font20grey,
-                      title: 'Save',
-                      onPressed: () {},
+                      title: 'Сохранить',
+                      onPressed: () {
+                        profileBloc.add(ProfileEditInitialEvent(
+                            name: _nameController.text,
+                            email: _emailController.text,
+                            phoneNumber: _telephoneController.text,
+                            contactUrl: _linkController.text));
+                      },
                       //TODO Сдлелать сохраниение номрмальное
                       width: 350,
                       height: 45,

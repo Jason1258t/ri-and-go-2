@@ -47,9 +47,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     profileStateSubscription =
         _profileRepository.profileState.stream.listen((ProfileStateEnum event) {
       if (event == ProfileStateEnum.loading) add(ProfileLoadingEvent());
-      if (event == ProfileStateEnum.success) {
-        add(ProfileLoadedEvent());
-      }
+      if (event == ProfileStateEnum.success) add(ProfileLoadedEvent());
       if (event == ProfileStateEnum.fail) add(ProfileErrorEvent());
     });
 

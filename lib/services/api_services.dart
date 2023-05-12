@@ -22,6 +22,7 @@ class ApiService {
   static const String register = '/Users/AddNew';
   static const String profile = '/Users/Get/';
   static const String profileEdit = '/Users/SetUser';
+  static const String userTrips = '/Trips/GetUserTrips/';
 
   Future<dynamic> loginUser(
       {required String email, required String password}) async {
@@ -119,4 +120,26 @@ class ApiService {
       throw Exception('un known exception');
     }
   }
+
+  Future<dynamic> loadUserTrips({required int id}) async {
+    try {
+      final userTripsResp = await _dio.get(userTrips + id.toString());
+      return userTripsResp.data;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
+      }
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
+      }
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
+      }
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
+      }
+      throw Exception('un known exception');
+    }
+  }
+
 }
