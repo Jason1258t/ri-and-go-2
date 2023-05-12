@@ -13,7 +13,7 @@ extension ModelsParser on Map<String, dynamic> {
   }
 }
 
-extension ListModelsParser on List<Map<String, dynamic>> {
+extension ListModelsParser on List {
   List<TripModel> parseTripList() {
     return List<TripModel>.generate(this.length, (index) =>
         TripModel(itemId: this[index]['id'],
@@ -21,6 +21,6 @@ extension ListModelsParser on List<Map<String, dynamic>> {
             itemDate: this[index]['departureTime'],
             authorId: this[index]['creatorId'],
             tripType: this[index]['tripType'],
-            image: ''));
+            image: 'Assets/logo.png'));
   }
 }

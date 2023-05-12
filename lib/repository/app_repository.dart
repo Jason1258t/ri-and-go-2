@@ -18,17 +18,13 @@ enum AppStateEnum { auth, unAuth, loading }
 
 enum AuthStateEnum { wait, loading, success, fail }
 
-// enum ProfileStateEnum { loading, success, fail }
 
 class AppRepository {
   final ApiService apiService;
 
-  /// seeded для установки значения по умолчанию
   BehaviorSubject<String> token = BehaviorSubject<String>.seeded('');
   BehaviorSubject<AppStateEnum> appState =
       BehaviorSubject<AppStateEnum>.seeded(AppStateEnum.unAuth);
-  // BehaviorSubject<ProfileStateEnum> profileState =
-  //     BehaviorSubject<ProfileStateEnum>.seeded(ProfileStateEnum.loading);
 
   AppRepository({required this.apiService});
 
@@ -117,15 +113,4 @@ class AppRepository {
     return userId;
   }
 
-  // Future<dynamic> loadProfile({required int id}) async {
-  //
-  //   profileState.add(ProfileStateEnum.loading);
-  //   try {
-  //     profileInfo = await apiService.loadProfile(id: id);
-  //     profileState.add(ProfileStateEnum.success);
-  //   } catch (e) {
-  //     profileState.add(ProfileStateEnum.fail);
-  //     throw e;
-  //   }
-  // }
 }

@@ -11,7 +11,8 @@ import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/ui_login/login_screen.dart';
 import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
-import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
+import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
+import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/feature/profile/ui/profile_screen.dart';
 import 'package:riandgo2/repository/app_repository.dart';
@@ -36,7 +37,8 @@ class MyRepositoryProvider extends StatelessWidget {
         providers: [
           RepositoryProvider(
               create: (_) => AppRepository(apiService: apiService)),
-          RepositoryProvider(create:(_) => ProfileRepository(apiService: apiService) )
+          RepositoryProvider(
+              create: (_) => ProfileRepository(apiService: apiService))
         ],
         child: const MyBlocProviders(),
         // child: MyApp(),
@@ -73,9 +75,15 @@ class MyBlocProviders extends StatelessWidget {
           ),
           BlocProvider<ProfileBloc>(
               create: (_) => ProfileBloc(
-                  profileRepository: RepositoryProvider.of<ProfileRepository>(context),
+                  profileRepository:
+                      RepositoryProvider.of<ProfileRepository>(context),
                   appRepository: RepositoryProvider.of<AppRepository>(context))
-                ..add(ProfileSubscribeEvent()))
+                ..add(ProfileSubscribeEvent())),
+          BlocProvider<UserTripsBloc>(
+              create: (_) => UserTripsBloc(
+                  profileRepository:
+                      RepositoryProvider.of<ProfileRepository>(context))
+                ..add(UserTripsSubscribeEvent()))
         ],
         child: const AppStateWidget(),
       ),

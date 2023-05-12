@@ -7,16 +7,19 @@ import '../../../models/models.dart';
 
 enum ProfileStateEnum { loading, success, fail }
 enum ProfileEditingStateEnum {wait, loading, success, fail}
+enum UserTripsStateEnum {loading, success, fail}
 
 class ProfileRepository {
   final ApiService apiService;
 
   BehaviorSubject<ProfileStateEnum> profileState = BehaviorSubject<ProfileStateEnum>.seeded(ProfileStateEnum.loading);
+  BehaviorSubject<UserTripsStateEnum> tripsState = BehaviorSubject<UserTripsStateEnum>.seeded(UserTripsStateEnum.loading);
   BehaviorSubject<ProfileEditingStateEnum> profileEditState = BehaviorSubject<ProfileEditingStateEnum>.seeded(ProfileEditingStateEnum.wait);
 
   ProfileRepository({required this.apiService});
 
   late User userInfo;
+  late List<TripModel> userTrips;
   late int userId;
   bool profileLoaded = false;
 
@@ -60,6 +63,14 @@ class ProfileRepository {
 
 
   Future<void> loadTrips() async {
-
+    tripsState.add(UserTripsStateEnum.loading);
+    try {
+      List data = await apiService.loadUserTrips(id: userId);
+      userTrips = data.parseTripList();
+      tripsState.add(UserTripsStateEnum.success);
+    } catch (e) {
+      tripsState.add(UserTripsStateEnum.fail);
+      rethrow;
+    }
   }
 }

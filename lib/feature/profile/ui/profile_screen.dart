@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
-import 'package:riandgo2/feature/profile/bloc/profile_bloc.dart';
+import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
+import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/feature/profile/ui/edit_screen.dart';
 import 'package:riandgo2/utils/utils.dart';
@@ -51,7 +52,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
     final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
-
+    final tripsBloc = BlocProvider.of<UserTripsBloc>(context);
     if (!profileRepository.isProfileLoaded()) {
       profileBloc.add(ProfileInitialLoadEvent());
     }
@@ -62,7 +63,6 @@ class _ProfileState extends State<Profile> {
           //   const snack = SnackBar(content: Text('профиль загружен'));
           //   ScaffoldMessenger.of(context).showSnackBar(snack);
           // }
-
         },
         builder: (context, state) {
           if (state is ProfileLoadedState) {
@@ -134,8 +134,17 @@ class _ProfileState extends State<Profile> {
                           fontWeight: FontWeight.w500,
                           fontStyle: FontStyle.italic),
                     ),
-                    ListViewTrips(
-                      trips: [],
+                    BlocConsumer<UserTripsBloc, UserTripsState>(
+                      builder: (context, state) {
+                        if (state is UserTripsLoadingState) {
+                          return const CircularProgressIndicator();
+                        } if (state is UserTripsSuccessState) {
+                          return ListViewTrips(trips: profileRepository.userTrips);
+                        } else {
+                          return const Text('ошибка загрузки');
+                        }
+                      },
+                      listener: (context, state) {},
                     )
                   ],
                 ),
