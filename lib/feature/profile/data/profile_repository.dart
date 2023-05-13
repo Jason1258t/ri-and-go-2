@@ -18,7 +18,7 @@ class ProfileRepository {
 
   ProfileRepository({required this.apiService});
 
-  late User userInfo;
+  late User userInfo = User(name: 'Даун', contactUrl: 'pornhub.com', email: 'seksstyskiy@shluhoi.com', phoneNumber: '88005553535');
   late List<TripModel> userTrips;
   late int userId;
   bool profileLoaded = false;

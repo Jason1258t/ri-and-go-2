@@ -74,13 +74,13 @@ class MyBlocProviders extends StatelessWidget {
             lazy: false,
           ),
           BlocProvider<ProfileBloc>(
-              create: (_) => ProfileBloc(
+              create: (context) => ProfileBloc(
                   profileRepository:
                       RepositoryProvider.of<ProfileRepository>(context),
                   appRepository: RepositoryProvider.of<AppRepository>(context))
                 ..add(ProfileSubscribeEvent())),
           BlocProvider<UserTripsBloc>(
-              create: (_) => UserTripsBloc(
+              create: (context) => UserTripsBloc(
                   profileRepository:
                       RepositoryProvider.of<ProfileRepository>(context))
                 ..add(UserTripsSubscribeEvent()))

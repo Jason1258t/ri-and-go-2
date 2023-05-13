@@ -47,9 +47,9 @@ class SecondRegistrationScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 100),
+                const SizedBox(height: 100),
                 Image.asset("Assets/logo.png"),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -72,7 +72,7 @@ class SecondRegistrationScreen extends StatelessWidget {
                   controller: _passwordControllerFirst,
                   keyboardType: TextInputType.visiblePassword,
                   hintText: 'password',
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.lock_outline,
                     size: 19,
                   ),

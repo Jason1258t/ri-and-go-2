@@ -18,7 +18,8 @@ class FirstRegistrationScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  bool checkFields() =>  _emailController.text != '' && _phoneController.text != '';
+  bool checkFields() =>
+      _emailController.text != '' && _phoneController.text != '';
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +69,9 @@ class FirstRegistrationScreen extends StatelessWidget {
                                 textStyle: AppTypography.font17grey)
                           ],
                         ),
-                        SizedBox(height: 100),
+                        const SizedBox(height: 100),
                         Image.asset("Assets/logo.png"),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -87,7 +88,8 @@ class FirstRegistrationScreen extends StatelessWidget {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           hintText: 'email',
-                          prefixIcon: const Icon(Icons.email_outlined, size: 19),
+                          prefixIcon:
+                              const Icon(Icons.email_outlined, size: 19),
                         ),
                         BaseTextFormField(
                           controller: _phoneController,
@@ -108,10 +110,8 @@ class FirstRegistrationScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => BlocProvider.value(
-                                            value: bloc,
-                                            child: SecondRegistrationScreen(),
-                                          )));
+                                    builder: (_) => SecondRegistrationScreen(),
+                                  ));
                             } else {
                               const snackBar = SnackBar(
                                 content: Text('поля не заполнены'),

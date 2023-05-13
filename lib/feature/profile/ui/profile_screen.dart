@@ -96,15 +96,11 @@ class _ProfileState extends State<Profile> {
                         DefaultTextButton(
                           onPressed: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => RepositoryProvider.value(
-                                          value: profileRepository,
-                                          child: BlocProvider.value(
-                                            value: profileBloc,
-                                            child: const EditProfile(),
-                                          ),
-                                        )));
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const EditProfile(),
+                              ),
+                            );
                           },
                           title: 'edit',
                           width: 100,
@@ -138,8 +134,10 @@ class _ProfileState extends State<Profile> {
                       builder: (context, state) {
                         if (state is UserTripsLoadingState) {
                           return const CircularProgressIndicator();
-                        } if (state is UserTripsSuccessState) {
-                          return ListViewTrips(trips: profileRepository.userTrips);
+                        }
+                        if (state is UserTripsSuccessState) {
+                          return ListViewTrips(
+                              trips: profileRepository.userTrips);
                         } else {
                           return const Text('ошибка загрузки');
                         }
