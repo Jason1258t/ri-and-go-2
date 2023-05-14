@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:riandgo2/feature/Trips/ui/trips_main_screen.dart';
+import 'package:riandgo2/feature/addCard/ui/addCard_screen.dart';
 import 'package:riandgo2/feature/profile/ui/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -12,10 +13,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     const TripScreen(),
-    Scaffold(
-      appBar: AppBar(title: const Text('добавить')),
-      body: const SizedBox(),
-    ),
+    const AddCard(),
     const Profile(),
   ];
 
