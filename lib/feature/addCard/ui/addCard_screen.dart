@@ -42,22 +42,22 @@ class _AddCardState extends State<AddCard> {
             child: Column(
               children: [
                 Image.asset(
-                    'Assets/logo.png',
-                    height: 87,
-                    width: 80,
+                  'Assets/logo.png',
+                  height: 87,
+                  width: 80,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 GestureDetector(
+                  onTap: change,
                   child: MoveButton(
                     firstName: 'Поездку',
                     secondName: 'Запрос',
                     val: val,
                   ),
-                  onTap: change,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 if (!val) ...[DriverCard()] else ...[PassengerCard()]
@@ -94,13 +94,13 @@ class _DriverCardState extends State<DriverCard> {
       width: 300,
       height: 440,
       decoration: BoxDecoration(
-        color: Color(0xffFFF2DE),
+        color: const Color(0xffFFF2DE),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Center(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -109,7 +109,7 @@ class _DriverCardState extends State<DriverCard> {
               maxLines: 1,
               hintText: 'Название',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -118,7 +118,7 @@ class _DriverCardState extends State<DriverCard> {
               maxLines: 1,
               hintText: 'Откуда',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -127,7 +127,7 @@ class _DriverCardState extends State<DriverCard> {
               maxLines: 1,
               hintText: 'Куда',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -136,7 +136,7 @@ class _DriverCardState extends State<DriverCard> {
               maxLines: 1,
               hintText: 'Когда',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -145,7 +145,7 @@ class _DriverCardState extends State<DriverCard> {
               maxLines: 1,
               hintText: 'Кол-во человек',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -182,13 +182,13 @@ class _PassengerCardState extends State<PassengerCard> {
       width: 300,
       height: 385,
       decoration: BoxDecoration(
-        color: Color(0xffFFF2DE),
+        color: const Color(0xffFFF2DE),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Center(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -197,7 +197,7 @@ class _PassengerCardState extends State<PassengerCard> {
               maxLines: 1,
               hintText: 'Название',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -206,7 +206,7 @@ class _PassengerCardState extends State<PassengerCard> {
               maxLines: 1,
               hintText: 'Откуда',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -215,7 +215,7 @@ class _PassengerCardState extends State<PassengerCard> {
               maxLines: 1,
               hintText: 'Куда',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
@@ -224,7 +224,7 @@ class _PassengerCardState extends State<PassengerCard> {
               maxLines: 1,
               hintText: 'Когда',
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TexrField(
