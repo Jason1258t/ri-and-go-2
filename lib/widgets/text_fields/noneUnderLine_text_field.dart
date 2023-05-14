@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:riandgo2/utils/utils.dart';
 
-class PasswordTextFormField extends StatefulWidget {
-  const PasswordTextFormField({
+class NoneUnderLineTextField extends StatefulWidget {
+  const NoneUnderLineTextField({
     Key? key,
     required this.controller,
     required this.keyboardType,
@@ -16,11 +16,13 @@ class PasswordTextFormField extends StatefulWidget {
     this.hintText = '',
     this.obscureText = false,
     this.prefixIcon,
+    this.suffixIcon,
   }) : super(key: key);
 
   final TextEditingController controller;
   final TextInputType keyboardType;
   final Icon? prefixIcon;
+  final Icon? suffixIcon;
   final double height;
   final double width;
   final EdgeInsets padding;
@@ -29,12 +31,10 @@ class PasswordTextFormField extends StatefulWidget {
   final bool obscureText;
 
   @override
-  _PasswordTextFormFieldState createState() => _PasswordTextFormFieldState();
+  _NoneUnderLineTextFieldState createState() => _NoneUnderLineTextFieldState();
 }
 
-class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
-  bool vizible = false;
-
+class _NoneUnderLineTextFieldState extends State<NoneUnderLineTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -45,31 +45,19 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
         child: TextFormField(
           maxLines: widget.maxLines,
           keyboardType: widget.keyboardType,
-          autofocus: false,
-          obscureText: vizible,
+          autofocus: true,
+          obscureText: widget.obscureText,
           textAlignVertical: TextAlignVertical.bottom,
           decoration: InputDecoration(
-              hintStyle: AppTypography.font17,
-              suffixIcon: IconButton(
-                icon: Icon(Icons.remove_red_eye_outlined),
-                onPressed: () {setState(() {
-                  vizible = !vizible;
-                });},
-              ),
-              prefixIcon: widget.prefixIcon,
               filled: false,
+              hintStyle: AppTypography.font12,
+              prefixIcon: widget.prefixIcon,
               hintText: widget.hintText,
               label: widget.controller.text != '' ? Text(widget.hintText) : null,
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.lightGrey,
-                  )
-              )
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
           ),
           style: AppTypography.font17,
-          onChanged: (String value) {
-            setState(() {});
-          },
           controller: widget.controller,
         ),
       ),

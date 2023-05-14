@@ -23,7 +23,6 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _linkController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
@@ -43,7 +42,8 @@ class _EditProfileState extends State<EditProfile> {
             }
           },
           builder: (context, state) {
-            if (profileRepository.isProfileLoaded() && _nameController.text.isEmpty) {
+            if (profileRepository.isProfileLoaded() &&
+                _nameController.text.isEmpty) {
               _nameController.text = profileRepository.userInfo.name;
               _emailController.text = profileRepository.userInfo.email;
               _telephoneController.text =
@@ -53,8 +53,8 @@ class _EditProfileState extends State<EditProfile> {
               return Container(
                 decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('Assets/searchBackground.png'),
-                    )),
+                  image: AssetImage('Assets/searchBackground.png'),
+                )),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,7 +68,7 @@ class _EditProfileState extends State<EditProfile> {
                         const SizedBox(width: 100),
                         _Avatar(
                           avatar:
-                          'Assets/logo.png', // TODO заменить на серверное фото
+                              'Assets/logo.png', // TODO заменить на серверное фото
                         ),
                         DefaultTextButton(
                           onPressed: () {
@@ -82,10 +82,7 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                       ],
                     ),
-                    SizedBox(height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.03),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                     BaseTextFormField(
                       controller: _nameController,
                       keyboardType: TextInputType.name,
@@ -131,7 +128,9 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               );
             } else {
-              return const Center(child: CircularProgressIndicator(),);
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
           },
         ),

@@ -70,9 +70,6 @@ flutter:
     - Assets/searchBackground.png
     - Assets/companion.jpg
     - Assets/companion.png
-    - Assets/no_image.png
-    - Assets/tripImg1.jpeg
-    - Assets/tripImg2.jpg
     - Assets/aboba.png
   # To add assets to your application, add an assets section, like this:
   # assets:

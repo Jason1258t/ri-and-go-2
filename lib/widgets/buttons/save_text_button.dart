@@ -36,7 +36,7 @@ class SaveTextButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           title,
-          style: AppTypography.fontw600_white,
+          style: AppTypography.font24_white,
         ),
       ),
     );

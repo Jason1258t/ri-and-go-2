@@ -50,24 +50,11 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
           textAlignVertical: TextAlignVertical.bottom,
           decoration: InputDecoration(
             hintStyle: AppTypography.font17,
-
-            // fillColor: AppColors.grey8E8E93,
             prefixIcon: widget.prefixIcon,
 
             filled: false,
             hintText: widget.hintText,
             label: widget.controller.text != '' ? Text(widget.hintText) : null,
-            // border: const OutlineInputBorder(
-            //   borderRadius: BorderRadius.all(
-            //     Radius.circular(10.0),
-            //   ),
-            // ),
-            // focusedBorder: OutlineInputBorder(
-            //   //borderRadius: BorderRadius.circular(10.0),
-            //   borderSide: const BorderSide(
-            //     color: AppColors.blue,
-            //   ),
-            // ),
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.lightGrey,
@@ -84,5 +71,3 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
     );
   }
 }
-
-//suffixIcon: IconButton(icon: Icon(Icons.panorama_fish_eye), onPressed: () {visible = !visible;},),
