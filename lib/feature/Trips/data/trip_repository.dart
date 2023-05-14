@@ -17,7 +17,7 @@ class TripsRepository {
   void loadTips(TripFilter? filter) async {
     tripsState.add(TripsStateEnum.loading);
     try {
-      List<Map<String, dynamic>> trips;
+      List trips;
       if (filter == null) {
         trips = await apiService.defaultLoadTrips();
       } else {
@@ -27,7 +27,8 @@ class TripsRepository {
       tripsState.add(TripsStateEnum.success);
     } catch (e) {
       tripsState.add(TripsStateEnum.fail);
-      return;
+      rethrow;
+
     }
   }
 }

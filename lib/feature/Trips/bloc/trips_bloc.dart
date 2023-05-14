@@ -18,11 +18,14 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
         super(TripsInitial()) {
     on<TripsSubscriptionEvent>(_subscribe);
     on<TripsInitialLoadEvent>(_initialLoad);
+    on<TripsLoadingEvent>(_onLoading);
+    on<TripsSuccessEvent>(_onSuccess);
+    on<TripsFailEvent>(_onFail);
   }
 
   _subscribe(TripsSubscriptionEvent event, emit) {
     _tripsState = _tripsRepository.tripsState.stream.listen((event) {
-      if (event == TripsStateEnum.loading) add(TripLoadingEvent());
+      if (event == TripsStateEnum.loading) add(TripsLoadingEvent());
       if (event == TripsStateEnum.success) add(TripsSuccessEvent());
       if (event == TripsStateEnum.fail) add(TripsFailEvent());
     });
@@ -30,6 +33,17 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
 
   _initialLoad(TripsInitialLoadEvent event, emit) {
     _tripsRepository.loadTips(event.filter);
+  }
 
+  _onLoading(TripsLoadingEvent event, emit) {
+    emit(TripsLoadingState());
+  }
+
+  _onSuccess(TripsSuccessEvent event, emit) {
+    emit(TripsLoadedState());
+  }
+
+  _onFail(TripsFailEvent event, emit) {
+    emit(TripsFailState());
   }
 }

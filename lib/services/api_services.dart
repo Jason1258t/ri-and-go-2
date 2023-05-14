@@ -26,6 +26,7 @@ class ApiService {
   static const String userTrips = '/Trips/GetUserTrips/';
   static const String trips = '/Trips/GetAll';
   static const String filteredTrips = '/Trips/FetchTrips';
+  static const String tripAdd = '/Trips/AddNew';
 
   Future<dynamic> loginUser(
       {required String email, required String password}) async {
@@ -171,6 +172,26 @@ class ApiService {
     try {
       final loadedTrips = await _dio.post(filteredTrips, data: filter.toJson());
       return loadedTrips.data;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
+      }
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
+      }
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
+      }
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
+      }
+      throw Exception('un known exception');
+    }
+  }
+
+  Future<void> addTrip(Map trip) async {
+    try {
+      await _dio.post(tripAdd, data: trip);
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         throw (UnAuthorizedException);
