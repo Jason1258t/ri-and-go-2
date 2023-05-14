@@ -12,3 +12,4 @@ class AddTripSuccessState extends AddTripState {}
 class AddTripFailState extends AddTripState {}
 
 class AddTripWaitingState extends AddTripState {}
+
