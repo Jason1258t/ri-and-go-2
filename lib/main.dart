@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/app.dart';
+import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
+import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 
 // Project imports:
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
+import 'package:riandgo2/feature/app/ui/main_screen.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/ui_login/login_screen.dart';
@@ -52,7 +55,9 @@ class MyRepositoryProvider extends StatelessWidget {
         RepositoryProvider(
             create: (_) => AppRepository(apiService: apiService)),
         RepositoryProvider(
-            create: (_) => ProfileRepository(apiService: apiService))
+            create: (_) => ProfileRepository(apiService: apiService)),
+        RepositoryProvider(
+            create: (_) => TripsRepository(apiService: apiService))
       ],
       child: const MyBlocProviders(),
       // child: MyApp(),
@@ -92,10 +97,18 @@ class MyBlocProviders extends StatelessWidget {
                 appRepository: RepositoryProvider.of<AppRepository>(context))
               ..add(ProfileSubscribeEvent())),
         BlocProvider<UserTripsBloc>(
-            create: (context) => UserTripsBloc(
-                profileRepository:
-                    RepositoryProvider.of<ProfileRepository>(context))
-              ..add(UserTripsSubscribeEvent()))
+          create: (context) => UserTripsBloc(
+              profileRepository:
+                  RepositoryProvider.of<ProfileRepository>(context))
+            ..add(UserTripsSubscribeEvent()),
+          lazy: false,
+        ),
+        BlocProvider<TripsBloc>(
+          create: (_) =>
+              TripsBloc(RepositoryProvider.of<TripsRepository>(context))
+                ..add(TripsSubscriptionEvent()),
+          lazy: false,
+        )
       ],
       child: const AppStateWidget(),
     );
@@ -120,7 +133,7 @@ class AppStateWidget extends StatelessWidget {
           },
           builder: (context, state) {
             if (state is AuthAppState) {
-              return const Profile();
+              return const MainScreen();
             } else if (state is UnAuthAppState) {
               return LoginScreen();
             } else if (state is LoadingAppState) {

@@ -18,22 +18,13 @@ class ProfileRepository {
 
   ProfileRepository({required this.apiService});
 
-  late User userInfo = User(name: 'Даун', contactUrl: 'pornhub.com', email: 'seksstyskiy@shluhoi.com', phoneNumber: '88005553535');
+  late User userInfo;
   late List<TripModel> userTrips;
   late int userId;
   bool profileLoaded = false;
 
   bool isProfileLoaded() {
     return profileLoaded;
-  }
-
-  void convertServerData(Map data) {
-    userInfo = User(
-      name: data['name'],
-      email: data['email'],
-      phoneNumber: data['phoneNumber'],
-      contactUrl: data['contactUrl']
-    );
   }
 
   Future<void> loadProfile() async {

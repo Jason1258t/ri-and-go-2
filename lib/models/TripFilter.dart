@@ -4,5 +4,11 @@ class TripFilter {
   final String? arrive;
   final bool type;
 
-  TripFilter(this.date, this.departure, this.arrive, {required this.type});
+  TripFilter({this.date = '', this.departure = '', this.arrive = '', this.type = false});
+
+  Map<String, dynamic> toJson () => {
+    'departurePlace': departure,
+    'arrivalPlace': arrive,
+    'departureTime': date,
+  };
 }

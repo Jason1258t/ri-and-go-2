@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:riandgo2/models/models.dart';
 
 // Project imports:
 import 'package:riandgo2/services/exceptions/exceptions.dart';
@@ -23,6 +24,8 @@ class ApiService {
   static const String profile = '/Users/Get/';
   static const String profileEdit = '/Users/SetUser';
   static const String userTrips = '/Trips/GetUserTrips/';
+  static const String trips = '/Trips/GetAll';
+  static const String filteredTrips = '/Trips/FetchTrips';
 
   Future<dynamic> loginUser(
       {required String email, required String password}) async {
@@ -142,4 +145,46 @@ class ApiService {
     }
   }
 
+  Future<dynamic> defaultLoadTrips() async {
+    try {
+      final loadedTrips = await _dio.get(trips);
+      return loadedTrips.data;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
+      }
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
+      }
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
+      }
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
+      }
+      throw Exception('un known exception');
+    }
+  }
+
+
+  Future<dynamic> filteredLoadTrips(TripFilter filter) async {
+    try {
+      final loadedTrips = await _dio.post(filteredTrips, data: filter.toJson());
+      return loadedTrips.data;
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
+      }
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
+      }
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
+      }
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
+      }
+      throw Exception('un known exception');
+    }
+  }
 }
