@@ -56,104 +56,111 @@ class _ProfileState extends State<Profile> {
     if (!profileRepository.isProfileLoaded()) {
       profileBloc.add(ProfileInitialLoadEvent());
     }
-    return BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (context, state) {
-          // if (state is ProfileLoadedState) {
-          //   const snack = SnackBar(content: Text('профиль загружен'));
-          //   ScaffoldMessenger.of(context).showSnackBar(snack);
-          // }
-        },
-        builder: (context, state) {
-          if (state is ProfileLoadedState) {
-            return Scaffold(
-              body: Container(
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                  image: AssetImage('Assets/searchBackground.png'),
-                )),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SafeArea(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Padding(padding: EdgeInsets.only(top: 15)),
-                          DefaultTextButton(
-                            width: 100,
-                            height: 45,
-                            title: 'log out',
-                            textStyle: AppTypography.font20_0xff929292,
-                            onPressed: logoutShowDialog,
-                          ),
-                          _Avatar(
-                            avatar:
-                                'Assets/logo.png', // TODO заменить на серверное фото
-                          ),
-                          DefaultTextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const EditProfile(),
-                                ),
-                              );
-                            },
-                            title: 'edit',
-                            width: 100,
-                            height: 45,
-                            textStyle: AppTypography.font20_0xff929292,
-                          ),
-                        ],
+    return BlocConsumer<ProfileBloc, ProfileState>(listener: (context, state) {
+      // if (state is ProfileLoadedState) {
+      //   const snack = SnackBar(content: Text('профиль загружен'));
+      //   ScaffoldMessenger.of(context).showSnackBar(snack);
+      // }
+    }, builder: (context, state) {
+      if (state is ProfileLoadedState) {
+        return Scaffold(
+          body: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('Assets/searchBackground.png'),
+            )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SafeArea(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Padding(padding: EdgeInsets.only(top: 15)),
+                      DefaultTextButton(
+                        width: 100,
+                        height: 45,
+                        title: 'log out',
+                        textStyle: AppTypography.font20_0xff929292,
+                        onPressed: logoutShowDialog,
                       ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                    if (state is ProfileLoadedState)
-                      _Elements(
-                        name: state.name,
-                        phone: state.phone,
-                        email: state.email,
-                      )
-                    else
-                      const _Elements(
-                        name: 'нд',
-                        phone: 'нд',
-                        email: "нд",
+                      _Avatar(
+                        avatar:
+                            'Assets/logo.png', // TODO заменить на серверное фото
                       ),
-                    const Text(
-                      'Созданные поездки',
-                      style: TextStyle(
-                          color: Color.fromRGBO(133, 64, 0, 1),
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.italic),
-                    ),
-                    BlocConsumer<UserTripsBloc, UserTripsState>(
-                      builder: (context, state) {
-                        if (state is UserTripsLoadingState) {
-                          return const CircularProgressIndicator();
-                        }
-                        if (state is UserTripsSuccessState) {
-                          return ListViewTrips(
-                              trips: profileRepository.userTrips);
-                        } else {
-                          return const Text('ошибка загрузки');
-                        }
-                      },
-                      listener: (context, state) {},
-                    )
-                  ],
+                      DefaultTextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const EditProfile(),
+                            ),
+                          );
+                        },
+                        title: 'edit',
+                        width: 100,
+                        height: 45,
+                        textStyle: AppTypography.font20_0xff929292,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return const Scaffold(
-                body: Center(child: CircularProgressIndicator()));
-          }
-        }
-    );
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                if (state is ProfileLoadedState)
+                  _Elements(
+                    name: state.name,
+                    phone: state.phone,
+                    email: state.email,
+                  )
+                else
+                  const _Elements(
+                    name: 'нд',
+                    phone: 'нд',
+                    email: "нд",
+                  ),
+                const Text(
+                  'Созданные поездки',
+                  style: TextStyle(
+                      color: Color.fromRGBO(133, 64, 0, 1),
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.italic),
+                ),
+                BlocConsumer<UserTripsBloc, UserTripsState>(
+                  builder: (context, state) {
+                    if (state is UserTripsLoadingState) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (state is UserTripsSuccessState) {
+                      return ListViewTrips(trips: profileRepository.userTrips);
+                    } else {
+                      return const Text('ошибка загрузки');
+                    }
+                  },
+                  listener: (context, state) {},
+                )
+              ],
+            ),
+          ),
+        );
+      }
+      if (state is ProfileErrorState) {
+        return Scaffold(
+          body: Center(
+            child: SizedBox(
+                width: 300.0,
+                height: 300.0,
+                child: Image.asset(
+                  'Assets/companion.png',
+                )),
+          ),
+        );
+      } else {
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      }
+    });
   }
 }
 

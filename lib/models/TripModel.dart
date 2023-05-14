@@ -5,6 +5,8 @@ class TripModel {
   int itemId;
   bool tripType;
   String image;
+  String departurePlace;
+  String arrivalPlace;
 
   TripModel(
       {required this.itemId,
@@ -12,7 +14,9 @@ class TripModel {
       required this.itemDate,
       required this.authorId,
       required this.tripType,
-      required this.image});
+      required this.image,
+      required this.departurePlace,
+      required this.arrivalPlace});
 }
 
 class AddTripModel {

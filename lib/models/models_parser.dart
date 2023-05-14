@@ -8,19 +8,22 @@ extension ModelsParser on Map<String, dynamic> {
         name: this['name'],
         email: this['email'],
         phoneNumber: this['phoneNumber'],
-        contactUrl: this['contactUrl']
-    );
+        contactUrl: this['contactUrl']);
   }
 }
 
 extension ListModelsParser on List {
   List<TripModel> parseTripList() {
-    return List<TripModel>.generate(this.length, (index) =>
-        TripModel(itemId: this[index]['id'],
+    return List<TripModel>.generate(
+        length,
+        (index) => TripModel(
+            itemId: this[index]['id'],
             itemName: this[index]['name'],
             itemDate: this[index]['departureTime'],
             authorId: this[index]['creatorId'],
             tripType: this[index]['tripType'],
-            image: 'Assets/logo.png'));
+            image: 'Assets/logo.png',
+            arrivalPlace: this[index]['arrivalPlace'],
+            departurePlace: this[index]['departurePlace']));
   }
 }

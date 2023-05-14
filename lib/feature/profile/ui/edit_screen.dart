@@ -23,23 +23,6 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _linkController = TextEditingController();
 
-  List<TripModel> trips = [
-    // TODO заменить на серверный лист
-    TripModel(
-        itemId: 1,
-        itemName: 'поездка',
-        itemDate: 'дата',
-        authorId: 12,
-        tripType: true,
-        image: 'Assets/logo.png'),
-    TripModel(
-        itemId: 1,
-        itemName: 'asdfsadf',
-        itemDate: 'asfdasdf',
-        authorId: 12,
-        tripType: false,
-        image: 'Assets/logo.png'),
-  ];
 
   @override
   Widget build(BuildContext context) {
