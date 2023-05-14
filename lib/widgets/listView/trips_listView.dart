@@ -172,20 +172,26 @@ class _SearchedTripState extends State<SearchedTrip> {
   bool viewType = false;
 
   void changeViewType () {
-    viewType = !viewType;
+    setState(() {
+      viewType = !viewType;
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return BaseSearchedTrip(trip: widget.trip);
+    if (!viewType) return BaseSearchedTrip(trip: widget.trip, onPres: changeViewType,);
+    else return AdvancedSearchedTrip(trip: widget.trip, onPres: changeViewType,);
+
   }
 }
 
 
 
 class BaseSearchedTrip extends StatelessWidget {
-  const BaseSearchedTrip({Key? key, required this.trip}) : super(key: key);
+  const BaseSearchedTrip({Key? key, required this.trip, required this.onPres}) : super(key: key);
   final TripModel trip;
+  final onPres;
 
 
   @override
@@ -243,7 +249,7 @@ class BaseSearchedTrip extends StatelessWidget {
                   ],
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: onPres,
                     child: const Icon(
                       Icons.expand_more,
                       size: 30,
@@ -257,8 +263,9 @@ class BaseSearchedTrip extends StatelessWidget {
 }
 
 class AdvancedSearchedTrip extends StatelessWidget {
-  const AdvancedSearchedTrip({Key? key, required this.trip}) : super(key: key);
+  const AdvancedSearchedTrip({Key? key, required this.trip, required this.onPres}) : super(key: key);
   final TripModel trip;
+  final onPres;
 
   @override
   Widget build(BuildContext context) {
@@ -290,7 +297,23 @@ class AdvancedSearchedTrip extends StatelessWidget {
               children: [
                 Image.asset('Assets/aboba.png'),
                 Column(children: [
-                  Text(trip.itemName, style: TextStyle(fontSize: 20),)
+                  Text(trip.itemName, style: TextStyle(fontSize: 20), maxLines: 2, overflow: TextOverflow.ellipsis,),
+                  Text(trip.itemDate, style: TextStyle(fontSize: 11), maxLines: 1, overflow: TextOverflow.ellipsis,),
+                  const SizedBox(height: 10,),
+                  Text(trip.description, style: TextStyle(fontSize: 13),),
+                  SizedBox(height: 43,),
+                  Row(
+                    children: [
+                      Icon(Icons.people, size: 20,),
+                      Text('4/${trip.maxPassengers}', style: TextStyle(fontSize: 14, color: Color(0xff747474)),),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text('Автор: ', style: TextStyle(fontSize: 15),),
+                      TextButton(onPressed: () {}, child: Text('Ебланище', style: TextStyle(fontSize: 14, color: Color(0xff1EC67F)),))
+                    ],
+                  )
                 ],)
               ],
             ),

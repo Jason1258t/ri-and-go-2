@@ -24,6 +24,8 @@ extension ListModelsParser on List {
             tripType: this[index]['tripType'],
             image: 'Assets/logo.png',
             arrivalPlace: this[index]['arrivalPlace'],
+            description: this[index]['description'],
+            maxPassengers: this[index]['maxPassengers'],
             departurePlace: this[index]['departurePlace']));
   }
 }
