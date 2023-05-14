@@ -8,6 +8,7 @@ import '../../../models/models.dart';
 enum ProfileStateEnum { loading, success, fail }
 enum ProfileEditingStateEnum {wait, loading, success, fail}
 enum UserTripsStateEnum {loading, success, fail}
+enum AddTripStateEnum {wait, loading, success, fail}
 
 class ProfileRepository {
   final ApiService apiService;
@@ -15,6 +16,7 @@ class ProfileRepository {
   BehaviorSubject<ProfileStateEnum> profileState = BehaviorSubject<ProfileStateEnum>.seeded(ProfileStateEnum.loading);
   BehaviorSubject<UserTripsStateEnum> tripsState = BehaviorSubject<UserTripsStateEnum>.seeded(UserTripsStateEnum.loading);
   BehaviorSubject<ProfileEditingStateEnum> profileEditState = BehaviorSubject<ProfileEditingStateEnum>.seeded(ProfileEditingStateEnum.wait);
+  BehaviorSubject<AddTripStateEnum> addTripState = BehaviorSubject<AddTripStateEnum>.seeded(AddTripStateEnum.wait);
 
   ProfileRepository({required this.apiService});
 
@@ -61,6 +63,16 @@ class ProfileRepository {
       tripsState.add(UserTripsStateEnum.success);
     } catch (e) {
       tripsState.add(UserTripsStateEnum.fail);
+      rethrow;
+    }
+  }
+
+  Future<void> addTrip(AddTripModel trip) async {
+    addTripState.add(AddTripStateEnum.loading);
+    try {
+      await apiService.addTrip(trip.toJson(userId));
+    } catch (e) {
+      addTripState.add(AddTripStateEnum.fail);
       rethrow;
     }
   }

@@ -11,7 +11,7 @@ class TripsInitialLoadEvent extends TripsEvent {
 
 class TripsSubscriptionEvent extends TripsEvent {}
 
-class TripLoadingEvent extends TripsEvent {}
+class TripsLoadingEvent extends TripsEvent {}
 
 class TripsSuccessEvent extends TripsEvent {}
 
