@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
 import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 import 'package:riandgo2/models/TripModel.dart';
+import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
 
 class TripScreen extends StatefulWidget {
@@ -13,7 +14,42 @@ class TripScreen extends StatefulWidget {
 }
 
 class _TripScreenState extends State<TripScreen> {
-  List<TripModel> trips = [ // TODO заменить на серверный лист
+  bool val = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final tripsBloc = BlocProvider.of<TripsBloc>(context);
+    tripsBloc.add(TripsInitialLoadEvent(filter: null));
+
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('Assets/searchBackground.png'),
+            )),
+        child: SafeArea(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                MoveButton(
+                  firstName: 'Поездки',
+                  secondName: 'Запросы',
+                  val: val,
+                ),
+                _TripsConsumer(),
+              ]),
+        ),
+      ),
+    );
+  }
+}
+
+class _TripsConsumer extends StatelessWidget {
+  _TripsConsumer({Key? key}) : super(key: key);
+
+  List<TripModel> trips = [
+    // TODO заменить на серверный лист
     TripModel(
         itemId: 1,
         itemName: 'поездка',
@@ -30,41 +66,16 @@ class _TripScreenState extends State<TripScreen> {
         image: 'Assets/logo.png'),
   ];
 
-
-  @override
-  Widget build(BuildContext context) {
-    final tripsBloc = BlocProvider.of<TripsBloc>(context);
-    tripsBloc.add(TripsInitialLoadEvent(filter: null));
-    return Scaffold(
-      body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _TripsConsumer(),
-          ]
-      ),
-    );
-  }
-}
-
-class _TripsConsumer extends StatelessWidget {
-  const _TripsConsumer({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TripsBloc, TripsState>(
         builder: (context, state) {
-          if (state is TripsLoadedState) {
-            return Container(
-              child: ListViewTrips(
-                trips: RepositoryProvider.of<TripsRepository>(context).tripList,
-              ),
+          if (1 == 1) {
+            return ListViewTrips(
+              trips: trips,
             );
-          }
-          if (state is TripsLoadingState) {
-            return const Center(child: CircularProgressIndicator());
           } else {
-            return const Center(child: Text('проблемки'));
+            return Text('asdfsad');
           }
         },
         listener: (context, state) {});

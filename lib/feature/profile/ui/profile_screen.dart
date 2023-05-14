@@ -56,8 +56,7 @@ class _ProfileState extends State<Profile> {
     if (!profileRepository.isProfileLoaded()) {
       profileBloc.add(ProfileInitialLoadEvent());
     }
-    return SafeArea(
-      child: BlocConsumer<ProfileBloc, ProfileState>(
+    return BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           // if (state is ProfileLoadedState) {
           //   const snack = SnackBar(content: Text('профиль загружен'));
@@ -76,38 +75,39 @@ class _ProfileState extends State<Profile> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Padding(padding: EdgeInsets.only(top: 10)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Padding(padding: EdgeInsets.only(top: 15)),
-                        DefaultTextButton(
-                          width: 100,
-                          height: 45,
-                          title: 'log out',
-                          textStyle: AppTypography.font20_0xff929292,
-                          onPressed: logoutShowDialog,
-                        ),
-                        _Avatar(
-                          avatar:
-                              'Assets/logo.png', // TODO заменить на серверное фото
-                        ),
-                        DefaultTextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const EditProfile(),
-                              ),
-                            );
-                          },
-                          title: 'edit',
-                          width: 100,
-                          height: 45,
-                          textStyle: AppTypography.font20_0xff929292,
-                        ),
-                      ],
+                    SafeArea(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Padding(padding: EdgeInsets.only(top: 15)),
+                          DefaultTextButton(
+                            width: 100,
+                            height: 45,
+                            title: 'log out',
+                            textStyle: AppTypography.font20_0xff929292,
+                            onPressed: logoutShowDialog,
+                          ),
+                          _Avatar(
+                            avatar:
+                                'Assets/logo.png', // TODO заменить на серверное фото
+                          ),
+                          DefaultTextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const EditProfile(),
+                                ),
+                              );
+                            },
+                            title: 'edit',
+                            width: 100,
+                            height: 45,
+                            textStyle: AppTypography.font20_0xff929292,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                     if (state is ProfileLoadedState)
@@ -152,8 +152,7 @@ class _ProfileState extends State<Profile> {
             return const Scaffold(
                 body: Center(child: CircularProgressIndicator()));
           }
-        },
-      ),
+        }
     );
   }
 }
