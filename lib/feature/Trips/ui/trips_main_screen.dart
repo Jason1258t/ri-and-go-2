@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
-import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 import 'package:riandgo2/models/TripModel.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
@@ -15,6 +14,11 @@ class TripScreen extends StatefulWidget {
 
 class _TripScreenState extends State<TripScreen> {
   bool val = true;
+  void change() {
+    setState(() {
+      val != val;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +36,13 @@ class _TripScreenState extends State<TripScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                MoveButton(
-                  firstName: 'Поездки',
-                  secondName: 'Запросы',
-                  val: val,
+                GestureDetector(
+                  child: MoveButton(
+                    firstName: 'Поездки',
+                    secondName: 'Запросы',
+                    val: val,
+                  ),
+                  onTap: change,
                 ),
                 _TripsConsumer(),
               ]),

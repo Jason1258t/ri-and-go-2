@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino(1).dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
+import 'package:riandgo2/models/models.dart';
 
 class MoveButton extends StatefulWidget {
   String firstName;
@@ -18,71 +21,65 @@ class MoveButton extends StatefulWidget {
 }
 
 class MoveButtonState extends State<MoveButton>{
-  void change() {
-    setState(() {
-      widget.val = !widget.val;
-    });
-  }
-
   @override
   Widget build(BuildContext context){
-    return GestureDetector(
-      onTap: change,
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.90,
+    return Container(
+        width: MediaQuery.of(context).size.width * 0.85,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Color(0xffD9D9D9),
+          borderRadius: BorderRadius.circular(30),
+          color: const Color(0xffD9D9D9),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(0),
           child: Row(
             mainAxisAlignment:
             MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 160,
-                height: 30,
-                decoration: BoxDecoration(
-                    borderRadius:
-                    BorderRadius.circular(30),
-                    color: widget.val
-                        ? Colors.white
-                        : Color(0xffD9D9D9)),
-                child: Center(
-                    child: Text(
-                      widget.firstName,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: widget.val
-                              ? Colors.black
-                              : Colors.white),
-                    )),
-              ),
-              Container(
-                width: 160,
-                height: 30,
-                decoration: BoxDecoration(
-                    borderRadius:
-                    BorderRadius.circular(30),
-                    color: widget.val
-                        ? Color(0xffD9D9D9)
-                        : Colors.white),
-                child: Center(
-                    child: Text(
-                      widget.secondName,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: widget.val
-                              ? Colors.white
-                              : Colors.black),
-                    )),
-              ),
+              ContainerBox(val: widget.val, title: widget.firstName,),
+              ContainerBox(val: !widget.val, title: widget.secondName,),
             ],
           ),
         ),
-      ),
     );
   }
 }
 
+class ContainerBox extends StatefulWidget {
+  bool val;
+  String title;
+
+  ContainerBox({
+    Key? key,
+    required this.val,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  _ContainerBoxState createState() => _ContainerBoxState();
+}
+
+class _ContainerBoxState extends State<ContainerBox> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 160,
+      height: 30,
+      decoration: BoxDecoration(
+          borderRadius:
+          BorderRadius.circular(30),
+          color: widget.val
+              ? const Color(0xffD9D9D9)
+              : const Color(0xffFFB74B)),
+      child: Center(
+          child: Text(
+            widget.title,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: widget.val
+                    ? Colors.black
+                    : Colors.white),
+          )),
+    );
+  }
+}
