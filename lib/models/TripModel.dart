@@ -7,6 +7,8 @@ class TripModel {
   String image;
   String departurePlace;
   String arrivalPlace;
+  String description;
+  int maxPassengers;
 
   TripModel(
       {required this.itemId,
@@ -16,7 +18,9 @@ class TripModel {
       required this.tripType,
       required this.image,
       required this.departurePlace,
-      required this.arrivalPlace});
+      required this.arrivalPlace,
+      required this.maxPassengers,
+      required this.description});
 }
 
 class AddTripModel {
