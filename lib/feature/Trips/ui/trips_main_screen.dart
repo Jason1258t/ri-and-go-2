@@ -2,90 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
 import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
+import 'package:riandgo2/models/TripModel.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
 
-// class TripScreen extends StatefulWidget {
-//   const TripScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   State<TripScreen> createState() => _TripScreenState();
-// }
-//
-// class _TripScreenState extends State<TripScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     final tripsBloc = BlocProvider.of<TripsBloc>(context);
-//     tripsBloc.add(TripsInitialLoadEvent(filter: null));
-//     return Scaffold(
-//       body: Container(
-//         width: double.infinity,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           children: const [
-//             SizedBox(
-//               height: 20,
-//             ),
-//             //_TripsType(),
-//             Text('Абоба'),
-//             //_TripsConsumer(),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-class TripScreen extends StatelessWidget {
+class TripScreen extends StatefulWidget {
   const TripScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _TripsType(),
-      ],
-    );
-  }
+  State<TripScreen> createState() => _TripScreenState();
 }
 
+class _TripScreenState extends State<TripScreen> {
+  List<TripModel> trips = [ // TODO заменить на серверный лист
+    TripModel(
+        itemId: 1,
+        itemName: 'поездка',
+        itemDate: 'дата',
+        authorId: 12,
+        tripType: true,
+        image: 'Assets/logo.png'),
+    TripModel(
+        itemId: 1,
+        itemName: 'asdfsadf',
+        itemDate: 'asfdasdf',
+        authorId: 12,
+        tripType: false,
+        image: 'Assets/logo.png'),
+  ];
 
-
-class _TripsType extends StatefulWidget {
-  const _TripsType({Key? key}) : super(key: key);
-
-  @override
-  State<_TripsType> createState() => _TripsTypeState();
-}
-
-class _TripsTypeState extends State<_TripsType> {
-  bool selectedType = false;
-
-  void changeType() {
-    setState(() {
-      selectedType = !selectedType;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    final tripsBloc = BlocProvider.of<TripsBloc>(context);
+    tripsBloc.add(TripsInitialLoadEvent(filter: null));
     return Scaffold(
-      body: Container(
-        height: 20,
-        width: 200,
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Color(0xffD9D9D9)),
-        child: Row(
+      body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SwitchButton(
-                onPressed: changeType, text: 'поездки', type: selectedType),
-            SwitchButton(
-                onPressed: changeType, text: 'запросы', type: !selectedType)
-          ],
-        ),
+            _TripsConsumer(),
+          ]
       ),
     );
   }
@@ -100,8 +56,6 @@ class _TripsConsumer extends StatelessWidget {
         builder: (context, state) {
           if (state is TripsLoadedState) {
             return Container(
-              height: 200,
-              width: MediaQuery.of(context).size.width * 0.9,
               child: ListViewTrips(
                 trips: RepositoryProvider.of<TripsRepository>(context).tripList,
               ),
@@ -128,25 +82,6 @@ class SwitchButton extends StatelessWidget {
       required this.text,
       required this.type})
       : super(key: key);
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   if (type) {
-  //     return Container(
-  //       decoration: const BoxDecoration(
-  //           color: Colors.white,
-  //           borderRadius: BorderRadius.all(Radius.circular(10))),
-  //       child: Text(text),
-  //     );
-  //   } else {
-  //     return Container(
-  //       decoration: const BoxDecoration(
-  //           color: Color(0xffD9D9D9),
-  //           borderRadius: BorderRadius.all(Radius.circular(10))),
-  //       child: Text(text),
-  //     );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
