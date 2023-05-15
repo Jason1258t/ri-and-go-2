@@ -50,13 +50,20 @@ class _TripScreenState extends State<TripScreen> {
                     fontWeight: FontWeight.w400
                 )
             )
-          // TextButton(onPressed: () {tripAskType = !tripAskType; loadAllTrips(); setState(() {
-          //
-          // });}, child: Text(
-          //   tripAskType? 'Созданные поездки' : 'созданные запроосы',
-          //   style: TextStyle(color: Colors.black, fontSize: 25),
-          // )),
         ),
+
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (_) => const SearchTrips(),
+            //     ));
+          },
+          backgroundColor: Colors.orange,
+          child: const Icon(Icons.search),
+        ),
+
         body: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
@@ -117,32 +124,5 @@ class _TripsConsumer extends StatelessWidget {
           }
         },
         listener: (context, state) {});
-  }
-}
-
-class SwitchButton extends StatelessWidget {
-  final bool type;
-  final String text;
-  final onPressed;
-
-  const SwitchButton(
-      {Key? key,
-      required this.onPressed,
-      required this.text,
-      required this.type})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)))),
-      child: Text(
-        text,
-      ),
-    );
   }
 }

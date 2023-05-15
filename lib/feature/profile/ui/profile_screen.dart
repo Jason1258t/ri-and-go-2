@@ -211,7 +211,7 @@ class _ElementsState extends State<_Elements> {
         Column(
           children: [
             InfoField(
-              name: 'Name',
+              name: 'Имя пользователя',
               value: widget.name ?? 'лох',
             ),
             InfoField(
@@ -219,7 +219,7 @@ class _ElementsState extends State<_Elements> {
               value: widget.email ?? 'лох',
             ),
             InfoField(
-              name: 'Telephone',
+              name: 'Номер телефона',
               value: widget.phone ?? 'лох',
             ),
           ],

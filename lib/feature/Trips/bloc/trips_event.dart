@@ -16,3 +16,5 @@ class TripsLoadingEvent extends TripsEvent {}
 class TripsSuccessEvent extends TripsEvent {}
 
 class TripsFailEvent extends TripsEvent {}
+
+class TripsSetFilterEvent extends TripsEvent {}

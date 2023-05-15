@@ -26,17 +26,17 @@ class SaveTextButton extends StatelessWidget {
       width: width,
       child: TextButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFFFFCCA1),
+          backgroundColor: const Color(0xFFFFC46C),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100.0),
+            borderRadius: BorderRadius.circular(17.0),
           ),
-          shadowColor: Color(0xffE28F8F),
-          elevation: 3,
+          // shadowColor: Color(0xffE28F8F),
+          elevation: 0,
         ),
         onPressed: onPressed,
         child: Text(
           title,
-          style: AppTypography.font24_white,
+          style: AppTypography.font20_white,
         ),
       ),
     );

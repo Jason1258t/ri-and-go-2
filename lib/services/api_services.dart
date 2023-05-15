@@ -13,6 +13,7 @@ class ApiService {
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: 'http://194.67.105.79:5101',
+      sendTimeout: 10,
       // baseUrl: '',
     ),
   )..interceptors.add(dioLoggerInterceptor);

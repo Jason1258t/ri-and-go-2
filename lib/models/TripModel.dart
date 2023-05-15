@@ -32,7 +32,7 @@ class AddTripModel {
   final String departurePlace;
   final String arrivalPlace;
   final bool tripType;
-  final int maxPassengers;
+  final String? maxPassengers;
 
   AddTripModel(
       {required this.name,
@@ -53,8 +53,8 @@ class AddTripModel {
         "departureTime": departureTime,
         "departurePlace": departurePlace,
         "arrivalPlace": arrivalPlace,
-        "tripType": false,
-        "maxPassengers": maxPassengers
+        "tripType": tripType,
+        "maxPassengers": (maxPassengers != null) ?  int.parse(maxPassengers ?? '1') : null
       };
 }
 

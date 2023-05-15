@@ -23,6 +23,9 @@ import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';
 import 'package:riandgo2/services/custom_bloc_observer.dart';
 
+import 'feature/addCard/bloc/add_trip_bloc.dart';
+import 'feature/app/bloc/navigator_bloc.dart';
+
 Future<void> main() async {
   /// Для хранения дефолтных переменных используется файл .env
   /// можно разделять на .prod.env и .dev.env, например, если|
@@ -107,6 +110,17 @@ class MyBlocProviders extends StatelessWidget {
           create: (_) =>
               TripsBloc(RepositoryProvider.of<TripsRepository>(context))
                 ..add(TripsSubscriptionEvent()),
+          lazy: false,
+        ),
+        BlocProvider<AddTripBloc>(
+          create: (_) =>
+              AddTripBloc(RepositoryProvider.of<ProfileRepository>(context))
+                ..add(AddTripSubscribeEvent()),
+          lazy: false,
+        ),
+        BlocProvider<NavigatorBloc>(
+          create: (_) =>
+          NavigatorBloc(),
           lazy: false,
         )
       ],

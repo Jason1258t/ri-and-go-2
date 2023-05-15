@@ -199,6 +199,11 @@ class AppTypography {
       fontSize: 24,
       color: Colors.white
   );
+  static final font20_white = _font.copyWith(
+      fontWeight: FontWeight.w600,
+      fontSize: 20,
+      color: Colors.white
+  );
 
   static final font25_0xff787878 = _font.copyWith(
     fontWeight: FontWeight.w800,

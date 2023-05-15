@@ -71,6 +71,7 @@ class ProfileRepository {
     addTripState.add(AddTripStateEnum.loading);
     try {
       await apiService.addTrip(trip.toJson(userId));
+      addTripState.add(AddTripStateEnum.success);
     } catch (e) {
       addTripState.add(AddTripStateEnum.fail);
       rethrow;

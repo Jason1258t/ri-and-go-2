@@ -105,7 +105,7 @@ class _EditProfileState extends State<EditProfile> {
                             suffixIcon: const Icon(Icons.edit_outlined),
                           ),
                           const SizedBox(
-                            height: 20,
+                            height: 30,
                           ),
                           SaveTextButton(
                             textStyle: AppTypography.font20grey,
@@ -117,8 +117,8 @@ class _EditProfileState extends State<EditProfile> {
                                   phoneNumber: _telephoneController.text,
                                   contactUrl: _linkController.text));
                             },
-                            width: 350,
-                            height: 50,
+                            width: 290,
+                            height: 56,
                           ),
                         ],
                       ),

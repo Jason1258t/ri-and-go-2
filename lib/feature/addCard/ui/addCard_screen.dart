@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/addCard/bloc/add_trip_bloc.dart';
+import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
+import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/utils/colors.dart';
 import 'package:riandgo2/utils/fonts.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
@@ -14,14 +18,6 @@ class AddCard extends StatefulWidget {
 }
 
 class _AddCardState extends State<AddCard> {
-  TextEditingController _nameControllerPassenger = TextEditingController();
-  TextEditingController _thenControllerPassager = TextEditingController();
-  TextEditingController _placeFromControllerPassenger = TextEditingController();
-  TextEditingController _placeWhereControllerPassenger =
-      TextEditingController();
-  TextEditingController _DescriptionControllerPassenger =
-      TextEditingController();
-
   bool val = false;
 
   void change() {
@@ -36,53 +32,42 @@ class _AddCardState extends State<AddCard> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Center(
-            child: Column(
-              children: [
-                Image.asset(
-                  'Assets/logo.png',
-                  height: 87,
-                  width: 80,
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                GestureDetector(
-                  onTap: change,
-                  child: MoveButton(
-                    firstName: 'Поездку',
-                    secondName: 'Запрос',
-                    val: val,
+            child: BlocListener<AddTripBloc, AddTripState>(
+              listener: (context, state) {
+                if (state is AddTripSuccessState) {
+                  const snackBar = SnackBar(content: Text('Успешно'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  BlocProvider.of<NavigatorBloc>(context).add(NavigateProfileEvent());
+                }
+              },
+              child: Column(
+                children: [
+                  Image.asset(
+                    'Assets/logo.png',
+                    height: 87,
+                    width: 80,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                if (!val) ...[
-                  DriverCard(),
-                  SizedBox(
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  GestureDetector(
+                    onTap: change,
+                    child: MoveButton(
+                      firstName: 'Поездку',
+                      secondName: 'Запрос',
+                      val: val,
+                    ),
+                  ),
+                  const SizedBox(
                     height: 10,
                   ),
-                  SaveTextButton(
-                    textStyle: AppTypography.font20grey,
-                    title: 'Создать',
-                    onPressed: () {},
-                    width: 350,
-                    height: 50,
-                  ),
-                ] else ...[
-                  PassengerCard(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SaveTextButton(
-                    textStyle: AppTypography.font20grey,
-                    title: 'Создать',
-                    onPressed: () {},
-                    width: 350,
-                    height: 50,
-                  ),
+                  if (!val) ...[
+                    DriverCard(),
+                  ] else ...[
+                    PassengerCard(),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),
@@ -111,74 +96,109 @@ class DriverCard extends StatefulWidget {
 class _DriverCardState extends State<DriverCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      height: 440,
-      decoration: BoxDecoration(
-        color: const Color(0xffFFF2DE),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Center(
-        child: Column(
+    return BlocConsumer<AddTripBloc, AddTripState>(
+      listener: (context, state) {
+
+      },
+      builder: (context, state) {
+        final bloc = BlocProvider.of<AddTripBloc>(context);
+
+        void createTrip() {
+          final trip = AddTripModel(
+              name: widget._nameControllerPassenger.text,
+              description: widget._DescriptionControllerPassenger.text,
+              departureTime: widget._thenControllerPassager.text,
+              departurePlace: widget._placeFromControllerPassenger.text,
+              arrivalPlace: widget._placeWhereControllerPassenger.text,
+              tripType: false,
+              maxPassengers: widget._CountPassegerControllerDriver.text);
+          bloc.add(AddTripInitialEvent(trip: trip));
+        }
+
+        return Column(
           children: [
+            Container(
+              width: 300,
+              height: 440,
+              decoration: BoxDecoration(
+                color: const Color(0xffFFF2DE),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._nameControllerPassenger,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Название',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._placeFromControllerPassenger,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Откуда',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._placeWhereControllerPassenger,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Куда',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._thenControllerPassager,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Когда',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._CountPassegerControllerDriver,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Кол-во человек',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._DescriptionControllerPassenger,
+                      keyboardType: TextInputType.name,
+                      maxLines: 3,
+                      hintText: 'Описание',
+                      height: 120,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(
               height: 10,
             ),
-            TexrField(
-              controller: widget._nameControllerPassenger,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Название',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._placeFromControllerPassenger,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Откуда',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._placeWhereControllerPassenger,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Куда',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._thenControllerPassager,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Когда',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._CountPassegerControllerDriver,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Кол-во человек',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._DescriptionControllerPassenger,
-              keyboardType: TextInputType.name,
-              maxLines: 3,
-              hintText: 'Описание',
-              height: 120,
+            SaveTextButton(
+              textStyle: AppTypography.font20grey,
+              title: 'Создать',
+              onPressed: createTrip,
+              width: 350,
+              height: 50,
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -199,65 +219,100 @@ class PassengerCard extends StatefulWidget {
 class _PassengerCardState extends State<PassengerCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      height: 385,
-      decoration: BoxDecoration(
-        color: const Color(0xffFFF2DE),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Center(
-        child: Column(
+    return BlocConsumer<AddTripBloc, AddTripState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        final bloc = BlocProvider.of<AddTripBloc>(context);
+
+        void createTrip() {
+          final trip = AddTripModel(
+              name: widget._nameControllerDriver.text,
+              description: widget._DescriptionControllerDriver.text,
+              departureTime: widget._thenControllerDriver.text,
+              departurePlace: widget._placeFromControllerDriver.text,
+              arrivalPlace: widget._placeWhereControllerDriver.text,
+              tripType: true,
+              maxPassengers: '99');
+          bloc.add(AddTripInitialEvent(trip: trip));
+        }
+
+        return Column(
           children: [
+            Container(
+              width: 300,
+              height: 385,
+              decoration: BoxDecoration(
+                color: const Color(0xffFFF2DE),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._nameControllerDriver,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Название',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._placeFromControllerDriver,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Откуда',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._placeWhereControllerDriver,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Куда',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._thenControllerDriver,
+                      keyboardType: TextInputType.name,
+                      maxLines: 1,
+                      hintText: 'Когда',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TexrField(
+                      controller: widget._DescriptionControllerDriver,
+                      keyboardType: TextInputType.name,
+                      maxLines: 3,
+                      hintText: 'Описание',
+                      height: 125,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(
               height: 10,
             ),
-            TexrField(
-              controller: widget._nameControllerDriver,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Название',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._placeFromControllerDriver,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Откуда',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._placeWhereControllerDriver,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Куда',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._thenControllerDriver,
-              keyboardType: TextInputType.name,
-              maxLines: 1,
-              hintText: 'Когда',
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TexrField(
-              controller: widget._DescriptionControllerDriver,
-              keyboardType: TextInputType.name,
-              maxLines: 3,
-              hintText: 'Описание',
-              height: 125,
+            SaveTextButton(
+              textStyle: AppTypography.font20grey,
+              title: 'Создать',
+              onPressed: createTrip,
+              width: 350,
+              height: 50,
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

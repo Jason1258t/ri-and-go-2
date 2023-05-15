@@ -295,7 +295,7 @@ class AdvancedSearchedTrip extends StatelessWidget {
                 width: 130,
                 height: 90,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Image.asset(
@@ -356,27 +356,27 @@ class AdvancedSearchedTrip extends StatelessWidget {
             Text(trip.arrivalPlace, style: TextStyle(fontSize: 15),)
           ],),
           const SizedBox(height: 15,),
-          Row(
+          if (!trip.tripType) Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.people,
                 size: 20,
               ),
               Text(
                 '4/${trip.maxPassengers}',
-                style: TextStyle(fontSize: 14, color: Color(0xff747474)),
+                style: const TextStyle(fontSize: 14, color: Color(0xff747474)),
               ),
             ],
           ),
           Row(
             children: [
-              Text(
+              const Text(
                 'Автор: ',
                 style: TextStyle(fontSize: 15),
               ),
               TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     'Ебланище',
                     style: TextStyle(fontSize: 14, color: Color(0xff1EC67F)),
                   ))

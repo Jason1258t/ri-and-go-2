@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/Trips/ui/trips_main_screen.dart';
 import 'package:riandgo2/feature/addCard/ui/addCard_screen.dart';
+import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
 import 'package:riandgo2/feature/profile/ui/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -28,31 +30,45 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: Scaffold(
-        body: Center(
-          child: _widgetOptions[_selectedTab],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: const Color(0xffEAC498),
-          selectedItemColor: Colors.white,
-          currentIndex: _selectedTab,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Поиск',
+    return BlocConsumer<NavigatorBloc, NavigatorScreenState>(
+      listener: (context, state) {
+        if (state is NavigateProfileState) onSelectTab(2);
+        if (state is NavigateSearchState) onSelectTab(1);
+      },
+      builder: (context, state) {
+        return WillPopScope(
+          child: Scaffold(
+            body: Center(
+              child: _widgetOptions[_selectedTab],
             ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.add_circle_outline_outlined), label: ''),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Профиль',
+            bottomNavigationBar: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
+              ),
+              child: BottomNavigationBar(
+                backgroundColor: const Color(0xffEAC498),
+                selectedItemColor: Colors.white,
+                currentIndex: _selectedTab,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.search),
+                    label: 'Поиск',
+                  ),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.add_circle_outline_outlined), label: ''),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    label: 'Профиль',
+                  ),
+                ],
+                onTap: onSelectTab,
+              ),
             ),
-          ],
-          onTap: onSelectTab,
-        ),
-      ),
-      onWillPop: () async => false,
+          ),
+          onWillPop: () async => false,
+        );
+      },
     );
   }
 }
