@@ -65,10 +65,6 @@ class _ProfileState extends State<Profile> {
       if (state is ProfileLoadedState) {
         return Scaffold(
           body: Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('Assets/searchBackground.png'),
-            )),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,

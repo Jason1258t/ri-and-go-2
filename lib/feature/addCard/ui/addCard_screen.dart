@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
 import 'package:riandgo2/utils/colors.dart';
+import 'package:riandgo2/utils/fonts.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
+import 'package:riandgo2/widgets/buttons/save_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/noneUnderLine_text_field.dart';
 
 class AddCard extends StatefulWidget {
@@ -30,15 +33,9 @@ class _AddCardState extends State<AddCard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage('Assets/searchBackground.png'),
-          )),
-          child: SafeArea(
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
             child: Column(
               children: [
                 Image.asset(
@@ -60,7 +57,31 @@ class _AddCardState extends State<AddCard> {
                 const SizedBox(
                   height: 10,
                 ),
-                if (!val) ...[DriverCard()] else ...[PassengerCard()]
+                if (!val) ...[
+                  DriverCard(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SaveTextButton(
+                    textStyle: AppTypography.font20grey,
+                    title: 'Создать',
+                    onPressed: () {},
+                    width: 350,
+                    height: 50,
+                  ),
+                ] else ...[
+                  PassengerCard(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SaveTextButton(
+                    textStyle: AppTypography.font20grey,
+                    title: 'Создать',
+                    onPressed: () {},
+                    width: 350,
+                    height: 50,
+                  ),
+                ],
               ],
             ),
           ),
