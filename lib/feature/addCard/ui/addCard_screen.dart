@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/addCard/bloc/add_trip_bloc.dart';
@@ -37,7 +39,8 @@ class _AddCardState extends State<AddCard> {
                 if (state is AddTripSuccessState) {
                   const snackBar = SnackBar(content: Text('Успешно'));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  BlocProvider.of<NavigatorBloc>(context).add(NavigateProfileEvent());
+                  BlocProvider.of<NavigatorBloc>(context)
+                      .add(NavigateProfileEvent());
                 }
               },
               child: Column(
@@ -94,12 +97,29 @@ class DriverCard extends StatefulWidget {
 }
 
 class _DriverCardState extends State<DriverCard> {
+  DateTime selectedDate = DateTime.now();
+
+  // Select for Date
+  void _selectDate(BuildContext context) async {
+    final selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+        widget._thenControllerPassager.text =
+            '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddTripBloc, AddTripState>(
-      listener: (context, state) {
-
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         final bloc = BlocProvider.of<AddTripBloc>(context);
 
@@ -107,7 +127,7 @@ class _DriverCardState extends State<DriverCard> {
           final trip = AddTripModel(
               name: widget._nameControllerPassenger.text,
               description: widget._DescriptionControllerPassenger.text,
-              departureTime: widget._thenControllerPassager.text,
+              departureTime: '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
               departurePlace: widget._placeFromControllerPassenger.text,
               arrivalPlace: widget._placeWhereControllerPassenger.text,
               tripType: false,
@@ -157,11 +177,21 @@ class _DriverCardState extends State<DriverCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    TexrField(
-                      controller: widget._thenControllerPassager,
-                      keyboardType: TextInputType.name,
-                      maxLines: 1,
-                      hintText: 'Когда',
+                    TextButton(
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        minimumSize: const Size(270, 50),
+                      ),
+                      child: Text(
+                        'Когда: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -207,7 +237,6 @@ class PassengerCard extends StatefulWidget {
   PassengerCard({Key? key}) : super(key: key);
 
   TextEditingController _nameControllerDriver = TextEditingController();
-  TextEditingController _thenControllerDriver = TextEditingController();
   TextEditingController _placeFromControllerDriver = TextEditingController();
   TextEditingController _placeWhereControllerDriver = TextEditingController();
   TextEditingController _DescriptionControllerDriver = TextEditingController();
@@ -217,6 +246,23 @@ class PassengerCard extends StatefulWidget {
 }
 
 class _PassengerCardState extends State<PassengerCard> {
+  DateTime selectedDate = DateTime.now();
+
+  // Select for Date
+  void _selectDate(BuildContext context) async {
+    final selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddTripBloc, AddTripState>(
@@ -230,7 +276,7 @@ class _PassengerCardState extends State<PassengerCard> {
           final trip = AddTripModel(
               name: widget._nameControllerDriver.text,
               description: widget._DescriptionControllerDriver.text,
-              departureTime: widget._thenControllerDriver.text,
+              departureTime: '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
               departurePlace: widget._placeFromControllerDriver.text,
               arrivalPlace: widget._placeWhereControllerDriver.text,
               tripType: true,
@@ -280,11 +326,21 @@ class _PassengerCardState extends State<PassengerCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    TexrField(
-                      controller: widget._thenControllerDriver,
-                      keyboardType: TextInputType.name,
-                      maxLines: 1,
-                      hintText: 'Когда',
+                    TextButton(
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        minimumSize: const Size(270, 50),
+                      ),
+                      child: Text(
+                        'Когда: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
