@@ -33,7 +33,7 @@ class _MainScreenState extends State<MainScreen> {
     return BlocConsumer<NavigatorBloc, NavigatorScreenState>(
       listener: (context, state) {
         if (state is NavigateProfileState) onSelectTab(2);
-        if (state is NavigateSearchState) onSelectTab(1);
+        if (state is NavigateSearchState) onSelectTab(0);
       },
       builder: (context, state) {
         return WillPopScope(

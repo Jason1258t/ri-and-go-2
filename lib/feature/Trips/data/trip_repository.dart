@@ -37,6 +37,10 @@ class TripsRepository {
     final oldDate = filter.date;
     final oldDeparture = filter.departure;
     final oldArrival = filter.arrive;
-    filter = TripFilter(date: newFilter.date?? oldDate,  departure: newFilter.departure?? oldDeparture, arrive: newFilter.arrive?? oldArrival);
+    filter = TripFilter(date: newFilter.date?? oldDate,  departure: newFilter.departure?? oldDeparture, arrive: newFilter.arrive?? oldArrival, type: newFilter.type);
+  }
+
+  void clearFilter() {
+    filter = TripFilter();
   }
 }

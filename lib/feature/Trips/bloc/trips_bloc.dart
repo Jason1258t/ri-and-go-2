@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -21,6 +22,7 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
     on<TripsLoadingEvent>(_onLoading);
     on<TripsSuccessEvent>(_onSuccess);
     on<TripsFailEvent>(_onFail);
+    on<TripsSetFilterEvent>(_onSetFilter);
   }
 
   _subscribe(TripsSubscriptionEvent event, emit) {
@@ -45,5 +47,10 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
 
   _onFail(TripsFailEvent event, emit) {
     emit(TripsFailState());
+  }
+
+  _onSetFilter(TripsSetFilterEvent event, emit) {
+    log(event.filter.departure?? 'хуйня');
+    _tripsRepository.copyWithFilter(event.filter);
   }
 }

@@ -53,14 +53,10 @@ class _NoneUnderLineTextFieldState extends State<NoneUnderLineTextField> {
             hintStyle: AppTypography.font12,
             prefixIcon: widget.prefixIcon,
             hintText: widget.hintText,
-            label: widget.controller.text != '' ? Text(widget.hintText) : null,
             focusedBorder: InputBorder.none,
             enabledBorder: InputBorder.none,
           ),
           style: AppTypography.font17,
-          // onChanged: (String value) {
-          //   setState(() {});
-          // },
           controller: widget.controller,
         ),
       ),

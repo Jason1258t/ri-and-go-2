@@ -22,14 +22,9 @@ class _CustomDateInputState extends State<CustomDateInput> {
   Widget build(BuildContext context) {
     confirmDate(DateTime date) {
       widget.selectedDate = date;
-      if (widget.type == 'search filter') {
-        BlocProvider.of<TripsBloc>(context)
-            .add(TripsSetFilterEvent(filter: TripFilter(date: date)));
-      } else {
-        BlocProvider.of<AddTripBloc>(context)
-            .add(AddTripSelectDateEvent(selectedDate: date));
-      }
 
+      BlocProvider.of<AddTripBloc>(context)
+          .add(AddTripSelectDateEvent(selectedDate: date));
     }
 
     void _selectDate() async {
@@ -64,7 +59,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Когда: ${state is! AddTripSelectedDate? widget.selectedDate.toString().split(' ')[0] : state.selectedDate.toString().split(' ')[0]}',
+              'Когда: ${state is! AddTripSelectedDate ? widget.selectedDate.toString().split(' ')[0] : state.selectedDate.toString().split(' ')[0]}',
               style: const TextStyle(
                   color: Color(0xff747474),
                   fontSize: 16,

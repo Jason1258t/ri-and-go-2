@@ -1,36 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:riandgo2/models/models.dart';
 
-class SearchedTripsList extends StatefulWidget {
-  SearchedTripsList({Key? key, required this.trips}) : super(key: key);
-  List<TripModel> trips;
-
-  @override
-  State<SearchedTripsList> createState() => _SearchedTripsListState();
-}
-
-class _SearchedTripsListState extends State<SearchedTripsList> {
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        clipBehavior: Clip.hardEdge,
-        padding: const EdgeInsets.only(top: 5, bottom: 5),
-        scrollDirection: Axis.vertical,
-        children: [
-          Column(
-            children: widget.trips
-                .map((e) => SearchedTrip(
-                      trip: e,
-                    ))
-                .toList(),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 class ListViewTrips extends StatefulWidget {
   List<TripModel> trips;
 
@@ -158,39 +128,7 @@ class TripState extends State<ProfileTrip> {
   }
 }
 
-class SearchedTrip extends StatefulWidget {
-  const SearchedTrip({Key? key, required this.trip}) : super(key: key);
 
-  final TripModel trip;
-
-  @override
-  State<SearchedTrip> createState() => _SearchedTripState();
-}
-
-class _SearchedTripState extends State<SearchedTrip> {
-  bool viewType = false;
-
-  void changeViewType() {
-    setState(() {
-      viewType = !viewType;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!viewType) {
-      return BaseSearchedTrip(
-        trip: widget.trip,
-        onPres: changeViewType,
-      );
-    } else {
-      return AdvancedSearchedTrip(
-        trip: widget.trip,
-        onPres: changeViewType,
-      );
-    }
-  }
-}
 
 class BaseSearchedTrip extends StatelessWidget {
   const BaseSearchedTrip({Key? key, required this.trip, required this.onPres})

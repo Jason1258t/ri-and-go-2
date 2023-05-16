@@ -11,11 +11,6 @@ class TripsLoadedState extends TripsState {}
 
 class TripsFailState extends TripsState {}
 
-class TripsSetFilterState extends TripsState {
-  final TripFilter filter;
-
-  TripsSetFilterState({required this.filter});
-}
 
 // class TripsInitialLoadState extends TripsState {
 //   final TripFilter? filter;

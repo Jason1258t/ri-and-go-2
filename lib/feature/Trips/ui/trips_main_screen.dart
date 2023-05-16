@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
 import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
-import 'package:riandgo2/models/TripModel.dart';
+import 'package:riandgo2/feature/Trips/ui/search_trips_screen.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
-import 'package:riandgo2/widgets/listView/trips_listView.dart';
+import 'package:riandgo2/widgets/listView/search_trips_listViev.dart';
 
 class TripScreen extends StatefulWidget {
   const TripScreen({Key? key}) : super(key: key);
@@ -28,9 +28,11 @@ class _TripScreenState extends State<TripScreen> {
   @override
   Widget build(BuildContext context) {
     final tripsBloc = BlocProvider.of<TripsBloc>(context);
+    final tripsRepository = RepositoryProvider.of<TripsRepository>(context);
 
     Future<void> loadTrips() async {
-      tripsBloc.add(TripsInitialLoadEvent(filter: TripFilter(type: val)));
+      tripsRepository.copyWithFilter(TripFilter(type: val));
+      tripsBloc.add(TripsInitialLoadEvent(filter: tripsRepository.filter));
     }
 
     loadTrips();
@@ -54,11 +56,11 @@ class _TripScreenState extends State<TripScreen> {
 
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (_) => const SearchTrips(),
-            //     ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SearchTrips(),
+                ));
           },
           backgroundColor: Colors.orange,
           child: const Icon(Icons.search),
