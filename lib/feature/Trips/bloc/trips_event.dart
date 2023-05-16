@@ -17,4 +17,8 @@ class TripsSuccessEvent extends TripsEvent {}
 
 class TripsFailEvent extends TripsEvent {}
 
-class TripsSetFilterEvent extends TripsEvent {}
+class TripsSetFilterEvent extends TripsEvent {
+  final TripFilter filter;
+
+  TripsSetFilterEvent({required this.filter});
+}

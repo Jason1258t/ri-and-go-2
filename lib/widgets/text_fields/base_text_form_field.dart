@@ -55,7 +55,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
             filled: false,
             hintText: widget.hintText,
             label: widget.controller.text != '' ? Text(widget.hintText) : null,
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.lightGrey,
               )

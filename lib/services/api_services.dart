@@ -206,7 +206,7 @@ class ApiService {
       if (e.response?.statusCode == 500) {
         throw (ServerException);
       }
-      throw Exception('un known exception');
+      rethrow;
     }
   }
 }

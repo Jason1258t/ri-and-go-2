@@ -6,6 +6,7 @@ enum TripsStateEnum { loading, success, fail }
 
 class TripsRepository {
   final ApiService apiService;
+  TripFilter filter = TripFilter();
 
   TripsRepository({required this.apiService});
 
@@ -30,5 +31,12 @@ class TripsRepository {
       rethrow;
 
     }
+  }
+
+  void copyWithFilter(TripFilter newFilter) {
+    final oldDate = filter.date;
+    final oldDeparture = filter.departure;
+    final oldArrival = filter.arrive;
+    filter = TripFilter(date: newFilter.date?? oldDate,  departure: newFilter.departure?? oldDeparture, arrive: newFilter.arrive?? oldArrival);
   }
 }

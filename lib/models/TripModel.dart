@@ -28,7 +28,7 @@ class AddTripModel {
   final String description;
   //final int creatorId;
   final bool isActive = true;
-  final String departureTime;
+  final DateTime departureTime;
   final String departurePlace;
   final String arrivalPlace;
   final bool tripType;
@@ -50,7 +50,7 @@ class AddTripModel {
         "description": description,
         "creatorId": creatorId,
         "isActive": true,
-        "departureTime": departureTime,
+        "departureTime": departureTime.toString().split(' ')[0],
         "departurePlace": departurePlace,
         "arrivalPlace": arrivalPlace,
         "tripType": tripType,

@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/addCard/bloc/add_trip_bloc.dart';
 import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
-import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
 import 'package:riandgo2/models/models.dart';
-import 'package:riandgo2/utils/colors.dart';
 import 'package:riandgo2/utils/fonts.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/buttons/save_text_button.dart';
-import 'package:riandgo2/widgets/text_fields/noneUnderLine_text_field.dart';
+import 'package:riandgo2/widgets/input_widgets/date_input.dart';
+import 'package:riandgo2/widgets/text_fields/white_text_field.dart';
 
 class AddCard extends StatefulWidget {
   const AddCard({Key? key}) : super(key: key);
@@ -41,6 +40,10 @@ class _AddCardState extends State<AddCard> {
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   BlocProvider.of<NavigatorBloc>(context)
                       .add(NavigateProfileEvent());
+                }
+                if (state is AddTripFailState) {
+                  const snackBar = SnackBar(content: Text('все пошло по пизде'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
               child: Column(
@@ -81,13 +84,13 @@ class _AddCardState extends State<AddCard> {
 
 class DriverCard extends StatefulWidget {
   TextEditingController _nameControllerPassenger = TextEditingController();
-  TextEditingController _placeFromControllerPassenger = TextEditingController();
-  TextEditingController _placeWhereControllerPassenger =
+  TextEditingController _departurePlaceControllerPassenger = TextEditingController();
+  TextEditingController _arrivalPlaceControllerPassenger =
       TextEditingController();
-  TextEditingController _thenControllerPassager = TextEditingController();
-  TextEditingController _DescriptionControllerPassenger =
+  TextEditingController _timeControllerPassager = TextEditingController();
+  TextEditingController _descriptionControllerPassenger =
       TextEditingController();
-  TextEditingController _CountPassegerControllerDriver =
+  TextEditingController _maxPassengersControllerDriver =
       TextEditingController();
 
   DriverCard({Key? key, required}) : super(key: key);
@@ -99,40 +102,32 @@ class DriverCard extends StatefulWidget {
 class _DriverCardState extends State<DriverCard> {
   DateTime selectedDate = DateTime.now();
 
-  // Select for Date
-  void _selectDate(BuildContext context) async {
-    final selected = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2023),
-      lastDate: DateTime(2025),
-    );
-    if (selected != null && selected != selectedDate) {
-      setState(() {
-        selectedDate = selected;
-        widget._thenControllerPassager.text =
-            '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}';
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddTripBloc, AddTripState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+
+      },
       builder: (context, state) {
         final bloc = BlocProvider.of<AddTripBloc>(context);
 
         void createTrip() {
-          final trip = AddTripModel(
-              name: widget._nameControllerPassenger.text,
-              description: widget._DescriptionControllerPassenger.text,
-              departureTime: '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
-              departurePlace: widget._placeFromControllerPassenger.text,
-              arrivalPlace: widget._placeWhereControllerPassenger.text,
-              tripType: false,
-              maxPassengers: widget._CountPassegerControllerDriver.text);
-          bloc.add(AddTripInitialEvent(trip: trip));
+          if (state is AddTripSelectedDate) {
+            final trip = AddTripModel(
+                name: widget._nameControllerPassenger.text,
+                description: widget._descriptionControllerPassenger.text,
+                departureTime: state.selectedDate,
+                departurePlace: widget._departurePlaceControllerPassenger.text,
+                arrivalPlace: widget._arrivalPlaceControllerPassenger.text,
+                tripType: false,
+                maxPassengers: widget._maxPassengersControllerDriver.text);
+            bloc.add(AddTripInitialEvent(trip: trip));
+          }
+          else {
+            const snackBar = SnackBar(content: Text('не введена дата'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+
         }
 
         return Column(
@@ -160,7 +155,7 @@ class _DriverCardState extends State<DriverCard> {
                       height: 10,
                     ),
                     TexrField(
-                      controller: widget._placeFromControllerPassenger,
+                      controller: widget._departurePlaceControllerPassenger,
                       keyboardType: TextInputType.name,
                       maxLines: 1,
                       hintText: 'Откуда',
@@ -169,7 +164,7 @@ class _DriverCardState extends State<DriverCard> {
                       height: 10,
                     ),
                     TexrField(
-                      controller: widget._placeWhereControllerPassenger,
+                      controller: widget._arrivalPlaceControllerPassenger,
                       keyboardType: TextInputType.name,
                       maxLines: 1,
                       hintText: 'Куда',
@@ -177,27 +172,12 @@ class _DriverCardState extends State<DriverCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        minimumSize: const Size(270, 50),
-                      ),
-                      child: Text(
-                        'Когда: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
+                    CustomDateInput(selectedDate: selectedDate, type: 'context',),
                     const SizedBox(
                       height: 10,
                     ),
                     TexrField(
-                      controller: widget._CountPassegerControllerDriver,
+                      controller: widget._maxPassengersControllerDriver,
                       keyboardType: TextInputType.name,
                       maxLines: 1,
                       hintText: 'Кол-во человек',
@@ -206,7 +186,7 @@ class _DriverCardState extends State<DriverCard> {
                       height: 10,
                     ),
                     TexrField(
-                      controller: widget._DescriptionControllerPassenger,
+                      controller: widget._descriptionControllerPassenger,
                       keyboardType: TextInputType.name,
                       maxLines: 3,
                       hintText: 'Описание',
@@ -223,7 +203,7 @@ class _DriverCardState extends State<DriverCard> {
               textStyle: AppTypography.font20grey,
               title: 'Создать',
               onPressed: createTrip,
-              width: 350,
+              width: 250,
               height: 50,
             ),
           ],
@@ -237,9 +217,9 @@ class PassengerCard extends StatefulWidget {
   PassengerCard({Key? key}) : super(key: key);
 
   TextEditingController _nameControllerDriver = TextEditingController();
-  TextEditingController _placeFromControllerDriver = TextEditingController();
-  TextEditingController _placeWhereControllerDriver = TextEditingController();
-  TextEditingController _DescriptionControllerDriver = TextEditingController();
+  TextEditingController _departurePlaceControllerDriver = TextEditingController();
+  TextEditingController _arrivalPlaceControllerDriver = TextEditingController();
+  TextEditingController _descriptionControllerDriver = TextEditingController();
 
   @override
   _PassengerCardState createState() => _PassengerCardState();
@@ -247,21 +227,6 @@ class PassengerCard extends StatefulWidget {
 
 class _PassengerCardState extends State<PassengerCard> {
   DateTime selectedDate = DateTime.now();
-
-  // Select for Date
-  void _selectDate(BuildContext context) async {
-    final selected = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2023),
-      lastDate: DateTime(2025),
-    );
-    if (selected != null && selected != selectedDate) {
-      setState(() {
-        selectedDate = selected;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -271,18 +236,25 @@ class _PassengerCardState extends State<PassengerCard> {
       },
       builder: (context, state) {
         final bloc = BlocProvider.of<AddTripBloc>(context);
-
-        void createTrip() {
-          final trip = AddTripModel(
-              name: widget._nameControllerDriver.text,
-              description: widget._DescriptionControllerDriver.text,
-              departureTime: '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
-              departurePlace: widget._placeFromControllerDriver.text,
-              arrivalPlace: widget._placeWhereControllerDriver.text,
-              tripType: true,
-              maxPassengers: '99');
-          bloc.add(AddTripInitialEvent(trip: trip));
+        void createTrip () {
+          if (state is AddTripSelectedDate) {
+            log(state.selectedDate.toString());
+            final trip = AddTripModel(
+                name: widget._nameControllerDriver.text,
+                description: widget._descriptionControllerDriver.text,
+                departureTime: state.selectedDate,
+                departurePlace: widget._departurePlaceControllerDriver.text,
+                arrivalPlace: widget._arrivalPlaceControllerDriver.text,
+                tripType: true,
+                maxPassengers: '99');
+            bloc.add(AddTripInitialEvent(trip: trip));
+          }
+          else {
+            const snackBar = SnackBar(content: Text('не введена дата'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
         }
+
 
         return Column(
           children: [
@@ -309,7 +281,7 @@ class _PassengerCardState extends State<PassengerCard> {
                       height: 10,
                     ),
                     TexrField(
-                      controller: widget._placeFromControllerDriver,
+                      controller: widget._departurePlaceControllerDriver,
                       keyboardType: TextInputType.name,
                       maxLines: 1,
                       hintText: 'Откуда',
@@ -318,7 +290,7 @@ class _PassengerCardState extends State<PassengerCard> {
                       height: 10,
                     ),
                     TexrField(
-                      controller: widget._placeWhereControllerDriver,
+                      controller: widget._arrivalPlaceControllerDriver,
                       keyboardType: TextInputType.name,
                       maxLines: 1,
                       hintText: 'Куда',
@@ -326,27 +298,12 @@ class _PassengerCardState extends State<PassengerCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        _selectDate(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        minimumSize: const Size(270, 50),
-                      ),
-                      child: Text(
-                        'Когда: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
+                    CustomDateInput(selectedDate: selectedDate, type: 'context',),
                     const SizedBox(
                       height: 10,
                     ),
                     TexrField(
-                      controller: widget._DescriptionControllerDriver,
+                      controller: widget._descriptionControllerDriver,
                       keyboardType: TextInputType.name,
                       maxLines: 3,
                       hintText: 'Описание',
@@ -369,47 +326,6 @@ class _PassengerCardState extends State<PassengerCard> {
           ],
         );
       },
-    );
-  }
-}
-
-class TexrField extends StatefulWidget {
-  TexrField({
-    Key? key,
-    required this.controller,
-    required this.keyboardType,
-    required this.maxLines,
-    required this.hintText,
-    this.height = 50,
-  }) : super(key: key);
-
-  final TextEditingController controller;
-  final TextInputType keyboardType;
-  final int maxLines;
-  final String hintText;
-  double? height;
-
-  @override
-  _TextFieldState createState() => _TextFieldState();
-}
-
-class _TextFieldState extends State<TexrField> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 270,
-      height: widget.height,
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: NoneUnderLineTextField(
-        height: 50,
-        controller: widget.controller,
-        keyboardType: widget.keyboardType,
-        hintText: widget.hintText,
-        maxLines: widget.maxLines,
-      ),
     );
   }
 }

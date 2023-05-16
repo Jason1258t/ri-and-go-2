@@ -13,3 +13,9 @@ class AddTripFailState extends AddTripState {}
 
 class AddTripWaitingState extends AddTripState {}
 
+class AddTripSelectedDate extends AddTripState {
+  final DateTime selectedDate;
+
+  AddTripSelectedDate({required this.selectedDate});
+}
+

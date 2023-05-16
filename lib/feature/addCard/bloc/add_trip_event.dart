@@ -18,3 +18,11 @@ class AddTripWaitingEvent extends AddTripEvent {}
 class AddTripSuccessEvent extends AddTripEvent {}
 
 class AddTripFailEvent extends AddTripEvent {}
+
+class AddTripSelectDateEvent extends AddTripEvent {
+  final DateTime selectedDate;
+
+  AddTripSelectDateEvent({required this.selectedDate});
+
+
+}

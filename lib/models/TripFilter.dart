@@ -1,5 +1,5 @@
 class TripFilter {
-  final String? date;
+  final DateTime? date;
   final String? departure;
   final String? arrive;
   final bool type;
@@ -9,7 +9,7 @@ class TripFilter {
   Map<String, dynamic> toJson () => {
     if (departure != null) 'departurePlace': departure,
     if (arrive != null) 'arrivalPlace': arrive,
-    if (date != null) 'departureTime': date,
+    if (date != null) 'departureTime': date.toString().split(' ')[0],
     'tripType': type,
   };
 }

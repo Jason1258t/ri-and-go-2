@@ -23,6 +23,7 @@ class AddTripBloc extends Bloc<AddTripEvent, AddTripState> {
     on<AddTripSuccessEvent>(_onSuccess);
     on<AddTripFailEvent>(_onFail);
     on<AddTripWaitingEvent>(_onWait);
+    on<AddTripSelectDateEvent>(_onSelectedDate);
   }
 
   _subscribe(AddTripSubscribeEvent event, emit) {
@@ -52,5 +53,9 @@ class AddTripBloc extends Bloc<AddTripEvent, AddTripState> {
 
   _onWait(AddTripWaitingEvent event, emit) {
     emit(AddTripWaitingState());
+  }
+
+  _onSelectedDate(AddTripSelectDateEvent event, emit) {
+    emit(AddTripSelectedDate(selectedDate: event.selectedDate));
   }
 }
