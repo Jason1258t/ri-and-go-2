@@ -1,12 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
-import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
-import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/default_text_button.dart';
@@ -36,7 +31,7 @@ class SecondRegistrationScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is RegisterSuccessState) {
             Navigator.push(
-                context, MaterialPageRoute(builder: (_) => MyHomePage()));
+                context, MaterialPageRoute(builder: (_) => const MyHomePage()));
           }
         },
         builder: (context, state) {

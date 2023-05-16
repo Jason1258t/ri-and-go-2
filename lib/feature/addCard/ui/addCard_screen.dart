@@ -87,7 +87,6 @@ class DriverCard extends StatefulWidget {
   TextEditingController _departurePlaceControllerPassenger = TextEditingController();
   TextEditingController _arrivalPlaceControllerPassenger =
       TextEditingController();
-  TextEditingController _timeControllerPassager = TextEditingController();
   TextEditingController _descriptionControllerPassenger =
       TextEditingController();
   TextEditingController _maxPassengersControllerDriver =

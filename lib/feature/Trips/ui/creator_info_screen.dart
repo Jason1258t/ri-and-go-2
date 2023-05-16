@@ -20,8 +20,8 @@ class _CreaterInfoState extends State<CreaterInfo> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _Avatar(avatar: 'Assets/logo.png',),//TODO догружеться из базы
-                SizedBox(height: 20,),
-                _Elements(name: null, email: null, phone: null,), // TODO ввод с репозитория
+                const SizedBox(height: 20,),
+                const _Elements(name: null, email: null, phone: null,), // TODO ввод с репозитория
                 SaveTextButton(
                   textStyle: AppTypography.font20grey,
                   title: 'Написать',
@@ -35,9 +35,9 @@ class _CreaterInfoState extends State<CreaterInfo> {
 }
 
 class _Elements extends StatefulWidget {
-  final name;
-  final email;
-  final phone;
+  final String? name;
+  final String? email;
+  final String? phone;
 
   const _Elements({
     Key? key,

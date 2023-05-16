@@ -9,8 +9,6 @@ import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/ui_login/login_screen.dart';
-import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
-import 'package:riandgo2/feature/home/ui/home_page.dart';
 import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
@@ -107,7 +105,7 @@ class AppStateWidget extends StatelessWidget {
           } else if (state is UnAuthAppState) {
             return LoginScreen();
           } else if (state is LoadingAppState) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else {

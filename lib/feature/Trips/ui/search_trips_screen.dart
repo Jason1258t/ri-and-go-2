@@ -6,10 +6,8 @@ import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
 import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
 import 'package:riandgo2/models/models.dart';
-import 'package:riandgo2/utils/colors.dart';
 import 'package:riandgo2/utils/fonts.dart';
 import 'package:riandgo2/widgets/buttons/save_text_button.dart';
-import 'package:riandgo2/widgets/input_widgets/date_input.dart';
 import 'package:riandgo2/widgets/text_fields/white_text_field.dart';
 
 class SearchTrips extends StatefulWidget {
@@ -17,8 +15,8 @@ class SearchTrips extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  TextEditingController _placeFromControllerDriver = TextEditingController();
-  TextEditingController _placeWhereControllerDriver = TextEditingController();
+  TextEditingController _departurePlaceContoller = TextEditingController();
+  TextEditingController _arrivalPlaceControllerDriver = TextEditingController();
 
   @override
   State<SearchTrips> createState() => _SearchTripsState();
@@ -47,19 +45,19 @@ class _SearchTripsState extends State<SearchTrips> {
 
   @override
   Widget build(BuildContext context) {
-    final _tripsRepository = RepositoryProvider.of<TripsRepository>(context);
-    widget._placeFromControllerDriver.text = _tripsRepository.filter.departure?? '';
-    widget._placeWhereControllerDriver.text = _tripsRepository.filter.arrive?? '';
+    final tripsRepository = RepositoryProvider.of<TripsRepository>(context);
+    widget._departurePlaceContoller.text = tripsRepository.filter.departure?? '';
+    widget._arrivalPlaceControllerDriver.text = tripsRepository.filter.arrive?? '';
     commitFilter() {
       BlocProvider.of<TripsBloc>(context)
-          .add(TripsSetFilterEvent(filter: TripFilter(departure: widget._placeFromControllerDriver.text, arrive: widget._placeWhereControllerDriver.text)));
-      log(_tripsRepository.filter.toJson().toString());
+          .add(TripsSetFilterEvent(filter: TripFilter(departure: widget._departurePlaceContoller.text, arrive: widget._arrivalPlaceControllerDriver.text)));
+      log(tripsRepository.filter.toJson().toString());
       BlocProvider.of<TripsBloc>(context)
-          .add(TripsInitialLoadEvent(filter: _tripsRepository.filter));
+          .add(TripsInitialLoadEvent(filter: tripsRepository.filter));
       BlocProvider.of<NavigatorBloc>(context).add(NavigateSearchEvent());
       Navigator.pop(context);
     }
-    log(_tripsRepository.filter.date.toString());
+    log(tripsRepository.filter.date.toString());
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFFEAC498),
@@ -91,7 +89,7 @@ class _SearchTripsState extends State<SearchTrips> {
                   ),
                   const SizedBox(height: 40,),
                   TexrField(
-                    controller: widget._placeFromControllerDriver,
+                    controller: widget._departurePlaceContoller,
                     keyboardType: TextInputType.name,
                     maxLines: 1,
                     hintText: 'Откуда',
@@ -100,7 +98,7 @@ class _SearchTripsState extends State<SearchTrips> {
                     height: 15,
                   ),
                   TexrField(
-                    controller: widget._placeWhereControllerDriver,
+                    controller: widget._arrivalPlaceControllerDriver,
                     keyboardType: TextInputType.name,
                     maxLines: 1,
                     hintText: 'Куда',
@@ -122,9 +120,9 @@ class _SearchTripsState extends State<SearchTrips> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Когда: ${_tripsRepository.filter.date != null
+                        'Когда: ${tripsRepository.filter.date != null
                             ? ''
-                            : _tripsRepository.filter.date.toString().split(
+                            : tripsRepository.filter.date.toString().split(
                             ' ')[0]}',
                         style: const TextStyle(
                             color: Color(0xff747474),
@@ -146,7 +144,7 @@ class _SearchTripsState extends State<SearchTrips> {
               height: 50,
             ),
             const SizedBox(height: 10,),
-            TextButton(onPressed: _tripsRepository.clearFilter, child: Text('очистить'))
+            TextButton(onPressed: tripsRepository.clearFilter, child: const Text('очистить'))
           ],
           ),
         ),
