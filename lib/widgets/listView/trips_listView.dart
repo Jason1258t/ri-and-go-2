@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/models/models.dart';
 
 class ListViewTrips extends StatefulWidget {
@@ -17,24 +19,27 @@ class ListViewTripsState extends State<ListViewTrips> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView(
-        clipBehavior: Clip.hardEdge,
-        padding: const EdgeInsets.only(top: 5, bottom: 5),
-        scrollDirection: Axis.vertical,
-        children: [
-          Column(
-            children: widget.trips
-                .map((e) => ProfileTrip(
-                      itemId: e.itemId,
-                      itemName: e.itemName,
-                      itemDate: e.itemDate,
-                      authorId: e.authorId,
-                      tripType: e.tripType,
-                      image: e.image,
-                    ))
-                .toList(),
-          )
-        ],
+      child: RefreshIndicator(
+        onRefresh: ()  async {BlocProvider.of<UserTripsBloc>(context).add(UserTripsInitialEvent());},
+        child: ListView(
+          clipBehavior: Clip.hardEdge,
+          padding: const EdgeInsets.only(top: 5, bottom: 5),
+          scrollDirection: Axis.vertical,
+          children: [
+            Column(
+              children: widget.trips
+                  .map((e) => ProfileTrip(
+                        itemId: e.itemId,
+                        itemName: e.itemName,
+                        itemDate: e.itemDate,
+                        authorId: e.authorId,
+                        tripType: e.tripType,
+                        image: e.image,
+                      ))
+                  .toList(),
+            )
+          ],
+        ),
       ),
     );
   }
