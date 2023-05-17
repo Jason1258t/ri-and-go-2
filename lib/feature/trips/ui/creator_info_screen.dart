@@ -33,35 +33,66 @@ class _CreaterInfoState extends State<CreaterInfo> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 20,),
-                      _Avatar(avatar: 'Assets/logo.png',),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      _Avatar(
+                        avatar: 'Assets/logo.png',
+                      ),
                       //TODO догружеться из базы
-                      const SizedBox(height: 20,),
-                      _Elements(name: state.name, email: state.email, phone: state.phone,),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      _Elements(
+                        name: state.name,
+                        email: state.email,
+                        phone: state.phone,
+                      ),
                       // TODO ввод с репозитория
-                      const SizedBox(height: 50,),
-                      SaveTextButton(
-                        textStyle: AppTypography.font20grey,
-                        title: 'Написать',
-                        onPressed: () async {
-                          if (state.contactUrl != null && state.contactUrl!.isNotEmpty) {
-                            //final Uri _url = Uri.parse(state.contactUrl!);
-                            await launch(state.contactUrl!);
-                          }
-
-                        },
-                        //TODO Подгружать ссылку на чела
-                        width: 329,
+                      const SizedBox(
                         height: 50,
                       ),
+                      if (state.contactUrl != null)
+                        SaveTextButton(
+                          textStyle: AppTypography.font20grey,
+                          title: 'Написать',
+                          onPressed: () async {
+                            if (state.contactUrl != null &&
+                                state.contactUrl!.isNotEmpty) {
+                              //final Uri _url = Uri.parse(state.contactUrl!);
+                              await launch(state.contactUrl!);
+                            }
+                          },
+                          //TODO Подгружать ссылку на чела
+                          width: 329,
+                          height: 50,
+                        )
+                      else
+                        (const SizedBox(
+                          width: 250,
+                          child: Text(
+                            'Этот пользователь не указал соцсети для связи',
+                            style: TextStyle(
+                                fontSize: 21, fontWeight: FontWeight.w300,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )),
                     ]);
               }
               if (state is CreatorLoadingState) {
-                return const Center(child: CircularProgressIndicator(),);
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
               } else {
-                return Center(child: SizedBox(width: 200, height: 200, child: Image.asset('Assets/companion.jpg'),),);
+                return Center(
+                  child: SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: Image.asset('Assets/companion.jpg'),
+                  ),
+                );
               }
-
             },
           ),
         ));

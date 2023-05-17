@@ -96,7 +96,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         name: _profileRepository.userInfo.name,
         email: _profileRepository.userInfo.email,
         phoneNumber: _profileRepository.userInfo.phoneNumber,
-        contactUrl: _profileRepository.userInfo.contactUrl));
+        contactUrl: _profileRepository.userInfo.contactUrl?? ''));
   }
 
   _onEditFail(ProfileEditFailEvent event, emit) {

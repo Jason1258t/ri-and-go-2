@@ -83,6 +83,7 @@ class _TripScreenState extends State<TripScreen> {
                       firstName: 'Поездки',
                       secondName: 'Запросы',
                       val: val,
+                      width: MediaQuery.of(context).size.width * 0.85,
                     ),
                   ),
                   const SizedBox(height: 10,),

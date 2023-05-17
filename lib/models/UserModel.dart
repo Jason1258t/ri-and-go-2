@@ -1,7 +1,7 @@
 
 class User {
   final String name;
-  final String contactUrl;
+  final String? contactUrl;
   final String imageUrl = '';
   final String email;
   final String phoneNumber;

@@ -17,7 +17,7 @@ class ProfileEditInitialEvent extends ProfileEvent {
   final String name;
   final String email;
   final String phoneNumber;
-  final String contactUrl;
+  final String? contactUrl;
 
   ProfileEditInitialEvent(
       {required this.name,

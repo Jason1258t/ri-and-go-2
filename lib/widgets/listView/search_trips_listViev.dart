@@ -158,18 +158,18 @@ class AdvancedSearchedTrip extends StatelessWidget {
             style: const TextStyle(fontSize: 15),
           ),
           const SizedBox(
-            height: 23,
+            height: 13,
           ),
           Row(children: [
             const Text('Откуда: ', style: TextStyle(fontSize: 15),),
             Text(trip.departurePlace, style: TextStyle(fontSize: 15),)
           ],),
-          const SizedBox(height: 7,),
+          const SizedBox(height: 2,),
           Row(children: [
             const Text('Куда: ', style: TextStyle(fontSize: 15),),
             Text(trip.arrivalPlace, style: TextStyle(fontSize: 15),)
           ],),
-          const SizedBox(height: 15,),
+          const SizedBox(height: 3,),
           if (!trip.tripType) Row(
             children: [
               const Icon(

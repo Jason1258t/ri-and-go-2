@@ -11,7 +11,7 @@ class InfoField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10, left: 20, bottom: 30),
+      padding: const EdgeInsets.only(top: 10, left: 20, bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -20,9 +20,9 @@ class InfoField extends StatelessWidget {
             style: AppTypography.font20grey,
           ),
           Container(
-            margin: EdgeInsets.only(top: 5),
+            margin: const EdgeInsets.only(top: 5),
             width: MediaQuery.of(context).size.width * 0.9,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
                       color: Color(0xff4D361C),
@@ -30,7 +30,7 @@ class InfoField extends StatelessWidget {
                     ))),
             child: Text(
               value,
-              style: AppTypography.font12,
+              style: AppTypography.font16_grey,
             ),
           ),
         ],

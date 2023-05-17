@@ -35,12 +35,12 @@ class _ProfileState extends State<Profile> {
                         appBloc.add(LogoutAppEvent());
                         Navigator.of(context).pop();
                       },
-                      child: Text('Да')),
+                      child: const Text('Да')),
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text('Эээ куда'))
+                      child: const Text('Эээ куда'))
                 ],
               )
             ],
@@ -81,9 +81,12 @@ class _ProfileState extends State<Profile> {
                         textStyle: AppTypography.font20_0xff929292,
                         onPressed: logoutShowDialog,
                       ),
+                      const SizedBox(
+                        height: 25,
+                      ),
                       _Avatar(
                         avatar:
-                            'Assets/logo.png', // TODO заменить на серверное фото
+                            'Assets/ProfileImage.png', // TODO заменить на серверное фото
                       ),
                       DefaultTextButton(
                         onPressed: () {
@@ -103,25 +106,19 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                if (state is ProfileLoadedState)
-                  _Elements(
-                    name: state.name,
-                    phone: state.phone,
-                    email: state.email,
-                  )
-                else
-                  const _Elements(
-                    name: 'нд',
-                    phone: 'нд',
-                    email: "нд",
-                  ),
+                _Elements(
+                  name: state.name,
+                  phone: state.phone,
+                  email: state.email,
+                ),
                 const Text(
                   'Созданные поездки',
                   style: TextStyle(
-                      color: Color.fromRGBO(133, 64, 0, 1),
+                      color: Colors.black,
                       fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic),
+                      fontWeight: FontWeight.w300,
+                      ),
+                  textAlign: TextAlign.center,
                 ),
                 BlocConsumer<UserTripsBloc, UserTripsState>(
                   builder: (context, state) {
@@ -175,12 +172,17 @@ class _AvatarState extends State<_Avatar> {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundColor: Colors.amberAccent,
-      radius: 90,
+      backgroundColor: const Color.fromARGB(20, 51, 51, 51),
+      radius: 71,
       child: CircleAvatar(
-        backgroundImage: AssetImage(widget.avatar ?? 'Assets/logo.png'),
         backgroundColor: Colors.white,
-        radius: 80,
+        radius: 70,
+        child: CircleAvatar(
+          backgroundImage:
+              AssetImage(widget.avatar ?? 'Assets/ProfileImage.png'),
+          backgroundColor: Colors.white,
+          radius: 65,
+        ),
       ),
     );
   }

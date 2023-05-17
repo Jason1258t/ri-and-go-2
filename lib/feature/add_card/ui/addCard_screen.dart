@@ -48,6 +48,7 @@ class _AddCardState extends State<AddCard> {
               },
               child: Column(
                 children: [
+                  const SizedBox(height: 10,),
                   Image.asset(
                     'Assets/logo.png',
                     height: 87,
@@ -62,6 +63,7 @@ class _AddCardState extends State<AddCard> {
                       firstName: 'Поездку',
                       secondName: 'Запрос',
                       val: val,
+                      width: 300,
                     ),
                   ),
                   const SizedBox(
@@ -202,7 +204,7 @@ class _DriverCardState extends State<DriverCard> {
               textStyle: AppTypography.font20grey,
               title: 'Создать',
               onPressed: createTrip,
-              width: 250,
+              width: 300,
               height: 50,
             ),
           ],
@@ -319,7 +321,7 @@ class _PassengerCardState extends State<PassengerCard> {
               textStyle: AppTypography.font20grey,
               title: 'Создать',
               onPressed: createTrip,
-              width: 350,
+              width: 300,
               height: 50,
             ),
           ],

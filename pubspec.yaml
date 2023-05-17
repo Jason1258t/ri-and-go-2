@@ -76,6 +76,7 @@ flutter:
     - Assets/aboba.png
     - Assets/wheel.png
     - Assets/briefcase.png
+    - Assets/ProfileImage.png
 
 
   # To add assets to your application, add an assets section, like this:

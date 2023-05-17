@@ -48,7 +48,7 @@ class _EditProfileState extends State<EditProfile> {
                   _emailController.text = profileRepository.userInfo.email;
                   _telephoneController.text =
                       profileRepository.userInfo.phoneNumber;
-                  _linkController.text = profileRepository.userInfo.contactUrl;
+                  _linkController.text = profileRepository.userInfo.contactUrl?? '';
 
                   return SingleChildScrollView(
                     child: Container(
@@ -115,7 +115,7 @@ class _EditProfileState extends State<EditProfile> {
                                   name: _nameController.text,
                                   email: _emailController.text,
                                   phoneNumber: _telephoneController.text,
-                                  contactUrl: _linkController.text));
+                                  contactUrl: _linkController.text.isNotEmpty? _linkController.text : null));
                             },
                             width: 290,
                             height: 56,

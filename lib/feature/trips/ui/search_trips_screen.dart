@@ -84,6 +84,7 @@ class _SearchTripsState extends State<SearchTrips> {
           Center(
             child: Column(
               children: [
+                const SizedBox(height: 100,),
                 BlocBuilder<TripsBloc, TripsState>(
                   builder: (context, state) {
                     return Container(

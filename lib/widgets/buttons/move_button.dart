@@ -8,12 +8,14 @@ class MoveButton extends StatefulWidget {
   String firstName;
   String secondName;
   bool val;
+  double width;
 
   MoveButton({
     Key? key,
     required this.firstName,
     required this.secondName,
     required this.val,
+    required this.width,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class MoveButtonState extends State<MoveButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.85,
+      width: widget.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         color: const Color(0xffD9D9D9),
@@ -37,10 +39,12 @@ class MoveButtonState extends State<MoveButton> {
             ContainerBox(
               val: widget.val,
               title: widget.firstName,
+              width: widget.width,
             ),
             ContainerBox(
               val: !widget.val,
               title: widget.secondName,
+              width: widget.width,
             ),
           ],
         ),
@@ -52,11 +56,13 @@ class MoveButtonState extends State<MoveButton> {
 class ContainerBox extends StatefulWidget {
   bool val;
   String title;
+  double width;
 
   ContainerBox({
     Key? key,
     required this.val,
     required this.title,
+    required this.width,
   }) : super(key: key);
 
   @override
@@ -67,7 +73,7 @@ class _ContainerBoxState extends State<ContainerBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 160,
+      width: widget.width / 2,
       height: 30,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),

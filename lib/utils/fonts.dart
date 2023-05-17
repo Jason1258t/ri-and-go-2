@@ -76,6 +76,12 @@ class AppTypography {
     fontWeight: FontWeight.normal,
     fontSize: 16,
   );
+  static final font16_grey = _font.copyWith(
+    color: const Color(0xff707070),
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.normal,
+    fontSize: 16,
+  );
 
   static final font17 = _font.copyWith(
     color: AppColors.lightGrey,
