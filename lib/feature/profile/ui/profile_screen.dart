@@ -62,8 +62,12 @@ class _ProfileState extends State<Profile> {
       // }
     }, builder: (context, state) {
       if (state is ProfileLoadedState) {
-        return Scaffold(
-          body: Container(
+        return Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('Assets/searchBackground.png'),
+                repeat: ImageRepeat.repeat),
+          ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +139,7 @@ class _ProfileState extends State<Profile> {
                 )
               ],
             ),
-          ),
+
         );
       }
       if (state is ProfileErrorState) {

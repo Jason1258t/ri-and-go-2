@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
+import 'package:riandgo2/feature/profile/ui/edit_trip_screen.dart';
 import 'package:riandgo2/models/models.dart';
 
 class ListViewTrips extends StatefulWidget {
@@ -99,7 +100,13 @@ class TripState extends State<ProfileTrip> {
     }
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => EditTrip(),
+            ));
+      },
       child: Container(
         width: MediaQuery.of(context).size.width * 0.98,
         margin: const EdgeInsets.only(bottom: 15),

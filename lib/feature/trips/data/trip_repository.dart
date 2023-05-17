@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/services/api_services.dart';
@@ -41,12 +42,20 @@ class TripsRepository {
     }
   }
 
+  List<String> getRandomImage() {
+    int n = Random().nextInt(2);
+    if (n == 1) {
+      return ['https://sportishka.com/uploads/posts/2022-03/1647538575_4-sportishka-com-p-poezdka-s-semei-na-mashine-turizm-krasivo-4.jpg', 'https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg'];
+    } else {
+      return ['https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg'];
+    }
+  }
+
   void loadCreator(int id) async {
     creatorState.add(CreatorStateEnum.loading);
     try {
       Map<String, dynamic> data = await apiService.loadProfile(id: id);
       creatorInfo = data.parseUser();
-      log('------------------------------------спарсилось');
       creatorState.add(CreatorStateEnum.success);
     } catch (e) {
       creatorState.add(CreatorStateEnum.fail);

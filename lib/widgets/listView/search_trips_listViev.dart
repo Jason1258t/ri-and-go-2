@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/Trips/bloc/creator_bloc/creator_bloc.dart';
 import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
+import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 import 'package:riandgo2/feature/Trips/ui/creator_info_screen.dart';
 import 'package:riandgo2/models/TripModel.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
@@ -103,21 +104,9 @@ class AdvancedSearchedTrip extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Image.asset(
-                'Assets/no_image.png',
-                width: 130,
-                height: 90,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Image.asset(
-                'Assets/no_image.png',
-                width: 130,
-                height: 90,
-              )
-            ],
+            children:
+              RepositoryProvider.of<TripsRepository>(context).getRandomImage().map((e) => Image.network(e, width: 130, height: 90,)).toList()
+            ,
           ),
           const SizedBox(
             height: 18,

@@ -31,50 +31,57 @@ class _AddCardState extends State<AddCard> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: SafeArea(
-          child: Center(
-            child: BlocListener<AddTripBloc, AddTripState>(
-              listener: (context, state) {
-                if (state is AddTripSuccessState) {
-                  const snackBar = SnackBar(content: Text('Успешно'));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  BlocProvider.of<NavigatorBloc>(context)
-                      .add(NavigateProfileEvent());
-                }
-                if (state is AddTripFailState) {
-                  const snackBar = SnackBar(content: Text('все пошло по пизде'));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-              },
-              child: Column(
-                children: [
-                  const SizedBox(height: 10,),
-                  Image.asset(
-                    'Assets/logo.png',
-                    height: 87,
-                    width: 80,
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  GestureDetector(
-                    onTap: change,
-                    child: MoveButton(
-                      firstName: 'Поездку',
-                      secondName: 'Запрос',
-                      val: val,
-                      width: 300,
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('Assets/searchBackground.png'),
+                repeat: ImageRepeat.repeat),
+          ),
+          child: SafeArea(
+            child: Center(
+              child: BlocListener<AddTripBloc, AddTripState>(
+                listener: (context, state) {
+                  if (state is AddTripSuccessState) {
+                    const snackBar = SnackBar(content: Text('Успешно'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    BlocProvider.of<NavigatorBloc>(context)
+                        .add(NavigateProfileEvent());
+                  }
+                  if (state is AddTripFailState) {
+                    const snackBar = SnackBar(content: Text('все пошло по пизде'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10,),
+                    Image.asset(
+                      'Assets/logo.png',
+                      height: 87,
+                      width: 80,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  if (!val) ...[
-                    DriverCard(),
-                  ] else ...[
-                    PassengerCard(),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    GestureDetector(
+                      onTap: change,
+                      child: MoveButton(
+                        firstName: 'Поездку',
+                        secondName: 'Запрос',
+                        val: val,
+                        width: 300,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (!val) ...[
+                      DriverCard(),
+                    ] else ...[
+                      PassengerCard(),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),

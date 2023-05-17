@@ -37,7 +37,7 @@ class _CreaterInfoState extends State<CreaterInfo> {
                         height: 20,
                       ),
                       _Avatar(
-                        avatar: 'Assets/logo.png',
+                        avatar: 'Assets/ProfileImage.png',
                       ),
                       //TODO догружеться из базы
                       const SizedBox(
@@ -157,12 +157,17 @@ class _AvatarState extends State<_Avatar> {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundColor: Colors.amberAccent,
-      radius: 90,
+      backgroundColor: const Color.fromARGB(20, 51, 51, 51),
+      radius: 71,
       child: CircleAvatar(
-        backgroundImage: AssetImage(widget.avatar ?? 'Assets/logo.png'),
         backgroundColor: Colors.white,
-        radius: 80,
+        radius: 70,
+        child: CircleAvatar(
+          backgroundImage:
+          AssetImage(widget.avatar ?? 'Assets/ProfileImage.png'),
+          backgroundColor: Colors.white,
+          radius: 65,
+        ),
       ),
     );
   }

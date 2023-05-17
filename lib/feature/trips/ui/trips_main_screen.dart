@@ -70,6 +70,7 @@ class _TripScreenState extends State<TripScreen> {
           decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('Assets/searchBackground.png'),
+                repeat: ImageRepeat.repeat
               )),
           child: SafeArea(
             child: Column(
