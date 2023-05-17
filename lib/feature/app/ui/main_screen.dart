@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/Trips/ui/trips_main_screen.dart';
-import 'package:riandgo2/feature/addCard/ui/addCard_screen.dart';
+import 'package:riandgo2/feature/add_card/ui/addCard_screen.dart';
 import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
 import 'package:riandgo2/feature/profile/ui/profile_screen.dart';
 

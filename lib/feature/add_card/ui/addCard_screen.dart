@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:riandgo2/feature/addCard/bloc/add_trip_bloc.dart';
+import 'package:riandgo2/feature/add_card/bloc/add_trip_bloc.dart';
 import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/utils/fonts.dart';
