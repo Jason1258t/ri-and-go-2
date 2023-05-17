@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/Trips/bloc/creator_bloc/creator_bloc.dart';
+import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
 import 'package:riandgo2/feature/Trips/ui/creator_info_screen.dart';
 import 'package:riandgo2/models/TripModel.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
@@ -62,10 +65,12 @@ class _SearchedTripState extends State<SearchedTrip> {
       return AdvancedSearchedTrip(
         trip: widget.trip,
         onPres: changeViewType,
-        onPressUrl: () { Navigator.push(
+        onPressUrl: () {
+          BlocProvider.of<CreatorBloc>(context).add(CreatorInitialLoadEvent(userId: widget.trip.authorId));
+          Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => CreaterInfo(),
+              builder: (_) => const CreaterInfo(),
             ));},
       );
     }
@@ -185,9 +190,9 @@ class AdvancedSearchedTrip extends StatelessWidget {
               ),
               TextButton(
                   onPressed: onPressUrl,
-                  child: const Text(
-                    'Ебланище',
-                    style: TextStyle(fontSize: 14, color: Color(0xff1EC67F)),
+                  child: Text(
+                    trip.authorName,
+                    style: const TextStyle(fontSize: 14, color: Color(0xff1EC67F)),
                   ))
             ],
           ),

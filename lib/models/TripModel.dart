@@ -2,6 +2,7 @@ class TripModel {
   String itemName;
   String itemDate;
   int authorId;
+  String authorName;
   int itemId;
   bool tripType;
   String image;
@@ -15,6 +16,7 @@ class TripModel {
       required this.itemName,
       required this.itemDate,
       required this.authorId,
+      required this.authorName,
       required this.tripType,
       required this.image,
       required this.departurePlace,

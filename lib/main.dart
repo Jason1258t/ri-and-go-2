@@ -23,6 +23,7 @@ import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';
 import 'package:riandgo2/services/custom_bloc_observer.dart';
 
+import 'feature/Trips/bloc/creator_bloc/creator_bloc.dart';
 import 'feature/addCard/bloc/add_trip_bloc.dart';
 import 'feature/app/bloc/navigator_bloc.dart';
 
@@ -121,6 +122,11 @@ class MyBlocProviders extends StatelessWidget {
         BlocProvider<NavigatorBloc>(
           create: (_) =>
           NavigatorBloc(),
+          lazy: false,
+        ),
+        BlocProvider<CreatorBloc>(
+          create: (_) =>
+              CreatorBloc(tripsRepository: RepositoryProvider.of<TripsRepository>(context))..add(CreatorSubscribeEvent()),
           lazy: false,
         )
       ],

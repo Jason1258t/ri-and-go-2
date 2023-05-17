@@ -21,6 +21,7 @@ extension ListModelsParser on List {
             itemName: this[index]['name'],
             itemDate: this[index]['departureTime'],
             authorId: this[index]['creatorId'],
+            authorName: this[index]['creatorName']?? 'багованная хрень',
             tripType: this[index]['tripType'],
             image: 'Assets/logo.png',
             arrivalPlace: this[index]['arrivalPlace'],
@@ -29,3 +30,10 @@ extension ListModelsParser on List {
             departurePlace: this[index]['departurePlace']));
   }
 }
+
+//
+// extension FutureParser on Future<Map<String, dynamic>> {
+//   Map<String, dynamic> parseMap() {
+//     Map<String, dynamic> newMap = this;
+//   }
+// }

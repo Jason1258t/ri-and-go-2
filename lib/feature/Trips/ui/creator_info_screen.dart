@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/Trips/bloc/creator_bloc/creator_bloc.dart';
 import 'package:riandgo2/utils/fonts.dart';
 import 'package:riandgo2/widgets/buttons/save_text_button.dart';
 import 'package:riandgo2/widgets/lable/information_field.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CreaterInfo extends StatefulWidget {
   const CreaterInfo({Key? key}) : super(key: key);
@@ -14,22 +17,53 @@ class _CreaterInfoState extends State<CreaterInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xFFEAC498),
+          title: const Text('Автор поездки'),
+          centerTitle: true,
+        ),
         body: SafeArea(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _Avatar(avatar: 'Assets/logo.png',),//TODO догружеться из базы
-                const SizedBox(height: 20,),
-                const _Elements(name: null, email: null, phone: null,), // TODO ввод с репозитория
-                SaveTextButton(
-                  textStyle: AppTypography.font20grey,
-                  title: 'Написать',
-                  onPressed: () {}, //TODO Подгружать ссылку на чела
-                  width: 329,
-                  height: 50,
-                ),
-              ]),
+          child: BlocConsumer<CreatorBloc, CreatorState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              if (state is CreatorSuccessState) {
+                return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20,),
+                      _Avatar(avatar: 'Assets/logo.png',),
+                      //TODO догружеться из базы
+                      const SizedBox(height: 20,),
+                      _Elements(name: state.name, email: state.email, phone: state.phone,),
+                      // TODO ввод с репозитория
+                      const SizedBox(height: 50,),
+                      SaveTextButton(
+                        textStyle: AppTypography.font20grey,
+                        title: 'Написать',
+                        onPressed: () async {
+                          if (state.contactUrl != null && state.contactUrl!.isNotEmpty) {
+                            //final Uri _url = Uri.parse(state.contactUrl!);
+                            await launch(state.contactUrl!);
+                          }
+
+                        },
+                        //TODO Подгружать ссылку на чела
+                        width: 329,
+                        height: 50,
+                      ),
+                    ]);
+              }
+              if (state is CreatorLoadingState) {
+                return const Center(child: CircularProgressIndicator(),);
+              } else {
+                return Center(child: SizedBox(width: 200, height: 200, child: Image.asset('Assets/companion.jpg'),),);
+              }
+
+            },
+          ),
         ));
   }
 }
