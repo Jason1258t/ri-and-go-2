@@ -21,6 +21,7 @@ class UserTripsBloc extends Bloc<UserTripsEvent, UserTripsState> {
     on<UserTripsLoadingEvent>(_onLoading);
     on<UserTripsSuccessEvent>(_onSuccess);
     on<UserTripsFailEvent>(_onFail);
+    on<UserTripsDeleteEvent>(_onDelete);
   }
   _onSubscribe (UserTripsSubscribeEvent event, emit) {
     _tripsStateSubscription = _profileRepository.tripsState.stream.listen((UserTripsStateEnum event) {
@@ -48,6 +49,10 @@ class UserTripsBloc extends Bloc<UserTripsEvent, UserTripsState> {
 
   _onFail(UserTripsFailEvent event, emit) {
     emit(UserTripsFailState());
+  }
+
+  _onDelete(UserTripsDeleteEvent event, emit) {
+    _profileRepository.deleteTrip(event.tripId);
   }
 
 }

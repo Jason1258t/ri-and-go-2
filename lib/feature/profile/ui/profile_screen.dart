@@ -52,7 +52,6 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
     final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
-    final tripsBloc = BlocProvider.of<UserTripsBloc>(context);
     if (!profileRepository.isProfileLoaded()) {
       profileBloc.add(ProfileInitialLoadEvent());
     }

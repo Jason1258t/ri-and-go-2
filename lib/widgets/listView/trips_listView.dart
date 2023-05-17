@@ -70,6 +70,34 @@ class ProfileTrip extends StatefulWidget {
 class TripState extends State<ProfileTrip> {
   @override
   Widget build(BuildContext context) {
+    void confirmDelete() {
+      showDialog(context: context, builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Уверены что хотите удалить?'),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton(
+                    onPressed: () {
+                      BlocProvider.of<UserTripsBloc>(context)
+                          .add(UserTripsDeleteEvent(tripId: widget.itemId));
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Да')),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Эээ куда'))
+              ],
+            )
+          ],
+        );
+      }
+      );
+    }
+
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -119,7 +147,7 @@ class TripState extends State<ProfileTrip> {
                     ],
                   ),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: confirmDelete,
                       child: const Icon(
                         Icons.delete_outline,
                         size: 30,
@@ -201,142 +229,6 @@ class BaseSearchedTrip extends StatelessWidget {
                       color: Colors.black,
                     )),
               ])
-        ],
-      ),
-    );
-  }
-}
-
-class AdvancedSearchedTrip extends StatelessWidget {
-  const AdvancedSearchedTrip(
-      {Key? key, required this.trip, required this.onPres})
-      : super(key: key);
-  final TripModel trip;
-  final onPres;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black.withOpacity(0.2),
-            width: 1,
-          ),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Image.asset(
-                'Assets/no_image.png',
-                width: 130,
-                height: 90,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Image.asset(
-                'Assets/no_image.png',
-                width: 130,
-                height: 90,
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 18,
-          ),
-          Container(
-            width: 285,
-            height: 45,
-            child: Row(
-              children: [
-                Image.asset('Assets/aboba.png'),
-                const SizedBox(width: 10,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      trip.itemName,
-                      style: const TextStyle(fontSize: 20),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Text(
-                      trip.itemDate,
-                      style: const TextStyle(fontSize: 12),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            trip.description,
-            style: const TextStyle(fontSize: 15),
-          ),
-          const SizedBox(
-            height: 23,
-          ),
-          Row(children: [
-            const Text('Откуда: ', style: TextStyle(fontSize: 15),),
-            Text(trip.departurePlace, style: TextStyle(fontSize: 15),)
-          ],),
-          const SizedBox(height: 7,),
-          Row(children: [
-            const Text('Куда: ', style: TextStyle(fontSize: 15),),
-            Text(trip.arrivalPlace, style: TextStyle(fontSize: 15),)
-          ],),
-          const SizedBox(height: 15,),
-          if (!trip.tripType) Row(
-            children: [
-              const Icon(
-                Icons.people,
-                size: 20,
-              ),
-              Text(
-                '4/${trip.maxPassengers}',
-                style: const TextStyle(fontSize: 14, color: Color(0xff747474)),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              const Text(
-                'Автор: ',
-                style: TextStyle(fontSize: 15),
-              ),
-              TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Ебланище',
-                    style: TextStyle(fontSize: 14, color: Color(0xff1EC67F)),
-                  ))
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                  onPressed: onPres,
-                  child: const Icon(
-                    Icons.expand_less,
-                    size: 40,
-                    color: Colors.black,
-                  )),
-            ],
-          )
         ],
       ),
     );

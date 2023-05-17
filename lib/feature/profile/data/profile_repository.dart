@@ -77,4 +77,18 @@ class ProfileRepository {
       rethrow;
     }
   }
+
+
+  Future<void> deleteTrip(int id) async {
+    tripsState.add(UserTripsStateEnum.loading);
+    try {
+      await apiService.deleteTrip(tripId: id);
+      List data = await apiService.loadUserTrips(id: userId);
+      userTrips = data.parseTripList();
+      tripsState.add(UserTripsStateEnum.success);
+    } catch (e) {
+      tripsState.add(UserTripsStateEnum.fail);
+      rethrow;
+    }
+  }
 }
