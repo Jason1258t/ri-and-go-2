@@ -24,7 +24,7 @@ import 'package:riandgo2/services/api_services.dart';
 import 'package:riandgo2/services/custom_bloc_observer.dart';
 
 import 'feature/Trips/bloc/creator_bloc/creator_bloc.dart';
-import 'feature/addCard/bloc/add_trip_bloc.dart';
+import 'feature/add_card/bloc/add_trip_bloc.dart';
 import 'feature/app/bloc/navigator_bloc.dart';
 
 Future<void> main() async {
