@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
@@ -6,6 +8,8 @@ import 'package:riandgo2/models/TripEditModel.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/utils/fonts.dart';
 import 'package:riandgo2/widgets/input_widgets/date_input.dart';
+
+import '../../trips/data/trip_repository.dart';
 
 class EditTrip extends StatefulWidget {
   final TripModel tripModel;
@@ -75,6 +79,17 @@ class _EditTripState extends State<EditTrip> {
   @override
   Widget build(BuildContext context) {
     _initialControllersValues();
+    List<String> getRandomImage() {
+      int n = Random().nextInt(2);
+      if (n == 1) {
+        return ['https://sportishka.com/uploads/posts/2022-03/1647538575_4-sportishka-com-p-poezdka-s-semei-na-mashine-turizm-krasivo-4.jpg', 'https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg'];
+      } else {
+        return ['https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg'];
+      }
+    }
+    
+    
+    final images = getRandomImage().map((e) => Image.network(e, width: 130, height: 90,)).toList();
     return BlocConsumer<UserTripsBloc, UserTripsState>(
   listener: (context, state) {
     // TODO: implement listener
@@ -103,19 +118,10 @@ class _EditTripState extends State<EditTrip> {
             ),
             child: Column(children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                        'Assets/logo.png'), // TODO подгрузка с сервера
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                        'Assets/logo.png'), // TODO подгрузка с сервера
-                  )
-                ],
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children:
+                images
+                ,
               ),
               const Divider(),
               Row(
