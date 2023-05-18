@@ -6,6 +6,7 @@ import 'package:riandgo2/feature/Trips/ui/search_trips_screen.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/listView/search_trips_listViev.dart';
+import 'package:swipe/swipe.dart';
 
 class TripScreen extends StatefulWidget {
   const TripScreen({Key? key}) : super(key: key);
@@ -17,14 +18,6 @@ class TripScreen extends StatefulWidget {
 class _TripScreenState extends State<TripScreen> {
   bool val = true;
 
-  void changeType() {
-    setState(() {
-      val = !val;
-    });
-    BlocProvider.of<TripsBloc>(context).add(
-        TripsInitialLoadEvent(filter: TripFilter(type: val)));
-  }
-
   @override
   Widget build(BuildContext context) {
     final tripsBloc = BlocProvider.of<TripsBloc>(context);
@@ -33,6 +26,17 @@ class _TripScreenState extends State<TripScreen> {
     Future<void> loadTrips() async {
       tripsRepository.copyWithFilter(TripFilter(type: val));
       tripsBloc.add(TripsInitialLoadEvent(filter: tripsRepository.filter));
+    }
+
+    void changeType({bool? type}) {
+      setState(() {
+        if (type == null) {
+          val = !val;
+        } else {
+          val = type;
+        }
+      });
+      loadTrips();
     }
 
     loadTrips();
@@ -49,11 +53,7 @@ class _TripScreenState extends State<TripScreen> {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
-                    fontWeight: FontWeight.w400
-                )
-            )
-        ),
-
+                    fontWeight: FontWeight.w400))),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
@@ -65,19 +65,19 @@ class _TripScreenState extends State<TripScreen> {
           backgroundColor: Colors.orange,
           child: const Icon(Icons.search),
         ),
-
         body: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('Assets/searchBackground.png'),
-                repeat: ImageRepeat.repeat
-              )),
+                  image: AssetImage('Assets/searchBackground.png'),
+                  repeat: ImageRepeat.repeat)),
           child: SafeArea(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   GestureDetector(
                     onTap: changeType,
                     child: MoveButton(
@@ -87,8 +87,23 @@ class _TripScreenState extends State<TripScreen> {
                       width: MediaQuery.of(context).size.width * 0.85,
                     ),
                   ),
-                  const SizedBox(height: 10,),
-                  const _TripsConsumer(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  //const _TripsConsumer(),
+                  Swipe(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height - 185,
+                      child: _TripsConsumer(),
+                    ),
+                    onSwipeLeft: () {
+                      changeType(type: true);
+                    },
+                    onSwipeRight: () {
+                      changeType(type: false);
+                    },
+                  ),
                 ]),
           ),
         ),
@@ -96,8 +111,6 @@ class _TripScreenState extends State<TripScreen> {
     );
   }
 }
-
-
 
 class _TripsConsumer extends StatelessWidget {
   const _TripsConsumer({Key? key}) : super(key: key);

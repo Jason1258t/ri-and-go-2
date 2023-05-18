@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/add_card/bloc/add_trip_bloc.dart';
 import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
+import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/utils/fonts.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
@@ -46,6 +47,7 @@ class _AddCardState extends State<AddCard> {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     BlocProvider.of<NavigatorBloc>(context)
                         .add(NavigateProfileEvent());
+                    BlocProvider.of<UserTripsBloc>(context).add(UserTripsInitialEvent());
                   }
                   if (state is AddTripFailState) {
                     const snackBar = SnackBar(content: Text('все пошло по пизде'));
@@ -122,13 +124,13 @@ class _DriverCardState extends State<DriverCard> {
         void createTrip() {
           if (state is AddTripSelectedDate) {
             final trip = AddTripModel(
-                name: widget._nameControllerPassenger.text,
-                description: widget._descriptionControllerPassenger.text,
+                name: widget._nameControllerPassenger.text.trim(),
+                description: widget._descriptionControllerPassenger.text.trim(),
                 departureTime: state.selectedDate,
-                departurePlace: widget._departurePlaceControllerPassenger.text,
-                arrivalPlace: widget._arrivalPlaceControllerPassenger.text,
+                departurePlace: widget._departurePlaceControllerPassenger.text.trim(),
+                arrivalPlace: widget._arrivalPlaceControllerPassenger.text.trim(),
                 tripType: false,
-                maxPassengers: widget._maxPassengersControllerDriver.text);
+                maxPassengers: widget._maxPassengersControllerDriver.text.trim());
             bloc.add(AddTripInitialEvent(trip: trip));
           }
           else {
@@ -248,11 +250,11 @@ class _PassengerCardState extends State<PassengerCard> {
           if (state is AddTripSelectedDate) {
             log(state.selectedDate.toString());
             final trip = AddTripModel(
-                name: widget._nameControllerDriver.text,
-                description: widget._descriptionControllerDriver.text,
+                name: widget._nameControllerDriver.text.trim(),
+                description: widget._descriptionControllerDriver.text.trim(),
                 departureTime: state.selectedDate,
-                departurePlace: widget._departurePlaceControllerDriver.text,
-                arrivalPlace: widget._arrivalPlaceControllerDriver.text,
+                departurePlace: widget._departurePlaceControllerDriver.text.trim(),
+                arrivalPlace: widget._arrivalPlaceControllerDriver.text.trim(),
                 tripType: true,
                 maxPassengers: '99');
             bloc.add(AddTripInitialEvent(trip: trip));

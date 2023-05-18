@@ -51,7 +51,7 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
           decoration: InputDecoration(
             hintStyle: AppTypography.font17,
             prefixIcon: widget.prefixIcon,
-
+            suffixIcon: widget.suffixIcon,
             filled: false,
             hintText: widget.hintText,
             label: widget.controller.text != '' ? Text(widget.hintText) : null,

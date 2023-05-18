@@ -75,6 +75,6 @@ class TripsRepository {
   }
 
   void clearFilter() {
-    filter = TripFilter();
+    filter = TripFilter(type: filter.type);
   }
 }

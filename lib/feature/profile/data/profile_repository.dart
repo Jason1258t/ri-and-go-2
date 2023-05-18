@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:riandgo2/services/api_services.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -34,7 +32,6 @@ class ProfileRepository {
     try{
       Map<String, dynamic> data = await apiService.loadProfile(id: userId);
       userInfo = data.parseUser();
-      print(data);
       profileLoaded = true;
       profileState.add(ProfileStateEnum.success);
     } catch (e) {

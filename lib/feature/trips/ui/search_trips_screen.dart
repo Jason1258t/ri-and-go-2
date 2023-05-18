@@ -61,10 +61,13 @@ class _SearchTripsState extends State<SearchTrips> {
     }
 
     commitFilter() {
+      final dp = widget._departurePlaceContoller.text.trim();
+      final ap = widget._arrivalPlaceControllerDriver.text.trim();
+
       BlocProvider.of<TripsBloc>(context).add(TripsSetFilterEvent(
           filter: TripFilter(
-              departure: widget._departurePlaceContoller.text.isNotEmpty? widget._departurePlaceContoller.text : null,
-              arrive: widget._arrivalPlaceControllerDriver.text.isNotEmpty? widget._arrivalPlaceControllerDriver.text : null)));
+              departure: dp.isNotEmpty? dp : null,
+              arrive: ap.isNotEmpty? ap : null)));
       log('----------------------------фильтр  ${tripsRepository.filter.toJson().toString()}');
       BlocProvider.of<TripsBloc>(context)
           .add(TripsInitialLoadEvent(filter: tripsRepository.filter));

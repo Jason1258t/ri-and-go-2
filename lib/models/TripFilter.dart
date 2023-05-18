@@ -2,9 +2,9 @@ class TripFilter {
   final DateTime? date;
   final String? departure;
   final String? arrive;
-  final bool type;
+  final bool? type;
 
-  TripFilter({this.date, this.departure, this.arrive, this.type = false});
+  TripFilter({this.date, this.departure, this.arrive, this.type});
 
   Map<String, dynamic> toJson () => {
     if (departure != null) 'departurePlace': departure,

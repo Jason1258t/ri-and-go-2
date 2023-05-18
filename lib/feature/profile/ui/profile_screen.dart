@@ -8,6 +8,7 @@ import 'package:riandgo2/feature/profile/ui/edit_screen.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/lable/information_field.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
+import 'package:riandgo2/widgets/show_elements/avatar.dart';
 
 import '../../../widgets/buttons/default_text_button.dart';
 
@@ -88,7 +89,7 @@ class _ProfileState extends State<Profile> {
                       const SizedBox(
                         height: 25,
                       ),
-                      _Avatar(
+                      Avatar(
                         avatar:
                             'Assets/ProfileImage.png', // TODO заменить на серверное фото
                       ),
@@ -160,37 +161,7 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-class _Avatar extends StatefulWidget {
-  String? avatar;
 
-  _Avatar({
-    Key? key,
-    required this.avatar,
-  }) : super(key: key);
-
-  @override
-  _AvatarState createState() => _AvatarState();
-}
-
-class _AvatarState extends State<_Avatar> {
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: const Color.fromARGB(20, 51, 51, 51),
-      radius: 71,
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        radius: 70,
-        child: CircleAvatar(
-          backgroundImage:
-              AssetImage(widget.avatar ?? 'Assets/ProfileImage.png'),
-          backgroundColor: Colors.white,
-          radius: 65,
-        ),
-      ),
-    );
-  }
-}
 
 class _Elements extends StatefulWidget {
   final name;
