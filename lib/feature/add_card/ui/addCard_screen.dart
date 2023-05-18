@@ -30,60 +30,63 @@ class _AddCardState extends State<AddCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('Assets/searchBackground.png'),
-                repeat: ImageRepeat.repeat),
-          ),
-          child: SafeArea(
-            child: Center(
-              child: BlocListener<AddTripBloc, AddTripState>(
-                listener: (context, state) {
-                  if (state is AddTripSuccessState) {
-                    const snackBar = SnackBar(content: Text('Успешно'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    BlocProvider.of<NavigatorBloc>(context)
-                        .add(NavigateProfileEvent());
-                    BlocProvider.of<UserTripsBloc>(context).add(UserTripsInitialEvent());
-                  }
-                  if (state is AddTripFailState) {
-                    const snackBar = SnackBar(content: Text('все пошло по пизде'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                },
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10,),
-                    Image.asset(
-                      'Assets/logo.png',
-                      height: 87,
-                      width: 80,
+    return Container(
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage('Assets/searchBackground.png'),
+            repeat: ImageRepeat.repeat),
+      ),
+      child: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
+            child: BlocListener<AddTripBloc, AddTripState>(
+              listener: (context, state) {
+                if (state is AddTripSuccessState) {
+                  const snackBar = SnackBar(content: Text('Успешно'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  BlocProvider.of<NavigatorBloc>(context)
+                      .add(NavigateProfileEvent());
+                  BlocProvider.of<UserTripsBloc>(context)
+                      .add(UserTripsInitialEvent());
+                }
+                if (state is AddTripFailState) {
+                  const snackBar =
+                      SnackBar(content: Text('все пошло по пизде'));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              },
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Image.asset(
+                    'Assets/logo.png',
+                    height: 87,
+                    width: 80,
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  GestureDetector(
+                    onTap: change,
+                    child: MoveButton(
+                      firstName: 'Поездку',
+                      secondName: 'Запрос',
+                      val: val,
+                      width: 300,
                     ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    GestureDetector(
-                      onTap: change,
-                      child: MoveButton(
-                        firstName: 'Поездку',
-                        secondName: 'Запрос',
-                        val: val,
-                        width: 300,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    if (!val) ...[
-                      DriverCard(),
-                    ] else ...[
-                      PassengerCard(),
-                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  if (!val) ...[
+                    DriverCard(),
+                  ] else ...[
+                    PassengerCard(),
                   ],
-                ),
+                ],
               ),
             ),
           ),
@@ -95,7 +98,8 @@ class _AddCardState extends State<AddCard> {
 
 class DriverCard extends StatefulWidget {
   TextEditingController _nameControllerPassenger = TextEditingController();
-  TextEditingController _departurePlaceControllerPassenger = TextEditingController();
+  TextEditingController _departurePlaceControllerPassenger =
+      TextEditingController();
   TextEditingController _arrivalPlaceControllerPassenger =
       TextEditingController();
   TextEditingController _descriptionControllerPassenger =
@@ -115,9 +119,7 @@ class _DriverCardState extends State<DriverCard> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AddTripBloc, AddTripState>(
-      listener: (context, state) {
-
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         final bloc = BlocProvider.of<AddTripBloc>(context);
 
@@ -127,17 +129,18 @@ class _DriverCardState extends State<DriverCard> {
                 name: widget._nameControllerPassenger.text.trim(),
                 description: widget._descriptionControllerPassenger.text.trim(),
                 departureTime: state.selectedDate,
-                departurePlace: widget._departurePlaceControllerPassenger.text.trim(),
-                arrivalPlace: widget._arrivalPlaceControllerPassenger.text.trim(),
+                departurePlace:
+                    widget._departurePlaceControllerPassenger.text.trim(),
+                arrivalPlace:
+                    widget._arrivalPlaceControllerPassenger.text.trim(),
                 tripType: false,
-                maxPassengers: widget._maxPassengersControllerDriver.text.trim());
+                maxPassengers:
+                    widget._maxPassengersControllerDriver.text.trim());
             bloc.add(AddTripInitialEvent(trip: trip));
-          }
-          else {
+          } else {
             const snackBar = SnackBar(content: Text('не введена дата'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
-
         }
 
         return Column(
@@ -182,7 +185,11 @@ class _DriverCardState extends State<DriverCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomDateInput(selectedDate: selectedDate, type: 'context', fixedWidth: 267,),
+                    CustomDateInput(
+                      selectedDate: selectedDate,
+                      type: 'context',
+                      fixedWidth: 267,
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -227,7 +234,8 @@ class PassengerCard extends StatefulWidget {
   PassengerCard({Key? key}) : super(key: key);
 
   TextEditingController _nameControllerDriver = TextEditingController();
-  TextEditingController _departurePlaceControllerDriver = TextEditingController();
+  TextEditingController _departurePlaceControllerDriver =
+      TextEditingController();
   TextEditingController _arrivalPlaceControllerDriver = TextEditingController();
   TextEditingController _descriptionControllerDriver = TextEditingController();
 
@@ -242,29 +250,28 @@ class _PassengerCardState extends State<PassengerCard> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddTripBloc, AddTripState>(
       listener: (context, state) {
-        // TODO: implement listener
+// TODO: implement listener
       },
       builder: (context, state) {
         final bloc = BlocProvider.of<AddTripBloc>(context);
-        void createTrip () {
+        void createTrip() {
           if (state is AddTripSelectedDate) {
             log(state.selectedDate.toString());
             final trip = AddTripModel(
                 name: widget._nameControllerDriver.text.trim(),
                 description: widget._descriptionControllerDriver.text.trim(),
                 departureTime: state.selectedDate,
-                departurePlace: widget._departurePlaceControllerDriver.text.trim(),
+                departurePlace:
+                    widget._departurePlaceControllerDriver.text.trim(),
                 arrivalPlace: widget._arrivalPlaceControllerDriver.text.trim(),
                 tripType: true,
                 maxPassengers: '99');
             bloc.add(AddTripInitialEvent(trip: trip));
-          }
-          else {
+          } else {
             const snackBar = SnackBar(content: Text('не введена дата'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         }
-
 
         return Column(
           children: [
@@ -308,7 +315,10 @@ class _PassengerCardState extends State<PassengerCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomDateInput(selectedDate: selectedDate, type: 'context', fixedWidth: 267),
+                    CustomDateInput(
+                        selectedDate: selectedDate,
+                        type: 'context',
+                        fixedWidth: 267),
                     const SizedBox(
                       height: 10,
                     ),

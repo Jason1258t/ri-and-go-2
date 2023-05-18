@@ -4,7 +4,7 @@ import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
-import 'package:riandgo2/feature/profile/ui/edit_screen.dart';
+import 'package:riandgo2/feature/profile/ui/edit_profile_screen.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/lable/information_field.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
