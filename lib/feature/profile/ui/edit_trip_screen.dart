@@ -2,14 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/models/TripEditModel.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/utils/fonts.dart';
 import 'package:riandgo2/widgets/input_widgets/date_input.dart';
 
-import '../../trips/data/trip_repository.dart';
 
 class EditTrip extends StatefulWidget {
   final TripModel tripModel;
@@ -108,147 +106,149 @@ class _EditTripState extends State<EditTrip> {
               repeat: ImageRepeat.repeat),
         ),
         child: Center(
-          child: Container(
-            height: 597,
-            width: 324,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.white10, width: 4),
-              borderRadius: BorderRadius.circular(10),
+          child: SingleChildScrollView(
+            child: Container(
+              height: 597,
+              width: 324,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.white10, width: 4),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children:
+                  images
+                  ,
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.edit_note),
+                        onPressed: () {
+                          _displayTextInputDialog(
+                              context, _nameControllerDriver, 'название поездки', 'name');
+                        },
+                      ),
+                    ),
+                    Container(
+                      height: 30,
+                      width: 250,
+                      child: Text(
+                        'Поездка: ${_nameControllerDriver.text}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.font16,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: IconButton(
+                        icon: const Icon(Icons.edit_note),
+                        onPressed: () {},
+                      ),
+                    ),
+                    CustomDateInput(
+                      selectedDate: selectedDate,
+                      type: 'context',
+                      fixedWidth: 150,
+                      callback: (DateTime date) {
+                        BlocProvider.of<UserTripsBloc>(context).add(UserTripsCommitChange(tripChanges: {'departureTime': date, 'id': widget.tripModel.itemId}.tripEditFromJason()));
+                      },
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.edit_note),
+                        onPressed: () {
+                          _displayTextInputDialog(context,
+                              _descriptionControllerDriver, 'описание поездки', 'description');
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 250,
+                      height: 50,
+                      child: Text(
+                        'описание: ${_descriptionControllerDriver.text}',
+                        softWrap: true,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.font16,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.edit_note),
+                        onPressed: () {
+                          _displayTextInputDialog(context,
+                              _departurePlaceControllerDriver, 'место отправки', 'departurePlace');
+                        },
+                      ),
+                    ),
+                    Container(
+                      height: 30,
+                      width: 250,
+                      child: Text(
+                        'Откуда: ${_departurePlaceControllerDriver.text}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.font16,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.edit_note),
+                        onPressed: () {
+                          _displayTextInputDialog(context,
+                              _arrivalPlaceControllerDriver, 'место прибытия', 'arrivalPlace');
+                        },
+                      ),
+                    ),
+                    Container(
+                      height: 30,
+                      width: 250,
+                      child: Text(
+                        'Куда: ${_arrivalPlaceControllerDriver.text}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.font16,
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
             ),
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children:
-                images
-                ,
-              ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                      icon: const Icon(Icons.edit_note),
-                      onPressed: () {
-                        _displayTextInputDialog(
-                            context, _nameControllerDriver, 'название поездки', 'name');
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 30,
-                    width: 250,
-                    child: Text(
-                      'Поездка: ${_nameControllerDriver.text}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTypography.font16,
-                    ),
-                  ),
-                ],
-              ),
-              const Divider(),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: IconButton(
-                      icon: const Icon(Icons.edit_note),
-                      onPressed: () {},
-                    ),
-                  ),
-                  CustomDateInput(
-                    selectedDate: selectedDate,
-                    type: 'context',
-                    fixedWidth: 150,
-                    callback: (DateTime date) {
-                      BlocProvider.of<UserTripsBloc>(context).add(UserTripsCommitChange(tripChanges: {'departureTime': date, 'id': widget.tripModel.itemId}.tripEditFromJason()));
-                    },
-                  ),
-                ],
-              ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                      icon: const Icon(Icons.edit_note),
-                      onPressed: () {
-                        _displayTextInputDialog(context,
-                            _descriptionControllerDriver, 'описание поездки', 'description');
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: 250,
-                    height: 50,
-                    child: Text(
-                      'описание: ${_descriptionControllerDriver.text}',
-                      softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTypography.font16,
-                    ),
-                  ),
-                ],
-              ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                      icon: const Icon(Icons.edit_note),
-                      onPressed: () {
-                        _displayTextInputDialog(context,
-                            _departurePlaceControllerDriver, 'место отправки', 'departurePlace');
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 30,
-                    width: 250,
-                    child: Text(
-                      'Откуда: ${_departurePlaceControllerDriver.text}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTypography.font16,
-                    ),
-                  ),
-                ],
-              ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(
-                      icon: const Icon(Icons.edit_note),
-                      onPressed: () {
-                        _displayTextInputDialog(context,
-                            _arrivalPlaceControllerDriver, 'место прибытия', 'arrivalPlace');
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 30,
-                    width: 250,
-                    child: Text(
-                      'Куда: ${_arrivalPlaceControllerDriver.text}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTypography.font16,
-                    ),
-                  ),
-                ],
-              ),
-            ]),
           ),
         ),
       ),

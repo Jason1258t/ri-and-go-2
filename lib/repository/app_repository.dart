@@ -1,7 +1,6 @@
 // Package imports:
 
 // Package imports:
-import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,7 +33,7 @@ class AppRepository {
   checkLogin() async {
     try {
       appState.add(AppStateEnum.loading);
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
       final prefs = await SharedPreferences.getInstance();
       final authToken = prefs.getString('auth_token');
       final id = prefs.getInt('id') ?? 0;
@@ -68,7 +67,7 @@ class AppRepository {
       final authToken =
           await apiService.loginUser(email: login, password: password);
 
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 3));
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('auth_token', 'any_auth_token');
       await prefs.setInt('id', authToken);
@@ -91,11 +90,11 @@ class AppRepository {
       final registration = await apiService.registerUser(
           email: login, password: password, phone: phone, name: name);
 
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 3));
       if (registration) {
         final registrationData =
             await apiService.loginUser(email: login, password: password);
-        await Future.delayed(Duration(seconds: 3));
+        await Future.delayed(const Duration(seconds: 3));
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('auth_token', 'any_auth_token');
         prefs.setInt('id', registrationData);

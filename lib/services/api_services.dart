@@ -4,8 +4,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:riandgo2/models/TripEditModel.dart';
 import 'package:riandgo2/models/models.dart';
 
 // Project imports:
@@ -63,7 +61,7 @@ class ApiService {
       required String phone,
       required String name}) async {
     try {
-      final userToken = await _dio.post(register, data: {
+      await _dio.post(register, data: {
         'email': email,
         'phoneNumber': phone,
         'name': name,

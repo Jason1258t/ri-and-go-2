@@ -1,7 +1,5 @@
 import 'package:riandgo2/models/models.dart';
 
-import 'UserModel.dart';
-
 extension ModelsParser on Map<String, dynamic> {
   User parseUser() {
     return User(

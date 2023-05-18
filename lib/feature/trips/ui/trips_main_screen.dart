@@ -6,7 +6,6 @@ import 'package:riandgo2/feature/Trips/ui/search_trips_screen.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/listView/search_trips_listViev.dart';
-import 'package:swipe/swipe.dart';
 
 class TripScreen extends StatefulWidget {
   const TripScreen({Key? key}) : super(key: key);
