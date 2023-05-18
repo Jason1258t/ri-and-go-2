@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:dio_logger/dio_logger.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:riandgo2/models/TripEditModel.dart';
 import 'package:riandgo2/models/models.dart';
 
 // Project imports:
@@ -30,6 +31,7 @@ class ApiService {
   static const String filteredTrips = '/Trips/FetchTrips';
   static const String tripAdd = '/Trips/AddNew';
   static const String tripDelete = '/Trips/SetActive';
+  static const String tripEdit = '/Trips/Edit';
 
   Future<dynamic> loginUser(
       {required String email, required String password}) async {
@@ -253,6 +255,26 @@ class ApiService {
   Future<void> deleteTrip({required int tripId}) async {
     try {
       await _dio.post(tripDelete, data: {'tripId': tripId, 'isActive': false});
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
+      }
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
+      }
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
+      }
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
+      }
+      rethrow;
+    }
+  }
+
+  Future<void> editTrip({required TripEditModel tripEditModel}) async {
+    try {
+      final resp = await _dio.post(tripEdit, data: tripEditModel.toJson());
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         throw (UnAuthorizedException);

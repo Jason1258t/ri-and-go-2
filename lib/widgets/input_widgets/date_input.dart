@@ -9,8 +9,15 @@ import 'package:riandgo2/models/models.dart';
 class CustomDateInput extends StatefulWidget {
   DateTime selectedDate;
   final String type;
+  double fixedWidth;
+  void Function(DateTime)? callback;
 
-  CustomDateInput({Key? key, required this.type, required this.selectedDate})
+  CustomDateInput(
+      {Key? key,
+      required this.type,
+      required this.selectedDate,
+      required this.fixedWidth,
+      this.callback})
       : super(key: key);
 
   @override
@@ -21,10 +28,17 @@ class _CustomDateInputState extends State<CustomDateInput> {
   @override
   Widget build(BuildContext context) {
     confirmDate(DateTime date) {
-      widget.selectedDate = date;
+      setState(() {
+        widget.selectedDate = date;
+      });
+      log(date.toString());
 
-      BlocProvider.of<AddTripBloc>(context)
-          .add(AddTripSelectDateEvent(selectedDate: date));
+      if (widget.callback == null) {
+        BlocProvider.of<AddTripBloc>(context)
+            .add(AddTripSelectDateEvent(selectedDate: date));
+      } else {
+        widget.callback!(date);
+      }
     }
 
     void _selectDate() async {
@@ -34,12 +48,9 @@ class _CustomDateInputState extends State<CustomDateInput> {
         firstDate: DateTime(2023),
         lastDate: DateTime(2025),
       );
-      log(selected.toString());
 
       if (selected != null && selected != widget.selectedDate) {
         confirmDate(selected);
-
-        log(widget.selectedDate.toString());
       }
     }
 
@@ -54,12 +65,12 @@ class _CustomDateInputState extends State<CustomDateInput> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-            fixedSize: const Size(265, 47),
+            fixedSize: Size(widget.fixedWidth, 47),
           ),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Когда: ${state is! AddTripSelectedDate ? widget.selectedDate.toString().split(' ')[0] : state.selectedDate.toString().split(' ')[0]}',
+              'Когда: ${widget.callback == null?  (state is! AddTripSelectedDate ? widget.selectedDate.toString().split(' ')[0] : state.selectedDate.toString().split(' ')[0]) : widget.selectedDate.toString().split(' ')[0]}',
               style: const TextStyle(
                   color: Color(0xff747474),
                   fontSize: 16,

@@ -21,7 +21,9 @@ class ListViewTripsState extends State<ListViewTrips> {
   Widget build(BuildContext context) {
     return Expanded(
       child: RefreshIndicator(
-        onRefresh: ()  async {BlocProvider.of<UserTripsBloc>(context).add(UserTripsInitialEvent());},
+        onRefresh: () async {
+          BlocProvider.of<UserTripsBloc>(context).add(UserTripsInitialEvent());
+        },
         child: ListView(
           clipBehavior: Clip.hardEdge,
           padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -30,12 +32,7 @@ class ListViewTripsState extends State<ListViewTrips> {
             Column(
               children: widget.trips
                   .map((e) => ProfileTrip(
-                        itemId: e.itemId,
-                        itemName: e.itemName,
-                        itemDate: e.itemDate,
-                        authorId: e.authorId,
-                        tripType: e.tripType,
-                        image: e.image,
+                        trip: e,
                       ))
                   .toList(),
             )
@@ -47,6 +44,7 @@ class ListViewTripsState extends State<ListViewTrips> {
 }
 
 class ProfileTrip extends StatefulWidget {
+  TripModel trip;
   String itemName;
   String itemDate;
   int authorId;
@@ -54,15 +52,14 @@ class ProfileTrip extends StatefulWidget {
   bool tripType;
   String image;
 
-  ProfileTrip(
-      {Key? key,
-      required this.itemId,
-      required this.itemName,
-      required this.itemDate,
-      required this.authorId,
-      required this.tripType,
-      required this.image})
-      : super(key: key);
+  ProfileTrip({Key? key, required this.trip})
+      : itemName = trip.itemName,
+        itemDate = trip.itemDate,
+        authorId = trip.authorId,
+        itemId = trip.itemId,
+        tripType = trip.tripType,
+        image = trip.image,
+        super(key: key);
 
   @override
   TripState createState() => TripState();
@@ -72,31 +69,32 @@ class TripState extends State<ProfileTrip> {
   @override
   Widget build(BuildContext context) {
     void confirmDelete() {
-      showDialog(context: context, builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Уверены что хотите удалить?'),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                    onPressed: () {
-                      BlocProvider.of<UserTripsBloc>(context)
-                          .add(UserTripsDeleteEvent(tripId: widget.itemId));
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Да')),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Эээ куда'))
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Уверены что хотите удалить?'),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          BlocProvider.of<UserTripsBloc>(context)
+                              .add(UserTripsDeleteEvent(tripId: widget.itemId));
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Да')),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Эээ куда'))
+                  ],
+                )
               ],
-            )
-          ],
-        );
-      }
-      );
+            );
+          });
     }
 
     return GestureDetector(
@@ -104,7 +102,7 @@ class TripState extends State<ProfileTrip> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => EditTrip(),
+              builder: (_) => EditTrip(tripModel: widget.trip,),
             ));
       },
       child: Container(
@@ -168,8 +166,6 @@ class TripState extends State<ProfileTrip> {
   }
 }
 
-
-
 class BaseSearchedTrip extends StatelessWidget {
   const BaseSearchedTrip({Key? key, required this.trip, required this.onPres})
       : super(key: key);
@@ -197,7 +193,7 @@ class BaseSearchedTrip extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset(
-                  trip.tripType? 'Assets/briefcase.png' : 'Assets/wheel.png',
+                  trip.tripType ? 'Assets/briefcase.png' : 'Assets/wheel.png',
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

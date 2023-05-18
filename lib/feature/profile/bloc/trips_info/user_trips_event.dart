@@ -18,3 +18,19 @@ class UserTripsDeleteEvent extends UserTripsEvent {
 
   UserTripsDeleteEvent({required this.tripId});
 }
+
+class UserTripsEditEvent extends UserTripsEvent {
+  final TripModel trip;
+
+  UserTripsEditEvent({required this.trip});
+}
+
+class UserTripsCommitChange extends UserTripsEvent {
+  final TripEditModel tripChanges;
+
+  UserTripsCommitChange({required this.tripChanges});
+}
+
+class UserTripsChangesFailEvent extends UserTripsEvent {}
+
+class UserTripsChangesSuccessEvent extends UserTripsEvent {}

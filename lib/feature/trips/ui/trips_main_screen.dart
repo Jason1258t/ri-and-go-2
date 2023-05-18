@@ -90,20 +90,20 @@ class _TripScreenState extends State<TripScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  //const _TripsConsumer(),
-                  Swipe(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height - 185,
-                      child: _TripsConsumer(),
-                    ),
-                    onSwipeLeft: () {
-                      changeType(type: true);
-                    },
-                    onSwipeRight: () {
-                      changeType(type: false);
-                    },
-                  ),
+                  const _TripsConsumer(),
+                  // Swipe(
+                  //   child: SizedBox(
+                  //     width: MediaQuery.of(context).size.width,
+                  //     height: MediaQuery.of(context).size.height - 185,
+                  //     child: _TripsConsumer(),
+                  //   ),
+                  //   onSwipeLeft: () {
+                  //     changeType(type: true);
+                  //   },
+                  //   onSwipeRight: () {
+                  //     changeType(type: false);
+                  //   },
+                  // ),
                 ]),
           ),
         ),

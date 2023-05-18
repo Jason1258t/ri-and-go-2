@@ -27,12 +27,12 @@ import 'feature/Trips/bloc/creator_bloc/creator_bloc.dart';
 import 'feature/add_card/bloc/add_trip_bloc.dart';
 import 'feature/app/bloc/navigator_bloc.dart';
 
+
 Future<void> main() async {
   /// Для хранения дефолтных переменных используется файл .env
   /// можно разделять на .prod.env и .dev.env, например, если|
   /// предполагается разработака на тестовой и боевой среде
   //await dotenv.load(fileName: ".env");
-
   Bloc.observer = CustomBlocObserver();
   runApp(const MyApp());
 }

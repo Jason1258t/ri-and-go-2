@@ -20,39 +20,42 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  void logoutShowDialog() {
-    final appBloc = BlocProvider.of<AppBloc>(context);
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Уверены что хотите выйти?'),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        appBloc.add(LogoutAppEvent());
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Да')),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Эээ куда'))
-                ],
-              )
-            ],
-          );
-        });
-  }
+
 
   @override
   Widget build(BuildContext context) {
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
     final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
+    final tripBloc = BlocProvider.of<UserTripsBloc>(context);
+    void logoutShowDialog() {
+      final appBloc = BlocProvider.of<AppBloc>(context);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Уверены что хотите выйти?'),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          appBloc.add(LogoutAppEvent());
+                          profileRepository.profileLoaded = false;
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Да')),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Эээ куда'))
+                  ],
+                )
+              ],
+            );
+          });
+    }
     if (!profileRepository.isProfileLoaded()) {
       profileBloc.add(ProfileInitialLoadEvent());
     }
@@ -132,7 +135,12 @@ class _ProfileState extends State<Profile> {
                     }
                     if (state is UserTripsSuccessState) {
                       return ListViewTrips(trips: profileRepository.userTrips);
-                    } else {
+                    }
+                    if (state is UserTripsSuccessChangeState) {
+                      tripBloc.add(UserTripsInitialEvent());
+                      return const CircularProgressIndicator();
+                    }
+                    else {
                       return const Text('ошибка загрузки');
                     }
                   },
@@ -164,9 +172,9 @@ class _ProfileState extends State<Profile> {
 
 
 class _Elements extends StatefulWidget {
-  final name;
-  final email;
-  final phone;
+  final String? name;
+  final String? email;
+  final String? phone;
 
   const _Elements({
     Key? key,

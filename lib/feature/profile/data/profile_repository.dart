@@ -1,3 +1,4 @@
+import 'package:riandgo2/models/TripEditModel.dart';
 import 'package:riandgo2/services/api_services.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -7,6 +8,7 @@ enum ProfileStateEnum { loading, success, fail }
 enum ProfileEditingStateEnum {wait, loading, success, fail}
 enum UserTripsStateEnum {loading, success, fail}
 enum AddTripStateEnum {wait, loading, success, fail}
+enum EditingTripStateEnum {wait, success, fail}
 
 class ProfileRepository {
   final ApiService apiService;
@@ -15,6 +17,7 @@ class ProfileRepository {
   BehaviorSubject<UserTripsStateEnum> tripsState = BehaviorSubject<UserTripsStateEnum>.seeded(UserTripsStateEnum.loading);
   BehaviorSubject<ProfileEditingStateEnum> profileEditState = BehaviorSubject<ProfileEditingStateEnum>.seeded(ProfileEditingStateEnum.wait);
   BehaviorSubject<AddTripStateEnum> addTripState = BehaviorSubject<AddTripStateEnum>.seeded(AddTripStateEnum.wait);
+  BehaviorSubject<EditingTripStateEnum> tripEditingState = BehaviorSubject<EditingTripStateEnum>.seeded(EditingTripStateEnum.wait);
 
   ProfileRepository({required this.apiService});
 
@@ -85,6 +88,18 @@ class ProfileRepository {
       tripsState.add(UserTripsStateEnum.success);
     } catch (e) {
       tripsState.add(UserTripsStateEnum.fail);
+      rethrow;
+    }
+  }
+
+
+  Future<void> editTrip(TripEditModel tripEditModel) async {
+    tripEditingState.add(EditingTripStateEnum.wait);
+    try {
+      await apiService.editTrip(tripEditModel: tripEditModel);
+      tripEditingState.add(EditingTripStateEnum.success);
+    } catch (e) {
+      tripEditingState.add(EditingTripStateEnum.fail);
       rethrow;
     }
   }

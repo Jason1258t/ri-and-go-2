@@ -1,21 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:riandgo2/models/TripModel.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
+import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
+import 'package:riandgo2/models/TripEditModel.dart';
+import 'package:riandgo2/models/models.dart';
+import 'package:riandgo2/utils/fonts.dart';
+import 'package:riandgo2/widgets/input_widgets/date_input.dart';
 
 class EditTrip extends StatefulWidget {
-  EditTrip({
-    Key? key,
-  }) : super(key: key);
+  final TripModel tripModel;
+
+  EditTrip({Key? key, required this.tripModel}) : super(key: key);
 
   @override
   State<EditTrip> createState() => _EditTripState();
 }
 
 class _EditTripState extends State<EditTrip> {
+  TextEditingController _nameControllerDriver =
+      TextEditingController(); // TODo поставить деволтные значения с бд все что ниже
+  TextEditingController _departurePlaceControllerDriver =
+      TextEditingController();
+  TextEditingController _arrivalPlaceControllerDriver = TextEditingController();
+  TextEditingController _descriptionControllerDriver = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _displayTextInputDialog(BuildContext context,
+      TextEditingController controller, String titleAlertDialog, String editType) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Изменить $titleAlertDialog'),
+            content: TextField(
+              onChanged: (value) {},
+              controller: controller,
+              decoration: const InputDecoration(
+                //hintText: "", // TODo подгрущка с бд
+              ),
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: const Text('Сохранить'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                    setState(() {});
+                  });
+                  BlocProvider.of<UserTripsBloc>(context).add(UserTripsCommitChange(tripChanges: {editType: controller.text, 'id': widget.tripModel.itemId}.tripEditFromJason()));
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  void _initialControllersValues() {
+    if (_nameControllerDriver.text.isEmpty) {
+      _nameControllerDriver.text = widget.tripModel.itemName;
+    }
+    if (_departurePlaceControllerDriver.text.isEmpty) {
+      _departurePlaceControllerDriver.text = widget.tripModel.departurePlace;
+    }
+    if (_arrivalPlaceControllerDriver.text.isEmpty) {
+      _arrivalPlaceControllerDriver.text = widget.tripModel.arrivalPlace;
+    }
+    if (_descriptionControllerDriver.text.isEmpty) {
+      _descriptionControllerDriver.text = widget.tripModel.description;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _initialControllersValues();
+    return BlocConsumer<UserTripsBloc, UserTripsState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Редактирование'),
+        title: const Text('Редактирование'),
         centerTitle: true,
         backgroundColor: Colors.orangeAccent,
       ),
@@ -31,9 +98,7 @@ class _EditTripState extends State<EditTrip> {
             width: 324,
             decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(
-                color: Colors.white10,
-              ),
+              border: Border.all(color: Colors.white10, width: 4),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(children: [
@@ -52,86 +117,128 @@ class _EditTripState extends State<EditTrip> {
                   )
                 ],
               ),
+              const Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: IconButton(icon: Icon(Icons.edit_note), onPressed: () { },),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                        'Assets/aboba.png'), // TODO подгрузка с сервера
-                  ),
-                  Text('Поездка: yfpdfybt}'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(icon: Icon(Icons.edit_note), onPressed: () { },),
-                  ),
-                  Text('12/11/2022'), // TODO dateTime
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(icon: Icon(Icons.edit_note), onPressed: () { },),
-                  ),
-                  Text(
-                      'yfpdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfybt',
-                      softWrap: true,
-                      maxLines: 6,
-                      overflow: TextOverflow.ellipsis),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(icon: Icon(Icons.edit_note), onPressed: () { },),
-                  ),
-                     Text(
-                        'Откуда: ',
-                        overflow: TextOverflow.fade,
-                        maxLines: 1,
-                      ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: IconButton(icon: Icon(Icons.edit_note), onPressed: () { },),
-                  ),
-                  Text(
-                      'Куда: ',
-                      overflow: TextOverflow.fade,
-                      maxLines: 1,
+                    child: IconButton(
+                      icon: const Icon(Icons.edit_note),
+                      onPressed: () {
+                        _displayTextInputDialog(
+                            context, _nameControllerDriver, 'название поездки', 'name');
+                      },
                     ),
+                  ),
+                  Container(
+                    height: 30,
+                    width: 250,
+                    child: Text(
+                      'Поездка: ${_nameControllerDriver.text}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTypography.font16,
+                    ),
+                  ),
                 ],
               ),
+              const Divider(),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: IconButton(
+                      icon: const Icon(Icons.edit_note),
+                      onPressed: () {},
+                    ),
+                  ),
+                  CustomDateInput(
+                    selectedDate: selectedDate,
+                    type: 'context',
+                    fixedWidth: 150,
+                    callback: (DateTime date) {
+                      BlocProvider.of<UserTripsBloc>(context).add(UserTripsCommitChange(tripChanges: {'departureTime': date, 'id': widget.tripModel.itemId}.tripEditFromJason()));
+                    },
+                  ),
+                ],
+              ),
+              const Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: IconButton(icon: Icon(Icons.edit_note), onPressed: () { },),
+                    child: IconButton(
+                      icon: const Icon(Icons.edit_note),
+                      onPressed: () {
+                        _displayTextInputDialog(context,
+                            _descriptionControllerDriver, 'описание поездки', 'description');
+                      },
+                    ),
                   ),
+                  Container(
+                    width: 250,
+                    height: 50,
+                    child: Text(
+                      'описание: ${_descriptionControllerDriver.text}',
+                      softWrap: true,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTypography.font16,
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Icon(Icons.people),
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      icon: const Icon(Icons.edit_note),
+                      onPressed: () {
+                        _displayTextInputDialog(context,
+                            _departurePlaceControllerDriver, 'место отправки', 'departurePlace');
+                      },
+                    ),
                   ),
-                  Text(
-                    '3/5',
+                  Container(
+                    height: 30,
+                    width: 250,
+                    child: Text(
+                      'Откуда: ${_departurePlaceControllerDriver.text}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTypography.font16,
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      icon: const Icon(Icons.edit_note),
+                      onPressed: () {
+                        _displayTextInputDialog(context,
+                            _arrivalPlaceControllerDriver, 'место прибытия', 'arrivalPlace');
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: 30,
+                    width: 250,
+                    child: Text(
+                      'Куда: ${_arrivalPlaceControllerDriver.text}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTypography.font16,
+                    ),
                   ),
                 ],
               ),
@@ -140,5 +247,7 @@ class _EditTripState extends State<EditTrip> {
         ),
       ),
     );
+  },
+);
   }
 }

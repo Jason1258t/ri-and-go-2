@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "392680060809",
+    "project_id": "ri-and-go-1985b",
+    "storage_bucket": "ri-and-go-1985b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392680060809:android:fa7943c5e0ee7feb999358",
+        "android_client_info": {
+          "package_name": "com.example.riandgo2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392680060809-affoi4o0km46p3huaf29rmesgu0tg6b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4oQMJ6fGqKjorKRXJVxaJPinN-QDmzUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392680060809-affoi4o0km46p3huaf29rmesgu0tg6b9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

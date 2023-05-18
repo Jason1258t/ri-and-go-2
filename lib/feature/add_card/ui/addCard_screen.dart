@@ -182,7 +182,7 @@ class _DriverCardState extends State<DriverCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomDateInput(selectedDate: selectedDate, type: 'context',),
+                    CustomDateInput(selectedDate: selectedDate, type: 'context', fixedWidth: 267,),
                     const SizedBox(
                       height: 10,
                     ),
@@ -308,7 +308,7 @@ class _PassengerCardState extends State<PassengerCard> {
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomDateInput(selectedDate: selectedDate, type: 'context',),
+                    CustomDateInput(selectedDate: selectedDate, type: 'context', fixedWidth: 267),
                     const SizedBox(
                       height: 10,
                     ),

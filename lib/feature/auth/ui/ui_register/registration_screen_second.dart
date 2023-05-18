@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/app/ui/main_screen.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
 import 'package:riandgo2/utils/utils.dart';
@@ -31,7 +32,7 @@ class SecondRegistrationScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is RegisterSuccessState) {
             Navigator.push(
-                context, MaterialPageRoute(builder: (_) => const MyHomePage()));
+                context, MaterialPageRoute(builder: (_) => const MainScreen()));
           }
         },
         builder: (context, state) {
@@ -88,9 +89,9 @@ class SecondRegistrationScreen extends StatelessWidget {
                             name: _nameController.text,
                             password: _passwordControllerFirst.text));
                         bloc.add(StartRegisterEvent(
-                          password: bloc.state.password,
+                          password: _passwordControllerFirst.text,
                           email: bloc.state.email,
-                          name: bloc.state.name,
+                          name: _nameController.text,
                           phone: bloc.state.phone,
                         ));
                       }else {

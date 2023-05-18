@@ -22,10 +22,6 @@ class CreatorBloc extends Bloc<CreatorEvent, CreatorState> {
     on<CreatorFailEvent>(_onFail);
   }
 
-  _onWaiting(CreatorWaitEvent event, emit) {
-    emit(CreatorWaitingState());
-  }
-
   _onLoading(CreatorLoadingEvent event, emit) {
     emit(CreatorLoadingState());
   }
