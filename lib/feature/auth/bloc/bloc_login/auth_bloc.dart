@@ -9,6 +9,7 @@ import 'package:meta/meta.dart';
 import '../../../../repository/app_repository.dart';
 
 part 'auth_event.dart';
+
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -25,8 +26,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<FailAuthEvent>(_failAuthEmit);
     on<SubscripeAuthEvent>(_subscribe);
     on<StartAuthEvent>(_startAuth);
+    on<IncorrectlyEmailAuthEvent>(_incorrectlyEmailAuthEmit);
+    on<IncorrectlyFieldAuthEvent>(_incorrectlyFieldAuthEmit);
   }
-
 
   FutureOr<void> _initialAuthEmit(InitialAuthEvent event, emit) =>
       emit(AuthInitialState());
@@ -53,11 +55,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
+  FutureOr<void> _incorrectlyEmailAuthEmit(
+      IncorrectlyEmailAuthEvent event, emit) {
+    if (!RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(event.email)) {
+      emit(AuthIncorrectlyEmailState());
+    } else {
+      emit(AuthCorrectlyEmailState());
+    }
+  }
+
+  FutureOr<void> _incorrectlyFieldAuthEmit(
+      IncorrectlyFieldAuthEvent event, emit) {
+    if (event.email == '' && event.password == '') {
+      emit(AuthIncorrectlyEmailState());
+    } else {
+      emit(AuthCorrectlyEmailState());
+    }
+  }
+
   Future<void> _startAuth(StartAuthEvent event, emit) async {
     await _appRepository.auth(login: event.login, password: event.password);
   }
-
-
 
   @override
   Future<void> close() {

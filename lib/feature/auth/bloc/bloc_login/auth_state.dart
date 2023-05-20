@@ -10,3 +10,11 @@ class AuthLoadingState extends AuthState {}
 class AuthSuccessState extends AuthState {}
 
 class AuthFailState extends AuthState {}
+
+class AuthIncorrectlyEmailState extends AuthState {}
+
+class AuthCorrectlyEmailState extends AuthState {}
+
+class AuthIncorrectlyFieldState extends AuthState {}
+
+class AuthCorrectlyFieldState extends AuthState {}

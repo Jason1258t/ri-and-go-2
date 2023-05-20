@@ -18,7 +18,6 @@ import 'package:riandgo2/widgets/buttons/default_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_password_field.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
-
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -39,9 +38,7 @@ class LoginScreen extends StatelessWidget {
           listener: (context, state) {
             log(state.toString(), name: 'BlocConsumer state');
             Dialogs.hide(context);
-            if (state is AuthInitialState) {
-
-            }
+            if (state is AuthInitialState) {}
             if (state is AuthLoadingState) {
               Dialogs.showModal(
                   context,
@@ -61,13 +58,32 @@ class LoginScreen extends StatelessWidget {
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
+            if (state is AuthCorrectlyFieldState) {
+              const snackBar = SnackBar(
+                content: Text('поля не заполнены'),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            } else {
+              if (state is AuthCorrectlyEmailState) {
+                authBloc.add(StartAuthEvent(
+                    login: _emailController.text,
+                    password: _passwordController.text));
+              } else {
+                const snackBar = SnackBar(
+                  content: Text('емаил введен неверно'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+            }
           },
           builder: (context, state) {
             return SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50,),
+                  const SizedBox(
+                    height: 50,
+                  ),
                   Image.asset("Assets/logo.png"),
                   const SizedBox(height: 20),
                   Row(
@@ -87,16 +103,17 @@ class LoginScreen extends StatelessWidget {
                         title: 'Регистрация',
                         onPressed: () {
                           Navigator.push(
-                              context, MaterialPageRoute(builder: (_) =>
-                              BlocProvider.value(
-                                value: bloc,
-                                child: FirstRegistrationScreen(),
-                              )));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      BlocProvider.value(
+                                        value: bloc,
+                                        child: FirstRegistrationScreen(),
+                                      )));
                         },
                       )
                     ],
                   ),
-
                   BaseTextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -113,27 +130,9 @@ class LoginScreen extends StatelessWidget {
                   DefaultElevatedButton(
                     title: 'Войти',
                     onPressed: () {
-                      if (checkFields()) {
-                        // BlocProvider.of<AuthBloc>(context).add(StartAuthEvent(
-                        //   login: _emailController.text,
-                        //   password: _passwordController.text,
-                        // ));
-                        authBloc.add(StartAuthEvent(login: _emailController.text, password: _passwordController.text));
-
-                        // Navigator.push(context, MaterialPageRoute(
-                        //     builder: (_) =>
-                        //         BlocProvider.value(
-                        //           value: profileBloc,
-                        //           child: const Profile(),
-                        //         )));
-                      }
-                      else {
-                        const snackBar = SnackBar(
-                          content: Text('поля не заполнены'),
-                        );
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(snackBar);
-                      }
+                      authBloc.add(
+                          IncorrectlyFieldAuthEvent(email: _emailController
+                              .text, password: _passwordController.text));
                     },
                   ),
                 ],
