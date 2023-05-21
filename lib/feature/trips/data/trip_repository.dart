@@ -43,7 +43,6 @@ class TripsRepository {
   }
 
   void setFollowedTrips(List tripsIds) {
-    dev.log('SetFollowedTrips--------------------------------------$tripsIds');
     _followedTrips = tripsIds;
   }
 
@@ -80,11 +79,9 @@ class TripsRepository {
       followState.add(FollowingStateEnum.success);
       _followedTrips.add(id);
     } else {
-      dev.log('-----------------------кто-то даун');
       followState.add(FollowingStateEnum.fail);
     }
   }
-
 
   void unFollowTrip({required int tripId, required int userId}) {
     followState.add(FollowingStateEnum.loading);
@@ -96,7 +93,6 @@ class TripsRepository {
       } else {
         tripsFalse[ind].followed = false;
       }
-
     }
   }
 
@@ -125,8 +121,6 @@ class TripsRepository {
     if (isEmptyTrips()) {
       needLoad = true;
     }
-    dev.log(necessarily.toString());
-    dev.log('Загрузка---------------------------------$needLoad');
     if (needLoad) {
       try {
         List trips;
@@ -149,15 +143,29 @@ class TripsRepository {
   }
 
   List<String> getRandomImage() {
+    List imageUrls = [
+      'https://sportishka.com/uploads/posts/2022-03/1647538575_4-sportishka-com-p-poezdka-s-semei-na-mashine-turizm-krasivo-4.jpg',
+      'https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg',
+      'https://krym-portal.ru/wp-content/uploads/2020/03/2112.jpg',
+      'https://bestvietnam.ru/wp-content/uploads/2020/04/%D0%BF%D0%BE%D0%B5%D0%B7%D0%B4%D0%BA%D0%B0-%D0%B2-%D1%81%D1%82%D1%80%D0%B0%D0%BD%D1%83.jpg',
+      'https://sportishka.com/uploads/posts/2022-03/1647538582_18-sportishka-com-p-poezdka-s-semei-na-mashine-turizm-krasivo-19.jpg',
+      'https://avatars.dzeninfra.ru/get-zen_doc/1641332/pub_5e5d0734bb781f231c3120eb_5e5d38cdac9a236dd3d930b4/scale_1200',
+      'https://avatars.dzeninfra.ru/get-zen_doc/3642096/pub_5f40d7464d12c246725dcd92_5f414bb82932bd7edaf1a762/scale_1200',
+      'http://mobimg.b-cdn.net/v3/fetch/76/7602069934d8b190aa06e329f63364a1.jpeg',
+      'https://ip1.anime-pictures.net/direct-images/894/89420a58045d7aa998aac25cc4716715.jpg?if=ANIME-PICTURES.NET_-_223219-1680x1050-original-volkswagen-range+murata-single-long+hair-black+hair.jpg',
+      'https://oir.mobi/uploads/posts/2021-03/1616366674_14-p-anime-puteshestvie-23.jpg',
+      'https://sun9-26.userapi.com/HormPGY__e8HtQTgpEuAerqfx9mzSAybhamQKg/ZL2Yn3corsk.jpg',
+      'https://kartinkin.net/uploads/posts/2021-07/1625494967_50-kartinkin-com-p-anime-geroi-shchita-anime-krasivo-52.jpg',
+    ];
     int n = Random().nextInt(2);
     if (n == 1) {
       return [
-        'https://sportishka.com/uploads/posts/2022-03/1647538575_4-sportishka-com-p-poezdka-s-semei-na-mashine-turizm-krasivo-4.jpg',
-        'https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg'
+        imageUrls[Random().nextInt(imageUrls.length - 1)],
+        imageUrls[Random().nextInt(imageUrls.length - 1)],
       ];
     } else {
       return [
-        'https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg'
+        imageUrls[Random().nextInt(imageUrls.length - 1)],
       ];
     }
   }

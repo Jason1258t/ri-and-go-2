@@ -97,9 +97,9 @@ class AdvancedSearchedTrip extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
     final followBloc = BlocProvider.of<FollowBloc>(context);
-
+    final width = MediaQuery.of(context).size.width * 0.9;
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
+      width: width,
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       decoration: BoxDecoration(
@@ -116,11 +116,16 @@ class AdvancedSearchedTrip extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: RepositoryProvider.of<TripsRepository>(context)
                 .getRandomImage()
-                .map((e) => Image.network(
-                      e,
-                      width: 130,
-                      height: 90,
-                    ))
+                .map((e) => GestureDetector(
+              onTap: () {
+                showDialog(context: context, builder: (_) => AlertDialog(content: SizedBox(width: width, child: Image.network(e)),));
+              },
+                  child: Image.network(
+                        e,
+                        width: 150,
+                        height: 100,
+                      ),
+                ))
                 .toList(),
           ),
           const SizedBox(
