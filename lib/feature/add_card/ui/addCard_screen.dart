@@ -11,6 +11,7 @@ import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/buttons/save_text_button.dart';
 import 'package:riandgo2/widgets/input_widgets/date_input.dart';
 import 'package:riandgo2/widgets/text_fields/white_text_field.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class AddCard extends StatefulWidget {
   const AddCard({Key? key}) : super(key: key);
@@ -22,9 +23,13 @@ class AddCard extends StatefulWidget {
 class _AddCardState extends State<AddCard> {
   bool val = false;
 
-  void change() {
+  void changeType({bool? type}) {
     setState(() {
-      val = !val;
+      if (type == null) {
+        val = !val;
+      } else {
+        val = type;
+      }
     });
   }
 
@@ -70,7 +75,7 @@ class _AddCardState extends State<AddCard> {
                     height: 40,
                   ),
                   GestureDetector(
-                    onTap: change,
+                    onTap: changeType,
                     child: MoveButton(
                       firstName: 'Поездку',
                       secondName: 'Запрос',
@@ -81,11 +86,20 @@ class _AddCardState extends State<AddCard> {
                   const SizedBox(
                     height: 10,
                   ),
-                  if (!val) ...[
-                    DriverCard(),
-                  ] else ...[
-                    PassengerCard(),
-                  ],
+                  SwipeTo(
+                    iconSize: 0,
+                    animationDuration: const Duration(milliseconds: 50),
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.60,
+                        child: val ? DriverCard() : PassengerCard()),
+                    onRightSwipe: () {
+                      changeType(type: false);
+                    },
+                    onLeftSwipe: () {
+                      changeType(type: true);
+                    },
+                  )
                 ],
               ),
             ),

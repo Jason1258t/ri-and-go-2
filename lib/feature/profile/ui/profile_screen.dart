@@ -73,134 +73,129 @@ class _ProfileState extends State<Profile> {
     if (!profileRepository.isProfileLoaded()) {
       profileBloc.add(ProfileInitialLoadEvent());
     }
-    return BlocConsumer<ProfileBloc, ProfileState>(listener: (context, state) {
-      // if (state is ProfileLoadedState) {
-      //   const snack = SnackBar(content: Text('профиль загружен'));
-      //   ScaffoldMessenger.of(context).showSnackBar(snack);
-      // }
-    }, builder: (context, state) {
-      if (state is ProfileLoadedState) {
-        return Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('Assets/searchBackground.png'),
-                repeat: ImageRepeat.repeat),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SafeArea(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Padding(padding: EdgeInsets.only(top: 15)),
-                    DefaultTextButton(
-                      width: 100,
-                      height: 45,
-                      title: 'log out',
-                      textStyle: AppTypography.font20_0xff929292,
-                      onPressed: logoutShowDialog,
-                    ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Avatar(
-                      avatar:
-                          'Assets/ProfileImage.png', // TODO заменить на серверное фото
-                    ),
-                    DefaultTextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const EditProfile(),
-                          ),
-                        );
-                      },
-                      title: 'edit',
-                      width: 100,
-                      height: 45,
-                      textStyle: AppTypography.font20_0xff929292,
-                    ),
-                  ],
-                ),
+    return BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is ProfileLoadedState) {
+            return Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('Assets/searchBackground.png'),
+                    repeat: ImageRepeat.repeat),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              _Elements(
-                name: state.name,
-                phone: state.phone,
-                email: state.email,
-              ),
-              GestureDetector(
-                onTap: changeType,
-                child: MoveButton(
-                  firstName: 'Созданные',
-                  secondName: 'Отслеживаемые',
-                  val: val,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.85,
-                ),
-              ),
-              BlocConsumer<UserTripsBloc, UserTripsState>(
-                builder: (context, state) {
-                  if (state is UserTripsLoadingState) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (state is UserTripsSuccessState) {
-                    return SwipeTo(
-                      iconSize: 0,
-                      animationDuration: const Duration(milliseconds: 50),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 0.33,
-                        child: val
-                            ? ListViewFollowedTrips(
-                                trips: profileRepository.userTrips)
-                            : // TODO заменить на отслеживаемые поездки
-                            ListViewTrips(
-                                trips: profileRepository.userTrips,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SafeArea(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Padding(padding: EdgeInsets.only(top: 15)),
+                        DefaultTextButton(
+                          width: 100,
+                          height: 45,
+                          title: 'log out',
+                          textStyle: AppTypography.font20_0xff929292,
+                          onPressed: logoutShowDialog,
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Avatar(
+                          avatar:
+                              'Assets/ProfileImage.png', // TODO заменить на серверное фото
+                        ),
+                        DefaultTextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const EditProfile(),
                               ),
-                      ),
-                      onRightSwipe: () {
-                        changeType(type: false);
-                      },
-                      onLeftSwipe: () {
-                        changeType(type: true);
-                      },
-                    );
-                  }
-                  if (state is UserTripsSuccessChangeState) {
-                    tripBloc.add(UserTripsInitialEvent());
-                    return const CircularProgressIndicator();
-                  } else {
-                    return const Text('ошибка загрузки');
-                  }
-                },
-                listener: (context, state) {},
-              )
-            ],
-          ),
-        );
-      }
-      if (state is ProfileErrorState) {
-        return Scaffold(
-          body: Center(
-            child: SizedBox(
-                width: 300.0,
-                height: 300.0,
-                child: Image.asset(
-                  'Assets/companion.png',
-                )),
-          ),
-        );
-      } else {
-        return const Scaffold(body: Center(child: CircularProgressIndicator()));
-      }
-    });
+                            );
+                          },
+                          title: 'edit',
+                          width: 100,
+                          height: 45,
+                          textStyle: AppTypography.font20_0xff929292,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                  _Elements(
+                    name: state.name,
+                    phone: state.phone,
+                    email: state.email,
+                  ),
+                  GestureDetector(
+                    onTap: changeType,
+                    child: MoveButton(
+                      firstName: 'Созданные',
+                      secondName: 'Отслеживаемые',
+                      val: val,
+                      width: MediaQuery.of(context).size.width * 0.85,
+                    ),
+                  ),
+                  BlocConsumer<UserTripsBloc, UserTripsState>(
+                    builder: (context, state) {
+                      if (state is UserTripsLoadingState) {
+                        return const CircularProgressIndicator();
+                      }
+                      if (state is UserTripsSuccessState) {
+                        return SwipeTo(
+                          iconSize: 0,
+                          animationDuration: const Duration(milliseconds: 50),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height * 0.33,
+                            child: val
+                                ? ListViewFollowedTrips(
+                                    trips: profileRepository.userTrips)
+                                : // TODO заменить на отслеживаемые поездки
+                                ListViewTrips(
+                                    trips: profileRepository.userTrips,
+                                  ),
+                          ),
+                          onRightSwipe: () {
+                            changeType(type: false);
+                          },
+                          onLeftSwipe: () {
+                            changeType(type: true);
+                          },
+                        );
+                      }
+                      if (state is UserTripsSuccessChangeState) {
+                        tripBloc.add(UserTripsInitialEvent());
+                        return const CircularProgressIndicator();
+                      } else {
+                        return const Text('ошибка загрузки');
+                      }
+                    },
+                    listener: (context, state) {},
+                  )
+                ],
+              ),
+            );
+          }
+          if (state is ProfileErrorState) {
+            return Scaffold(
+              body: Center(
+                child: SizedBox(
+                    width: 300.0,
+                    height: 300.0,
+                    child: Image.asset(
+                      'Assets/companion.png',
+                    )),
+              ),
+            );
+          } else {
+            return const Scaffold(
+                body: Center(child: CircularProgressIndicator()));
+          }
+        });
   }
 }
 

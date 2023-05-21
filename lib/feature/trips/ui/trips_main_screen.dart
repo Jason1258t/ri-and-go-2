@@ -103,7 +103,7 @@ class _TripScreenState extends State<TripScreen> {
                     animationDuration: const Duration(milliseconds: 50),
                     child: SizedBox(
                       width: double.infinity,
-                      height: MediaQuery.of(context).size.height - 200,
+                      height: MediaQuery.of(context).size.height * 0.75,
                       child: const _TripsConsumer(),
                     ),
                     onRightSwipe: () {
