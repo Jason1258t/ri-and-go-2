@@ -156,7 +156,6 @@ class _DriverCardState extends State<DriverCard> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         }
-
         return Column(
           children: [
             Container(
