@@ -57,21 +57,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> _incorrectlyEmailAuthEmit(
       IncorrectlyEmailAuthEvent event, emit) {
-    if (!RegExp(
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-        .hasMatch(event.email)) {
-      emit(AuthIncorrectlyEmailState());
+    if (event.email != 'admin') {
+      if (!(RegExp(
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+          .hasMatch(event.email))) {
+        emit(AuthIncorrectlyEmailState());
+      } else {
+        emit(AuthCorrectlyEmailState());
+      }
     } else {
       emit(AuthCorrectlyEmailState());
     }
+
   }
 
   FutureOr<void> _incorrectlyFieldAuthEmit(
       IncorrectlyFieldAuthEvent event, emit) {
     if (event.email == '' && event.password == '') {
-      emit(AuthIncorrectlyEmailState());
+      emit(AuthIncorrectlyFieldState());
     } else {
-      emit(AuthCorrectlyEmailState());
+      add(IncorrectlyEmailAuthEvent(email: event.email));
     }
   }
 

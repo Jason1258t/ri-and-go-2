@@ -30,25 +30,16 @@ class FirstRegistrationScreen extends StatelessWidget {
               listener: (context, state) {
                 log(state.toString(), name: 'BlocConsumer state');
                 Dialogs.hide(context);
-                if (state is RegisterInitialState) {}
-                if (state is RegisterLoadingState) {
-                  Dialogs.showModal(
+                if (state is CorrectFirstScreen) {
+                  bloc.add(CollectingRegistrationInfoEvent(
+                    email: _emailController.text,
+                    phone: _phoneController.text,
+                  ));
+                  Navigator.push(
                       context,
-                      const Center(
-                        child: CircularProgressIndicator(),
+                      MaterialPageRoute(
+                        builder: (_) => SecondRegistrationScreen(),
                       ));
-                }
-                if (state is RegisterSuccessState) {
-                  const snackBar = SnackBar(
-                    content: Text('reg complete'),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-                if (state is RegisterFailState) {
-                  const snackBar = SnackBar(
-                    content: Text('reg fail'),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
               builder: (context, state) => SingleChildScrollView(
@@ -89,6 +80,7 @@ class FirstRegistrationScreen extends StatelessWidget {
                           hintText: 'email',
                           prefixIcon:
                               const Icon(Icons.email_outlined, size: 19),
+                          outlineColor: (state is InvalidFirstScreenState)?  ((!state.email)? Colors.red : AppColors.lightGrey) : AppColors.lightGrey,
                         ),
                         BaseTextFormField(
                           controller: _phoneController,
@@ -96,21 +88,16 @@ class FirstRegistrationScreen extends StatelessWidget {
                           obscureText: false,
                           hintText: 'phone',
                           prefixIcon: const Icon(Icons.phone, size: 19),
+                          outlineColor: (state is InvalidFirstScreenState)?  ((!state.phone)? Colors.red : AppColors.lightGrey) : AppColors.lightGrey,
                         ),
                         const SizedBox(height: 90),
                         DefaultElevatedButton(
                           title: 'Далее',
                           onPressed: () {
                             if (checkFields()) {
-                              bloc.add(CollectingRegistrationInfoEvent(
+                              bloc.add(FirstScreenCorrectCheckFieldsEvent(
                                 email: _emailController.text,
-                                phone: _phoneController.text,
-                              ));
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => SecondRegistrationScreen(),
-                                  ));
+                                phone: _phoneController.text,));
                             } else {
                               const snackBar = SnackBar(
                                 content: Text('поля не заполнены'),

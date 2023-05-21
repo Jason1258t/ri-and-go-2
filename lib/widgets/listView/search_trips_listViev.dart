@@ -231,9 +231,22 @@ class AdvancedSearchedTrip extends StatelessWidget {
               BlocBuilder<FollowBloc, FollowState>(
                 builder: (context, state) {
                   if (trip.followed) {
-                    return Text('Отслеживется');
-                  } else if (state is! FollowFailState) {
                     return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueGrey
+                      ),
+                        onPressed: () {
+                          followBloc.add(UnFollowInitialEvent(
+                              tripId: trip.itemId,
+                              userId: profileRepository.userId));
+                        },
+                        child: const Text('Прекратить отслеживание'));
+                  }
+                  else if (state is! FollowFailState) {
+                    return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.amber
+                        ),
                         onPressed: () {
                           followBloc.add(FollowInitialEvent(
                               tripId: trip.itemId,
@@ -241,7 +254,7 @@ class AdvancedSearchedTrip extends StatelessWidget {
                         },
                         child: const Text('отслеживать'));
                   } else {
-                    return Text('проблемс');
+                    return const Text('проблемс');
                   }
 
                 },

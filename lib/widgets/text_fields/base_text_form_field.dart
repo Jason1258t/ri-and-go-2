@@ -17,6 +17,7 @@ class BaseTextFormField extends StatefulWidget {
     this.obscureText = false,
     this.prefixIcon,
     this.suffixIcon,
+    this.outlineColor = AppColors.lightGrey
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -29,6 +30,7 @@ class BaseTextFormField extends StatefulWidget {
   final int maxLines;
   final String hintText;
   final bool obscureText;
+  final Color outlineColor;
 
   @override
   State<BaseTextFormField> createState() => _BaseTextFormFieldState();
@@ -55,11 +57,17 @@ class _BaseTextFormFieldState extends State<BaseTextFormField> {
             filled: false,
             hintText: widget.hintText,
             label: widget.controller.text != '' ? Text(widget.hintText) : null,
-            enabledBorder: const UnderlineInputBorder(
+            enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: AppColors.lightGrey,
+                color: widget.outlineColor,
               )
-            )
+            ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: widget.outlineColor,
+                  )
+              )
+
           ),
           style: AppTypography.font17,
           onChanged: (String value) {

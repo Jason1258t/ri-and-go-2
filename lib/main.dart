@@ -12,6 +12,7 @@ import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/app/ui/main_screen.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
+import 'package:riandgo2/feature/auth/data/registration_repository.dart';
 import 'package:riandgo2/feature/auth/ui/ui_login/login_screen.dart';
 import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
 import 'package:riandgo2/feature/home/ui/home_page.dart';
@@ -62,7 +63,9 @@ class MyRepositoryProvider extends StatelessWidget {
         RepositoryProvider(
             create: (_) => ProfileRepository(apiService: apiService)),
         RepositoryProvider(
-            create: (_) => TripsRepository(apiService: apiService))
+            create: (_) => TripsRepository(apiService: apiService)),
+        RepositoryProvider(
+            create: (_) => RegistrationRepository())
       ],
       child: const MyBlocProviders(),
       // child: MyApp(),
@@ -92,6 +95,7 @@ class MyBlocProviders extends StatelessWidget {
         BlocProvider<RegisterBloc>(
           create: (_) => RegisterBloc(
             appRepository: RepositoryProvider.of<AppRepository>(context),
+            registrationRepository: RepositoryProvider.of<RegistrationRepository>(context),
           )..add(SubscripeRegisterEvent()),
           lazy: false,
         ),

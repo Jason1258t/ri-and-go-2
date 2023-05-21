@@ -58,7 +58,7 @@ class LoginScreen extends StatelessWidget {
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
-            if (state is AuthCorrectlyFieldState) {
+            if (state is AuthIncorrectlyFieldState) {
               const snackBar = SnackBar(
                 content: Text('поля не заполнены'),
               );
@@ -71,7 +71,7 @@ class LoginScreen extends StatelessWidget {
               }
               if (state is AuthIncorrectlyEmailState) {
                 const snackBar = SnackBar(
-                  content: Text('емаил введен неверно'),
+                  content: Text('email введен неверно'),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }

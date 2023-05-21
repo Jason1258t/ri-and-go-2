@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Project imports:
 import 'package:riandgo2/services/api_services.dart';
 
+import '../feature/auth/data/registration_repository.dart';
+
 ///Для стримов использую BehaviorSubject т.к. он сохраняет последние данные внутри себя
 ///Репозиторий ничего напрямую в блок не передает. Блоки подписаны на стримы.
 ///Блоки между собой так же общаются только через стримы в репе.
@@ -86,24 +88,21 @@ class AppRepository {
   }
 
   Future<void> register(
-      {required String login,
-      required String password,
-      required String phone,
-      required String name}) async {
+      {required RegistrationInfo regInfo}) async {
     try {
       authState.add(AuthStateEnum.loading);
       final registration = await apiService.registerUser(
-          email: login, password: password, phone: phone, name: name);
+          regInfo: regInfo);
 
       await Future.delayed(const Duration(seconds: 3));
       if (registration) {
         final registrationData =
-            await apiService.loginUser(email: login, password: password);
+            await apiService.loginUser(email: regInfo.email!, password: regInfo.password!);
         await Future.delayed(const Duration(seconds: 3));
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('auth_token', 'any_auth_token');
         prefs.setInt('id', registrationData);
-        await prefs.setString('password', password);
+        await prefs.setString('password', regInfo.password!);
         userId = registrationData;
         authState.add(AuthStateEnum.success);
       }

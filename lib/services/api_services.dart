@@ -9,6 +9,8 @@ import 'package:riandgo2/models/models.dart';
 // Project imports:
 import 'package:riandgo2/services/exceptions/exceptions.dart';
 
+import '../feature/auth/data/registration_repository.dart';
+
 class ApiService {
   final Dio _dio = Dio(
     BaseOptions(
@@ -62,17 +64,9 @@ class ApiService {
   }
 
   Future<dynamic> registerUser(
-      {required String email,
-      required String password,
-      required String phone,
-      required String name}) async {
+      {required RegistrationInfo regInfo}) async {
     try {
-      final resp = await _dio.post(register, data: {
-        'email': email,
-        'phoneNumber': phone,
-        'name': name,
-        'password': password,
-      });
+      final resp = await _dio.post(register, data: regInfo.toJson());
       if (resp.statusCode == 208) {
         throw Exception('already created');
       } else {
@@ -236,6 +230,14 @@ class ApiService {
   Future<void> followTrip({required int tripId, required int userId}) async {
     try {
       await _dio.post(tripFollow, data: {'userId': userId, 'tripId': tripId});
+    } on DioError catch (e) {
+      customTrowHandler(e);
+      rethrow;
+    }
+  }
+  Future<void> unFollowTrip({required int tripId, required int userId}) async {
+    try {
+      await _dio.post(tripUnFollow, data: {'userId': userId, 'tripId': tripId});
     } on DioError catch (e) {
       customTrowHandler(e);
       rethrow;

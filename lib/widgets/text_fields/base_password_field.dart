@@ -16,6 +16,7 @@ class BasePasswordField extends StatefulWidget {
     this.hintText = '',
     this.prefixIcon,
     this.suffixIcon,
+    this.outlineColor = AppColors.lightGrey
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -27,6 +28,7 @@ class BasePasswordField extends StatefulWidget {
   final EdgeInsets padding;
   final int maxLines;
   final String hintText;
+  final Color outlineColor;
 
   @override
   State<BasePasswordField> createState() => _BasePasswordFieldState();
@@ -72,7 +74,12 @@ class _BasePasswordFieldState extends State<BasePasswordField> {
               // ),
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: AppColors.lightGrey,
+                    color: widget.outlineColor,
+                  )
+              ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: widget.outlineColor,
                   )
               )
           ),

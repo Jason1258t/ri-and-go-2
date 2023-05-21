@@ -16,5 +16,3 @@ class AuthIncorrectlyEmailState extends AuthState {}
 class AuthCorrectlyEmailState extends AuthState {}
 
 class AuthIncorrectlyFieldState extends AuthState {}
-
-class AuthCorrectlyFieldState extends AuthState {}
