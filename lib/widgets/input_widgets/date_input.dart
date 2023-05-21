@@ -25,11 +25,15 @@ class CustomDateInput extends StatefulWidget {
 }
 
 class _CustomDateInputState extends State<CustomDateInput> {
+
+
+
   @override
   Widget build(BuildContext context) {
+    DateTime _date = widget.selectedDate;
     confirmDate(DateTime date) {
       setState(() {
-        widget.selectedDate = date;
+        _date = date;
       });
       log(date.toString());
 
@@ -44,12 +48,12 @@ class _CustomDateInputState extends State<CustomDateInput> {
     void _selectDate() async {
       final selected = await showDatePicker(
         context: context,
-        initialDate: widget.selectedDate,
+        initialDate: _date,
         firstDate: DateTime(2023),
         lastDate: DateTime(2025),
       );
 
-      if (selected != null && selected != widget.selectedDate) {
+      if (selected != null && selected != _date) {
         confirmDate(selected);
       }
     }
@@ -70,7 +74,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Когда: ${widget.callback == null?  (state is! AddTripSelectedDate ? widget.selectedDate.toString().split(' ')[0] : state.selectedDate.toString().split(' ')[0]) : widget.selectedDate.toString().split(' ')[0]}',
+              'Когда: ${widget.callback == null?  (state is! AddTripSelectedDate ? widget.selectedDate.toString().split(' ')[0] : state.selectedDate.toString().split(' ')[0]) : _date.toString().split(' ')[0]}',
               style: const TextStyle(
                   color: Color(0xff747474),
                   fontSize: 16,

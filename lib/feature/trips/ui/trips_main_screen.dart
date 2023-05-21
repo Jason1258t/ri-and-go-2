@@ -6,6 +6,7 @@ import 'package:riandgo2/feature/Trips/ui/search_trips_screen.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/listView/search_trips_listViev.dart';
+import 'package:swipe_to/swipe_to.dart';
 
 class TripScreen extends StatefulWidget {
   const TripScreen({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class TripScreen extends StatefulWidget {
 }
 
 class _TripScreenState extends State<TripScreen> {
+  bool fl = true;
   bool val = true;
 
   @override
@@ -22,9 +24,11 @@ class _TripScreenState extends State<TripScreen> {
     final tripsBloc = BlocProvider.of<TripsBloc>(context);
     final tripsRepository = RepositoryProvider.of<TripsRepository>(context);
 
-    Future<void> loadTrips() async {
+    Future<void> loadTrips(bool necessarily) async {
       tripsRepository.copyWithFilter(TripFilter(type: val));
-      tripsBloc.add(TripsInitialLoadEvent(filter: tripsRepository.filter));
+
+      tripsBloc.add(TripsInitialLoadEvent(
+          filter: tripsRepository.getFilter(), necessarily: necessarily));
     }
 
     void changeType({bool? type}) {
@@ -35,13 +39,18 @@ class _TripScreenState extends State<TripScreen> {
           val = type;
         }
       });
-      loadTrips();
+      loadTrips(false);
+    }
+    if (fl) {
+      loadTrips(true);
+      fl = false;
     }
 
-    loadTrips();
 
     return RefreshIndicator(
-      onRefresh: loadTrips,
+      onRefresh: () async {
+        loadTrips(true);
+      },
       child: Scaffold(
         appBar: AppBar(
             backgroundColor: const Color(0xffFFB74B),
@@ -89,20 +98,21 @@ class _TripScreenState extends State<TripScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const _TripsConsumer(),
-                  // Swipe(
-                  //   child: SizedBox(
-                  //     width: MediaQuery.of(context).size.width,
-                  //     height: MediaQuery.of(context).size.height - 185,
-                  //     child: _TripsConsumer(),
-                  //   ),
-                  //   onSwipeLeft: () {
-                  //     changeType(type: true);
-                  //   },
-                  //   onSwipeRight: () {
-                  //     changeType(type: false);
-                  //   },
-                  // ),
+                  SwipeTo(
+                    iconSize: 0,
+                    animationDuration: const Duration(milliseconds: 50),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height - 200,
+                      child: const _TripsConsumer(),
+                    ),
+                    onRightSwipe: () {
+                      changeType(type: false);
+                    },
+                    onLeftSwipe: () {
+                      changeType(type: true);
+                    },
+                  ),
                 ]),
           ),
         ),
@@ -120,7 +130,7 @@ class _TripsConsumer extends StatelessWidget {
         builder: (context, state) {
           if (state is TripsLoadedState) {
             return SearchedTripsList(
-              trips: RepositoryProvider.of<TripsRepository>(context).tripList,
+              trips: RepositoryProvider.of<TripsRepository>(context).getTrips(),
             );
           }
           if (state is TripsLoadingState) {

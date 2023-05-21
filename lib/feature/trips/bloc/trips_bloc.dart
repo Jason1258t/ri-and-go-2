@@ -34,7 +34,7 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
   }
 
   _initialLoad(TripsInitialLoadEvent event, emit) {
-    _tripsRepository.loadTips(event.filter);
+    _tripsRepository.loadTips(event.filter, event.necessarily);
   }
 
   _onLoading(TripsLoadingEvent event, emit) {
@@ -50,7 +50,7 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
   }
 
   _onSetFilter(TripsSetFilterEvent event, emit) {
-    log(event.filter.departure?? 'хуйня');
+    log(event.filter.departure ?? 'хуйня');
     _tripsRepository.copyWithFilter(event.filter);
   }
 }

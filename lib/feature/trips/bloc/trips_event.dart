@@ -5,8 +5,9 @@ abstract class TripsEvent {}
 
 class TripsInitialLoadEvent extends TripsEvent {
   final TripFilter? filter;
+  final bool necessarily;
 
-  TripsInitialLoadEvent({required this.filter});
+  TripsInitialLoadEvent({required this.filter, this.necessarily = false});
 }
 
 class TripsSubscriptionEvent extends TripsEvent {}

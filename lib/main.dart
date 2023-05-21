@@ -19,6 +19,7 @@ import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/feature/profile/ui/profile_screen.dart';
+import 'package:riandgo2/feature/trips/bloc/follow_bloc/follow_bloc.dart';
 import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';
 import 'package:riandgo2/services/custom_bloc_observer.dart';
@@ -98,6 +99,7 @@ class MyBlocProviders extends StatelessWidget {
             create: (context) => ProfileBloc(
                 profileRepository:
                     RepositoryProvider.of<ProfileRepository>(context),
+                tripsRepository: RepositoryProvider.of<TripsRepository>(context),
                 appRepository: RepositoryProvider.of<AppRepository>(context))
               ..add(ProfileSubscribeEvent())),
         BlocProvider<UserTripsBloc>(
@@ -127,6 +129,11 @@ class MyBlocProviders extends StatelessWidget {
         BlocProvider<CreatorBloc>(
           create: (_) =>
               CreatorBloc(tripsRepository: RepositoryProvider.of<TripsRepository>(context))..add(CreatorSubscribeEvent()),
+          lazy: false,
+        ),
+        BlocProvider<FollowBloc>(
+          create: (_) =>
+          FollowBloc(tripsRepository: RepositoryProvider.of<TripsRepository>(context))..add(FollowSubscriptionEvent()),
           lazy: false,
         )
       ],

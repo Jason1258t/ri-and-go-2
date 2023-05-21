@@ -30,28 +30,34 @@ class ApiService {
   static const String tripAdd = '/Trips/AddNew';
   static const String tripDelete = '/Trips/SetActive';
   static const String tripEdit = '/Trips/Edit';
+  static const String tripPassengers = '/Passengers/GetUsersIds/';
+  static const String tripFollow = '/Passengers/AddNew';
+  static const String tripUnFollow = '/Passengers/DeleteUserFromTrip';
+  static const String userFollowedTrips = '/Passengers/GetTripsIds/';
+
+  void customTrowHandler(e) {
+    if (e.response?.statusCode == 401) {
+      throw (UnAuthorizedException);
+    }
+    if (e.response?.statusCode == 403) {
+      throw (BadGateWayException);
+    }
+    if (e.response?.statusCode == 404) {
+      throw (NotFoundException);
+    }
+    if (e.response?.statusCode == 500) {
+      throw (ServerException);
+    }
+    throw Exception('un known exception');
+  }
 
   Future<dynamic> loginUser(
       {required String email, required String password}) async {
     try {
-      final userToken = await _dio.get('${login}/$email/$password'
-          // auth + login + '?email=$login&password=$password',
-          );
+      final userToken = await _dio.get('$login/$email/$password');
       return userToken.data;
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw (UnAuthorizedException);
-      }
-      if (e.response?.statusCode == 403) {
-        throw (BadGateWayException);
-      }
-      if (e.response?.statusCode == 404) {
-        throw (NotFoundException);
-      }
-      if (e.response?.statusCode == 500) {
-        throw (ServerException);
-      }
-      throw Exception('un known exception');
+      customTrowHandler(e);
     }
   }
 
@@ -61,29 +67,19 @@ class ApiService {
       required String phone,
       required String name}) async {
     try {
-      await _dio.post(register, data: {
+      final resp = await _dio.post(register, data: {
         'email': email,
         'phoneNumber': phone,
         'name': name,
         'password': password,
+      });
+      if (resp.statusCode == 208) {
+        throw Exception('already created');
+      } else {
+        return true;
       }
-          // auth + login + '?email=$login&password=$password',
-          );
-      return true;
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw (UnAuthorizedException);
-      }
-      if (e.response?.statusCode == 403) {
-        throw (BadGateWayException);
-      }
-      if (e.response?.statusCode == 404) {
-        throw (NotFoundException);
-      }
-      if (e.response?.statusCode == 500) {
-        throw (ServerException);
-      }
-      throw Exception('un known exception');
+      customTrowHandler(e);
     }
   }
 
@@ -112,19 +108,7 @@ class ApiService {
     try {
       await _dio.post(profileEdit, data: newInfo);
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw (UnAuthorizedException);
-      }
-      if (e.response?.statusCode == 403) {
-        throw (BadGateWayException);
-      }
-      if (e.response?.statusCode == 404) {
-        throw (NotFoundException);
-      }
-      if (e.response?.statusCode == 500) {
-        throw (ServerException);
-      }
-      throw Exception('un known exception');
+      customTrowHandler(e);
     }
   }
 
@@ -133,19 +117,7 @@ class ApiService {
       final userTripsResp = await _dio.get(userTrips + id.toString());
       return userTripsResp.data;
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw (UnAuthorizedException);
-      }
-      if (e.response?.statusCode == 403) {
-        throw (BadGateWayException);
-      }
-      if (e.response?.statusCode == 404) {
-        throw (NotFoundException);
-      }
-      if (e.response?.statusCode == 500) {
-        throw (ServerException);
-      }
-      throw Exception('un known exception');
+      customTrowHandler(e);
     }
   }
 
@@ -170,10 +142,11 @@ class ApiService {
     }
   }
 
-  Future<dynamic> defaultLoadTrips() async {
+  FutureOr<int> loadTripPassengersCount(int id) async {
     try {
-      final loadedTrips = await _dio.get(trips).then((value) async => await loadTripsCreators(value.data));
-      return loadedTrips;
+      final passengersInfo = await _dio.get(tripPassengers + id.toString());
+      log('Passengers---------------------------------${passengersInfo.data}');
+      return passengersInfo.data.length;
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         throw (UnAuthorizedException);
@@ -197,8 +170,12 @@ class ApiService {
     for (var element in tripList) {
       try {
         final String name = await loadCreatorName(element['creatorId']);
-        log(name.toString());
+        final int passengersCount =
+            await loadTripPassengersCount(element['id']);
+        log('создатель: $name');
+        log('passengers: $passengersCount');
         element['creatorName'] = name;
+        element['passengersCount'] = passengersCount;
         toReturn.add(element);
         log(element.toString());
       } catch (e) {
@@ -209,24 +186,26 @@ class ApiService {
     return toReturn;
   }
 
-  Future<dynamic> filteredLoadTrips(TripFilter filter) async {
+
+  Future<dynamic> defaultLoadTrips() async {
     try {
-      List loadedTrips = await _dio.post(filteredTrips, data: filter.toJson()).then((value) async => await loadTripsCreators(value.data));
+      final loadedTrips = await _dio
+          .get(trips)
+          .then((value) async => await loadTripsCreators(value.data));
       return loadedTrips;
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw (UnAuthorizedException);
-      }
-      if (e.response?.statusCode == 403) {
-        throw (BadGateWayException);
-      }
-      if (e.response?.statusCode == 404) {
-        throw (NotFoundException);
-      }
-      if (e.response?.statusCode == 500) {
-        throw (ServerException);
-      }
-      throw Exception('un known exception');
+      customTrowHandler(e);
+    }
+  }
+
+  Future<dynamic> filteredLoadTrips(TripFilter filter) async {
+    try {
+      List loadedTrips = await _dio
+          .post(filteredTrips, data: filter.toJson())
+          .then((value) async => await loadTripsCreators(value.data));
+      return loadedTrips;
+    } on DioError catch (e) {
+      customTrowHandler(e);
     }
   }
 
@@ -234,19 +213,7 @@ class ApiService {
     try {
       await _dio.post(tripAdd, data: trip);
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw (UnAuthorizedException);
-      }
-      if (e.response?.statusCode == 403) {
-        throw (BadGateWayException);
-      }
-      if (e.response?.statusCode == 404) {
-        throw (NotFoundException);
-      }
-      if (e.response?.statusCode == 500) {
-        throw (ServerException);
-      }
-      rethrow;
+      customTrowHandler(e);
     }
   }
 
@@ -254,19 +221,7 @@ class ApiService {
     try {
       await _dio.post(tripDelete, data: {'tripId': tripId, 'isActive': false});
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw (UnAuthorizedException);
-      }
-      if (e.response?.statusCode == 403) {
-        throw (BadGateWayException);
-      }
-      if (e.response?.statusCode == 404) {
-        throw (NotFoundException);
-      }
-      if (e.response?.statusCode == 500) {
-        throw (ServerException);
-      }
-      rethrow;
+      customTrowHandler(e);
     }
   }
 
@@ -274,18 +229,26 @@ class ApiService {
     try {
       final resp = await _dio.post(tripEdit, data: tripEditModel.toJson());
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        throw (UnAuthorizedException);
-      }
-      if (e.response?.statusCode == 403) {
-        throw (BadGateWayException);
-      }
-      if (e.response?.statusCode == 404) {
-        throw (NotFoundException);
-      }
-      if (e.response?.statusCode == 500) {
-        throw (ServerException);
-      }
+      customTrowHandler(e);
+    }
+  }
+
+  Future<void> followTrip({required int tripId, required int userId}) async {
+    try {
+      await _dio.post(tripFollow, data: {'userId': userId, 'tripId': tripId});
+    } on DioError catch (e) {
+      customTrowHandler(e);
+      rethrow;
+    }
+  }
+
+  Future loadFollowedTrips({required int userId}) async {
+    try {
+      final resp = await _dio.get(userFollowedTrips + userId.toString());
+      log(resp.data.toString());
+      return resp.data;
+    } on DioError catch (e) {
+      customTrowHandler(e);
       rethrow;
     }
   }

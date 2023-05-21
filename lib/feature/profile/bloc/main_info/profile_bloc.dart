@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/repository/app_repository.dart';
 
@@ -11,15 +13,18 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileRepository _profileRepository;
+  final TripsRepository _tripsRepository;
   final AppRepository _appRepository;
   late final StreamSubscription profileStateSubscription;
   late final StreamSubscription profileEditingStateSubscription;
 
   ProfileBloc(
       {required ProfileRepository profileRepository,
-      required AppRepository appRepository})
+      required AppRepository appRepository,
+      required TripsRepository tripsRepository})
       : _profileRepository = profileRepository,
         _appRepository = appRepository,
+        _tripsRepository = tripsRepository,
         super(ProfileInitial()) {
     on<ProfileLoadingEvent>(_onLoading);
     on<ProfileLoadedEvent>(_onLoaded);
@@ -32,15 +37,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileEditFailEvent>(_onEditFail);
   }
 
-  _onInitial(ProfileInitialLoadEvent event, emit) {
+  _onInitial(ProfileInitialLoadEvent event, emit) async {
     try {
       _profileRepository.userId = _appRepository.getUserId() ?? -1;
       _profileRepository.loadProfile();
-      add(ProfileLoadingEvent());
+      log('профиль подгружен');
+      final ft = await _profileRepository.loadFollowedTrips().then((value) => _tripsRepository.setFollowedTrips(value));
+      //log('поездки подгружены   ${_profileRepository.followedTrips}');
     } catch (e) {
-      add(ProfileErrorEvent());
-      rethrow;
+      log(e.toString());
     }
+
   }
 
   _onSubscribe(ProfileSubscribeEvent event, emit) {
@@ -53,8 +60,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     profileEditingStateSubscription = _profileRepository.profileEditState.stream
         .listen((ProfileEditingStateEnum event) {
-      if (event == ProfileEditingStateEnum.loading) add(ProfileEditLoadingEvent());
-      if (event == ProfileEditingStateEnum.success) add(ProfileEditSuccessEvent());
+      if (event == ProfileEditingStateEnum.loading)
+        add(ProfileEditLoadingEvent());
+      if (event == ProfileEditingStateEnum.success)
+        add(ProfileEditSuccessEvent());
       if (event == ProfileEditingStateEnum.fail) add(ProfileEditFailEvent());
     });
   }
@@ -96,7 +105,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         name: _profileRepository.userInfo.name,
         email: _profileRepository.userInfo.email,
         phoneNumber: _profileRepository.userInfo.phoneNumber,
-        contactUrl: _profileRepository.userInfo.contactUrl?? ''));
+        contactUrl: _profileRepository.userInfo.contactUrl ?? ''));
   }
 
   _onEditFail(ProfileEditFailEvent event, emit) {

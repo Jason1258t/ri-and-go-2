@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 
 // Project imports:
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
@@ -75,6 +76,7 @@ class MyBlocProviders extends StatelessWidget {
               create: (context) => ProfileBloc(
                   profileRepository:
                       RepositoryProvider.of<ProfileRepository>(context),
+                  tripsRepository: RepositoryProvider.of<TripsRepository>(context),
                   appRepository: RepositoryProvider.of<AppRepository>(context))
                 ..add(ProfileSubscribeEvent())),
           BlocProvider<UserTripsBloc>(

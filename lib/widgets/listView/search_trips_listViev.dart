@@ -4,6 +4,8 @@ import 'package:riandgo2/feature/Trips/bloc/creator_bloc/creator_bloc.dart';
 import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
 import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 import 'package:riandgo2/feature/Trips/ui/creator_info_screen.dart';
+import 'package:riandgo2/feature/profile/data/profile_repository.dart';
+import 'package:riandgo2/feature/trips/bloc/follow_bloc/follow_bloc.dart';
 import 'package:riandgo2/models/TripModel.dart';
 import 'package:riandgo2/widgets/listView/trips_listView.dart';
 
@@ -27,8 +29,8 @@ class _SearchedTripsListState extends State<SearchedTripsList> {
           Column(
             children: widget.trips
                 .map((e) => SearchedTrip(
-              trip: e,
-            ))
+                      trip: e,
+                    ))
                 .toList(),
           )
         ],
@@ -67,12 +69,14 @@ class _SearchedTripState extends State<SearchedTrip> {
         trip: widget.trip,
         onPres: changeViewType,
         onPressUrl: () {
-          BlocProvider.of<CreatorBloc>(context).add(CreatorInitialLoadEvent(userId: widget.trip.authorId));
+          BlocProvider.of<CreatorBloc>(context)
+              .add(CreatorInitialLoadEvent(userId: widget.trip.authorId));
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const CreaterInfo(),
-            ));},
+              context,
+              MaterialPageRoute(
+                builder: (_) => const CreaterInfo(),
+              ));
+        },
       );
     }
   }
@@ -80,7 +84,10 @@ class _SearchedTripState extends State<SearchedTrip> {
 
 class AdvancedSearchedTrip extends StatelessWidget {
   AdvancedSearchedTrip(
-      {Key? key, required this.trip, required this.onPres, required this.onPressUrl})
+      {Key? key,
+      required this.trip,
+      required this.onPres,
+      required this.onPressUrl})
       : super(key: key);
   final TripModel trip;
   final onPres;
@@ -88,6 +95,9 @@ class AdvancedSearchedTrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
+    final followBloc = BlocProvider.of<FollowBloc>(context);
+
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       margin: const EdgeInsets.only(bottom: 15),
@@ -104,9 +114,14 @@ class AdvancedSearchedTrip extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:
-              RepositoryProvider.of<TripsRepository>(context).getRandomImage().map((e) => Image.network(e, width: 130, height: 90,)).toList()
-            ,
+            children: RepositoryProvider.of<TripsRepository>(context)
+                .getRandomImage()
+                .map((e) => Image.network(
+                      e,
+                      width: 130,
+                      height: 90,
+                    ))
+                .toList(),
           ),
           const SizedBox(
             height: 18,
@@ -117,7 +132,9 @@ class AdvancedSearchedTrip extends StatelessWidget {
             child: Row(
               children: [
                 Image.asset('Assets/aboba.png'),
-                const SizedBox(width: 10,),
+                const SizedBox(
+                  width: 10,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,28 +166,50 @@ class AdvancedSearchedTrip extends StatelessWidget {
           const SizedBox(
             height: 13,
           ),
-          Row(children: [
-            const Text('Откуда: ', style: TextStyle(fontSize: 15),),
-            Text(trip.departurePlace, style: TextStyle(fontSize: 15),)
-          ],),
-          const SizedBox(height: 2,),
-          Row(children: [
-            const Text('Куда: ', style: TextStyle(fontSize: 15),),
-            Text(trip.arrivalPlace, style: TextStyle(fontSize: 15),)
-          ],),
-          const SizedBox(height: 3,),
-          if (!trip.tripType) Row(
+          Row(
             children: [
-              const Icon(
-                Icons.people,
-                size: 20,
+              const Text(
+                'Откуда: ',
+                style: TextStyle(fontSize: 15),
               ),
               Text(
-                '4/${trip.maxPassengers}',
-                style: const TextStyle(fontSize: 14, color: Color(0xff747474)),
-              ),
+                trip.departurePlace,
+                style: TextStyle(fontSize: 15),
+              )
             ],
           ),
+          const SizedBox(
+            height: 2,
+          ),
+          Row(
+            children: [
+              const Text(
+                'Куда: ',
+                style: TextStyle(fontSize: 15),
+              ),
+              Text(
+                trip.arrivalPlace,
+                style: TextStyle(fontSize: 15),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 3,
+          ),
+          if (!trip.tripType)
+            Row(
+              children: [
+                const Icon(
+                  Icons.people,
+                  size: 20,
+                ),
+                Text(
+                  '${trip.passengersCount}/${trip.maxPassengers}',
+                  style:
+                      const TextStyle(fontSize: 14, color: Color(0xff747474)),
+                ),
+              ],
+            ),
           Row(
             children: [
               const Text(
@@ -181,8 +220,32 @@ class AdvancedSearchedTrip extends StatelessWidget {
                   onPressed: onPressUrl,
                   child: Text(
                     trip.authorName,
-                    style: const TextStyle(fontSize: 14, color: Color(0xff1EC67F)),
+                    style:
+                        const TextStyle(fontSize: 14, color: Color(0xff1EC67F)),
                   ))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BlocBuilder<FollowBloc, FollowState>(
+                builder: (context, state) {
+                  if (trip.followed) {
+                    return Text('Отслеживется');
+                  } else if (state is! FollowFailState) {
+                    return ElevatedButton(
+                        onPressed: () {
+                          followBloc.add(FollowInitialEvent(
+                              tripId: trip.itemId,
+                              userId: profileRepository.userId));
+                        },
+                        child: const Text('отслеживать'));
+                  } else {
+                    return Text('проблемс');
+                  }
+
+                },
+              )
             ],
           ),
           Row(
@@ -230,7 +293,7 @@ class BaseSearchedTrip extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset(
-                  trip.tripType? 'Assets/briefcase.png' : 'Assets/wheel.png',
+                  trip.tripType ? 'Assets/briefcase.png' : 'Assets/wheel.png',
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

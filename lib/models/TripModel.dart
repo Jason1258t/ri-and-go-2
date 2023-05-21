@@ -10,6 +10,8 @@ class TripModel {
   String arrivalPlace;
   String description;
   int maxPassengers;
+  int passengersCount;
+  bool followed;
 
   TripModel(
       {required this.itemId,
@@ -22,7 +24,9 @@ class TripModel {
       required this.departurePlace,
       required this.arrivalPlace,
       required this.maxPassengers,
-      required this.description});
+      required this.passengersCount,
+      required this.description,
+      this.followed = false});
 }
 
 class AddTripModel {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:riandgo2/models/TripEditModel.dart';
 import 'package:riandgo2/services/api_services.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,10 +26,26 @@ class ProfileRepository {
   late User userInfo;
   late List<TripModel> userTrips;
   late int userId;
+  late List<int> followedTrips;
   bool profileLoaded = false;
 
   bool isProfileLoaded() {
     return profileLoaded;
+  }
+
+  Future loadFollowedTrips() async {
+    try {
+      final resp = await apiService.loadFollowedTrips(userId: userId);
+      log('resp ---------------response: $resp   ${resp.runtimeType}------------------');
+      log('resp ---------------response: $resp   ${resp.runtimeType}------------------');
+      log('resp ---------------response: $resp   ${resp.runtimeType}------------------');
+      // followedTrips = resp;
+      // log('followedTrips: $followedTrips');
+      return resp;
+    } catch (e) {
+      profileLoaded = false;
+      profileState.add(ProfileStateEnum.fail);
+    }
   }
 
   Future<void> loadProfile() async {

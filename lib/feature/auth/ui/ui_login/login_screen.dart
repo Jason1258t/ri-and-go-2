@@ -68,7 +68,8 @@ class LoginScreen extends StatelessWidget {
                 authBloc.add(StartAuthEvent(
                     login: _emailController.text,
                     password: _passwordController.text));
-              } else {
+              }
+              if (state is AuthIncorrectlyEmailState) {
                 const snackBar = SnackBar(
                   content: Text('емаил введен неверно'),
                 );
@@ -105,8 +106,7 @@ class LoginScreen extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) =>
-                                      BlocProvider.value(
+                                  builder: (_) => BlocProvider.value(
                                         value: bloc,
                                         child: FirstRegistrationScreen(),
                                       )));
@@ -130,9 +130,9 @@ class LoginScreen extends StatelessWidget {
                   DefaultElevatedButton(
                     title: 'Войти',
                     onPressed: () {
-                      authBloc.add(
-                          IncorrectlyFieldAuthEvent(email: _emailController
-                              .text, password: _passwordController.text));
+                      authBloc.add(IncorrectlyFieldAuthEvent(
+                          email: _emailController.text,
+                          password: _passwordController.text));
                     },
                   ),
                 ],

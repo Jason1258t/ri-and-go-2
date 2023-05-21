@@ -25,6 +25,7 @@ extension ListModelsParser on List {
             arrivalPlace: this[index]['arrivalPlace'],
             description: this[index]['description'],
             maxPassengers: this[index]['maxPassengers'],
+            passengersCount: this[index]['passengersCount']?? 0,
             departurePlace: this[index]['departurePlace']));
   }
 }

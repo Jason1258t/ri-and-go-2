@@ -163,6 +163,9 @@ class _EditTripState extends State<EditTrip> {
                       type: 'context',
                       fixedWidth: 150,
                       callback: (DateTime date) {
+                        setState(() {
+
+                        });
                         BlocProvider.of<UserTripsBloc>(context).add(UserTripsCommitChange(tripChanges: {'departureTime': date, 'id': widget.tripModel.itemId}.tripEditFromJason()));
                       },
                     ),
