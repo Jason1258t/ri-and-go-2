@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/models/models.dart';
+import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -19,7 +20,11 @@ class TripsRepository {
   TripFilter _filter = TripFilter();
 
   List<TripModel> tripsFalse = [];
+
+  late int _userId;
+
   List<TripModel> tripsTrue = [];
+
 
   TripsRepository({required this.apiService});
 
@@ -33,6 +38,10 @@ class TripsRepository {
       BehaviorSubject<FollowingStateEnum>.seeded(FollowingStateEnum.loading);
 
   late List<TripModel> tripList;
+
+  void initUserId(int userId) {
+    _userId = userId;
+  }
 
   void setTripList(List<TripModel> trips, bool tripsType) {
     if (tripsType) {
@@ -72,8 +81,10 @@ class TripsRepository {
     if (ind != -1) {
       if (_filter.type!) {
         tripsTrue[ind].followed = true;
+        tripsTrue[ind].passengersCount++;
       } else {
         tripsFalse[ind].followed = true;
+        tripsTrue[ind].passengersCount++;
       }
       apiService.followTrip(tripId: id, userId: userId);
       followState.add(FollowingStateEnum.success);
@@ -90,9 +101,16 @@ class TripsRepository {
     if (ind != -1) {
       if (_filter.type!) {
         tripsTrue[ind].followed = false;
+        tripsTrue[ind].passengersCount--;
       } else {
         tripsFalse[ind].followed = false;
+        tripsTrue[ind].passengersCount--;
       }
+      apiService.unFollowTrip(tripId: tripId, userId: userId);
+      followState.add(FollowingStateEnum.success);
+      _followedTrips.remove(tripId);
+    } else {
+      followState.add(FollowingStateEnum.fail);
     }
   }
 
@@ -105,10 +123,13 @@ class TripsRepository {
     return -1;
   }
 
-  List<TripModel> markFollowedTrips(List<TripModel> trips) {
+  List<TripModel> markFollowedAndCreatedTrips(List<TripModel> trips) {
     for (var i in trips) {
       if (_followedTrips.contains(i.itemId)) {
         trips[trips.indexOf(i)].followed = true;
+      }
+      if (trips[trips.indexOf(i)].authorId == _userId) {
+        trips[trips.indexOf(i)].creator = true;
       }
     }
     return trips;
@@ -130,9 +151,9 @@ class TripsRepository {
           trips = await apiService.filteredLoadTrips(filter);
         }
         if (_filter.type!) {
-          tripsTrue = markFollowedTrips(trips.parseTripList());
+          tripsTrue = markFollowedAndCreatedTrips(trips.parseTripList());
         } else {
-          tripsFalse = markFollowedTrips(trips.parseTripList());
+          tripsFalse = markFollowedAndCreatedTrips(trips.parseTripList());
         }
       } catch (e) {
         tripsState.add(TripsStateEnum.fail);

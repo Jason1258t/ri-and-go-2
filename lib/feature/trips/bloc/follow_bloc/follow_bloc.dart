@@ -21,6 +21,7 @@ class FollowBloc extends Bloc<FollowEvent, FollowState> {
     on<FollowSuccessEvent>(_onFollowSuccess);
     on<FollowFailEvent>(_onFollowFail);
     on<FollowAlreadyAvailableEvent>(_onAlreadyFollow);
+    on<UnFollowInitialEvent>(_onUnFollow);
   }
 
   _subscribe(FollowSubscriptionEvent event, emit) {
@@ -33,6 +34,9 @@ class FollowBloc extends Bloc<FollowEvent, FollowState> {
 
   _onFollow(FollowInitialEvent event, emit) {
     _tripRepository.followTrip(event.tripId, event.userId);
+  }
+  _onUnFollow(UnFollowInitialEvent event, emit) {
+    _tripRepository.unFollowTrip(tripId: event.tripId, userId: event.userId);
   }
 
   _onFollowProcessing(FollowProcessingEvent event, emit) {
@@ -49,9 +53,5 @@ class FollowBloc extends Bloc<FollowEvent, FollowState> {
 
   _onAlreadyFollow(FollowAlreadyAvailableEvent event, emit) {
     emit(FollowAlreadyAvailableState());
-  }
-
-  _onUnFollow(UnFollowInitialEvent event, emit) {
-
   }
 }

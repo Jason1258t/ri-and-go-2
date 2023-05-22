@@ -221,7 +221,7 @@ class AdvancedSearchedTrip extends StatelessWidget {
                 'Автор: ',
                 style: TextStyle(fontSize: 15),
               ),
-              TextButton(
+              trip.creator?  const Text('Вы', style: TextStyle(fontSize: 14, color: Color(0xff1EC67F))) : TextButton(
                   onPressed: onPressUrl,
                   child: Text(
                     trip.authorName,
@@ -233,7 +233,7 @@ class AdvancedSearchedTrip extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BlocBuilder<FollowBloc, FollowState>(
+              trip.creator? const SizedBox(width: 150, child: Text('Вам незачем отслеживать вашу поездку', textAlign: TextAlign.center)) : BlocBuilder<FollowBloc, FollowState>(
                 builder: (context, state) {
                   if (trip.followed) {
                     return ElevatedButton(

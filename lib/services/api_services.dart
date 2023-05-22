@@ -36,6 +36,7 @@ class ApiService {
   static const String tripFollow = '/Passengers/AddNew';
   static const String tripUnFollow = '/Passengers/DeleteUserFromTrip';
   static const String userFollowedTrips = '/Passengers/GetTripsIds/';
+  static const String followedTripsGet = '/Passengers/GetUserAsPassengerTrips/';
 
   void customTrowHandler(e) {
     if (e.response?.statusCode == 401) {
@@ -63,8 +64,7 @@ class ApiService {
     }
   }
 
-  Future<dynamic> registerUser(
-      {required RegistrationInfo regInfo}) async {
+  Future<dynamic> registerUser({required RegistrationInfo regInfo}) async {
     try {
       final resp = await _dio.post(register, data: regInfo.toJson());
       if (resp.statusCode == 208) {
@@ -139,7 +139,7 @@ class ApiService {
   FutureOr<int> loadTripPassengersCount(int id) async {
     try {
       final passengersInfo = await _dio.get(tripPassengers + id.toString());
-      log('Passengers---------------------------------${passengersInfo.data}');
+      log('Passengers---------------------------------${passengersInfo.data.length}');
       return passengersInfo.data.length;
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
@@ -179,7 +179,6 @@ class ApiService {
     log(toReturn.toString());
     return toReturn;
   }
-
 
   Future<dynamic> defaultLoadTrips() async {
     try {
@@ -235,23 +234,61 @@ class ApiService {
       rethrow;
     }
   }
+
   Future<void> unFollowTrip({required int tripId, required int userId}) async {
     try {
-      await _dio.post(tripUnFollow, data: {'userId': userId, 'tripId': tripId});
+      await _dio.delete(tripUnFollow, data: {'userId': userId, 'tripId': tripId});
     } on DioError catch (e) {
       customTrowHandler(e);
       rethrow;
     }
   }
 
-  Future loadFollowedTrips({required int userId}) async {
+  Future loadFollowedTrips({required int userId}) async { //TODO вернуть просто List
     try {
       final resp = await _dio.get(userFollowedTrips + userId.toString());
-      log(resp.data.toString());
+      log('apeService loadFollowedTrips---------------${resp.data}');
       return resp.data;
     } on DioError catch (e) {
       customTrowHandler(e);
       rethrow;
+    }
+  }
+
+  Future<List> loadTrips({required int userId}) async {
+    try {
+      // List toReturn = [];
+      // for (var i = 0; i < tripIds.length; i ++) {
+      //   final resp = await _dio.get(tripGet + tripIds[i].toString());
+      //   final trip = resp.data;
+      //   final String name = await loadCreatorName(trip['creatorId']);
+      //   final int passengersCount =
+      //   await loadTripPassengersCount(trip['id']);
+      //   trip['creatorName'] = name;
+      //   trip['passengersCount'] = passengersCount;
+      //   toReturn.add(trip);
+      // }
+
+      //return toReturn;
+
+      final resp = await _dio.get(followedTripsGet + userId.toString());
+      return resp.data;
+
+
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw (UnAuthorizedException);
+      }
+      if (e.response?.statusCode == 403) {
+        throw (BadGateWayException);
+      }
+      if (e.response?.statusCode == 404) {
+        throw (NotFoundException);
+      }
+      if (e.response?.statusCode == 500) {
+        throw (ServerException);
+      }
+      throw Exception('un known exception');
     }
   }
 }

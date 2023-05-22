@@ -19,6 +19,7 @@ import 'package:riandgo2/feature/home/ui/home_page.dart';
 import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
+import 'package:riandgo2/feature/profile/data/trip_view_repository.dart';
 import 'package:riandgo2/feature/profile/ui/profile_screen.dart';
 import 'package:riandgo2/feature/trips/bloc/follow_bloc/follow_bloc.dart';
 import 'package:riandgo2/repository/app_repository.dart';
@@ -56,16 +57,19 @@ class MyRepositoryProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return
+    MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-            create: (_) => AppRepository(apiService: apiService)),
+          create: (_) => AppRepository(apiService: apiService)),
         RepositoryProvider(
             create: (_) => ProfileRepository(apiService: apiService)),
         RepositoryProvider(
             create: (_) => TripsRepository(apiService: apiService)),
         RepositoryProvider(
-            create: (_) => RegistrationRepository())
+            create: (_) => RegistrationRepository()),
+        RepositoryProvider(
+            create: (_) => TripViewRepository(apiService: apiService))
       ],
       child: const MyBlocProviders(),
       // child: MyApp(),

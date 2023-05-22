@@ -26,27 +26,35 @@ class ProfileRepository {
   late User userInfo;
   late List<TripModel> userTrips;
   late int userId;
-  late List<int> followedTrips;
+  late List<TripModel> followedTrips;
+  late List<int> followedTripsIds;
   bool profileLoaded = false;
 
   bool isProfileLoaded() {
     return profileLoaded;
   }
 
-  Future loadFollowedTrips() async {
+  Future loadFollowedTripsIds() async {
     try {
-      final resp = await apiService.loadFollowedTrips(userId: userId);
-      log('resp ---------------response: $resp   ${resp.runtimeType}------------------');
-      log('resp ---------------response: $resp   ${resp.runtimeType}------------------');
-      log('resp ---------------response: $resp   ${resp.runtimeType}------------------');
-      // followedTrips = resp;
-      // log('followedTrips: $followedTrips');
+      final resp = await apiService.loadFollowedTrips(userId: userId); //TODO вернуть просто List
+      log('profileRepository setFollowedTripsIds-----------------------${resp.runtimeType}');
+      followedTripsIds = List<int>.from(resp);
       return resp;
     } catch (e) {
       profileLoaded = false;
       profileState.add(ProfileStateEnum.fail);
     }
   }
+
+  Future loadFollowedTrips() async {
+    try {
+      List data = await apiService.loadTrips(userId: userId);
+      followedTrips = data.parseTripList();
+    } catch(e) {
+      log('profileRepository loadFollowedTrips ----------- $e');
+    }
+  }
+
 
   Future<void> loadProfile() async {
     profileState.add(ProfileStateEnum.loading);
@@ -78,6 +86,8 @@ class ProfileRepository {
     try {
       List data = await apiService.loadUserTrips(id: userId);
       userTrips = data.parseTripList();
+      data = await apiService.loadTrips(userId: userId);
+      followedTrips = data.parseTripList();
       tripsState.add(UserTripsStateEnum.success);
     } catch (e) {
       tripsState.add(UserTripsStateEnum.fail);

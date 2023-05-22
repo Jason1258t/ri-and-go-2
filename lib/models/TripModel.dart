@@ -12,6 +12,7 @@ class TripModel {
   int maxPassengers;
   int passengersCount;
   bool followed;
+  bool creator;
 
   TripModel(
       {required this.itemId,
@@ -26,7 +27,8 @@ class TripModel {
       required this.maxPassengers,
       required this.passengersCount,
       required this.description,
-      this.followed = false});
+      this.followed = false,
+      this.creator = false});
 }
 
 class AddTripModel {

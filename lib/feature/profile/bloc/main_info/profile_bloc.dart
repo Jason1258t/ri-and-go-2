@@ -41,8 +41,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       _profileRepository.userId = _appRepository.getUserId() ?? -1;
       _profileRepository.loadProfile();
+      _tripsRepository.initUserId(_profileRepository.userId);
       log('профиль подгружен');
-      final ft = await _profileRepository.loadFollowedTrips().then((value) => _tripsRepository.setFollowedTrips(value));
+      await _profileRepository.loadFollowedTripsIds().then((value) => _tripsRepository.setFollowedTrips(value));
       //log('поездки подгружены   ${_profileRepository.followedTrips}');
     } catch (e) {
       log(e.toString());

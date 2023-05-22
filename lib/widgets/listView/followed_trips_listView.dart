@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
+import 'package:riandgo2/feature/profile/data/trip_view_repository.dart';
 import 'package:riandgo2/models/models.dart';
+
+import '../../feature/profile/ui/trip_view_screen.dart';
 
 class ListViewFollowedTrips extends StatefulWidget {
   List<TripModel> trips;
@@ -93,129 +96,63 @@ class TripState extends State<ProfileTrip> {
           });
     }
 
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.98,
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-      decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black.withOpacity(0.2),
-            width: 1,
-          ),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset(
-                  'Assets/wheel.png',
-                  width: 80,
-                  height: 80,
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: Text(
-                        widget.itemName,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+    return GestureDetector(
+      onTap: () {
+        RepositoryProvider.of<TripViewRepository>(context).setCurrentTrip(widget.trip);
+        Navigator.push(context, MaterialPageRoute(builder: (_) => TripViewScreen()));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.98,
+        margin: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
+        decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black.withOpacity(0.2),
+              width: 1,
+            ),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    'Assets/wheel.png',
+                    width: 80,
+                    height: 80,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        child: Text(
+                          widget.itemName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      widget.itemDate,
-                    )
-                  ],
-                ),
-                IconButton(
-                    onPressed: confirmDelete,
-                    icon: const Icon(Icons.dangerous_outlined))
-              ])
-        ],
-      ),
-    );
-  }
-}
-
-class BaseSearchedTrip extends StatelessWidget {
-  const BaseSearchedTrip({Key? key, required this.trip, required this.onPres})
-      : super(key: key);
-  final TripModel trip;
-  final onPres;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-      decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black.withOpacity(0.2),
-            width: 1,
-          ),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset(
-                  'Assets/wheel.png',
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: Text(
-                        trip.itemName,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: const TextStyle(fontSize: 18),
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        '${trip.departurePlace} --> ${trip.arrivalPlace}',
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    Text(
-                      trip.itemDate,
-                      style: const TextStyle(
-                          color: Color(0xff636363), fontSize: 14),
-                    )
-                  ],
-                ),
-                TextButton(
-                    onPressed: onPres,
-                    child: const Icon(
-                      Icons.expand_more,
-                      size: 30,
-                      color: Colors.black,
-                    )),
-              ])
-        ],
+                      Text(
+                        widget.itemDate,
+                      )
+                    ],
+                  ),
+                  IconButton(
+                      onPressed: confirmDelete,
+                      icon: const Icon(Icons.dangerous_outlined))
+                ])
+          ],
+        ),
       ),
     );
   }

@@ -23,7 +23,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  bool val = true;
+  bool val = false;
 
   void changeType({bool? type}) {
     setState(() {
@@ -153,9 +153,8 @@ class _ProfileState extends State<Profile> {
                             height: MediaQuery.of(context).size.height * 0.33,
                             child: val
                                 ? ListViewFollowedTrips(
-                                    trips: profileRepository.userTrips)
-                                : // TODO заменить на отслеживаемые поездки
-                                ListViewTrips(
+                                    trips: profileRepository.followedTrips)
+                                : ListViewTrips(
                                     trips: profileRepository.userTrips,
                                   ),
                           ),
