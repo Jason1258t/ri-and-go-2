@@ -28,9 +28,10 @@ class _SearchedTripsListState extends State<SearchedTripsList> {
         children: [
           Column(
             children: widget.trips
-                .map((e) => SearchedTrip(
-                      trip: e,
-                    ))
+                .map((e) =>
+                SearchedTrip(
+                  trip: e,
+                ))
                 .toList(),
           )
         ],
@@ -83,11 +84,10 @@ class _SearchedTripState extends State<SearchedTrip> {
 }
 
 class AdvancedSearchedTrip extends StatelessWidget {
-  AdvancedSearchedTrip(
-      {Key? key,
-      required this.trip,
-      required this.onPres,
-      required this.onPressUrl})
+  AdvancedSearchedTrip({Key? key,
+    required this.trip,
+    required this.onPres,
+    required this.onPressUrl})
       : super(key: key);
   final TripModel trip;
   final onPres;
@@ -97,7 +97,10 @@ class AdvancedSearchedTrip extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
     final followBloc = BlocProvider.of<FollowBloc>(context);
-    final width = MediaQuery.of(context).size.width * 0.9;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width * 0.9;
     return Container(
       width: width,
       margin: const EdgeInsets.only(bottom: 15),
@@ -116,15 +119,20 @@ class AdvancedSearchedTrip extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: RepositoryProvider.of<TripsRepository>(context)
                 .getRandomImage()
-                .map((e) => GestureDetector(
-              onTap: () {
-                showDialog(context: context, builder: (_) => AlertDialog(content: SizedBox(width: width, child: Image.network(e)),));
-              },
+                .map((e) =>
+                GestureDetector(
+                  onTap: () {
+                    showDialog(context: context,
+                        builder: (_) =>
+                            AlertDialog(
+                              content: SizedBox(width: width, child: Image
+                                  .network(e)),));
+                  },
                   child: Image.network(
-                        e,
-                        width: 150,
-                        height: 100,
-                      ),
+                    e,
+                    width: 150,
+                    height: 100,
+                  ),
                 ))
                 .toList(),
           ),
@@ -211,7 +219,7 @@ class AdvancedSearchedTrip extends StatelessWidget {
                 Text(
                   '${trip.passengersCount}/${trip.maxPassengers}',
                   style:
-                      const TextStyle(fontSize: 14, color: Color(0xff747474)),
+                  const TextStyle(fontSize: 14, color: Color(0xff747474)),
                 ),
               ],
             ),
@@ -221,25 +229,33 @@ class AdvancedSearchedTrip extends StatelessWidget {
                 'Автор: ',
                 style: TextStyle(fontSize: 15),
               ),
-              trip.creator?  const Text('Вы', style: TextStyle(fontSize: 14, color: Color(0xff1EC67F))) : TextButton(
+              trip.creator
+                  ? const Text('Вы',
+                  style: TextStyle(fontSize: 14, color: Color(0xff1EC67F)))
+                  : TextButton(
                   onPressed: onPressUrl,
                   child: Text(
                     trip.authorName,
                     style:
-                        const TextStyle(fontSize: 14, color: Color(0xff1EC67F)),
+                    const TextStyle(fontSize: 14, color: Color(0xff1EC67F)),
                   ))
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              trip.creator? const SizedBox(width: 150, child: Text('Вам незачем отслеживать вашу поездку', textAlign: TextAlign.center)) : BlocBuilder<FollowBloc, FollowState>(
+              trip.creator ? const SizedBox(width: 150,
+                  child: Text('Вам незачем отслеживать вашу поездку',
+                      textAlign: TextAlign.center)) :
+              BlocBuilder<
+                  FollowBloc,
+                  FollowState>(
                 builder: (context, state) {
                   if (trip.followed) {
                     return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey
-                      ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueGrey
+                        ),
                         onPressed: () {
                           followBloc.add(UnFollowInitialEvent(
                               tripId: trip.itemId,
@@ -247,7 +263,7 @@ class AdvancedSearchedTrip extends StatelessWidget {
                         },
                         child: const Text('Прекратить отслеживание'));
                   }
-                  else if (state is! FollowFailState) {
+                  else if (state is! FollowFailState && trip.passengersCount < trip.maxPassengers) {
                     return ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.amber
@@ -258,10 +274,17 @@ class AdvancedSearchedTrip extends StatelessWidget {
                               userId: profileRepository.userId));
                         },
                         child: const Text('отслеживать'));
-                  } else {
+                  } else if (state is! FollowFailState && trip.passengersCount >= trip.maxPassengers) {
+                    return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey
+                        ),
+                        onPressed: () {},
+                        child: const Text('отслеживать'));
+                  }
+                  else {
                     return const Text('проблемс');
                   }
-
                 },
               )
             ],
@@ -293,7 +316,10 @@ class BaseSearchedTrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.9,
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
       decoration: BoxDecoration(
@@ -318,7 +344,10 @@ class BaseSearchedTrip extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.45,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.45,
                       child: Text(
                         trip.itemName,
                         overflow: TextOverflow.ellipsis,
@@ -327,7 +356,10 @@ class BaseSearchedTrip extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.45,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.45,
                       child: Text(
                         '${trip.departurePlace} --> ${trip.arrivalPlace}',
                         overflow: TextOverflow.ellipsis,

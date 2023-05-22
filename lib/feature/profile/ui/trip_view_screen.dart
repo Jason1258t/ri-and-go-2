@@ -17,9 +17,10 @@ class TripViewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final followBloc = BlocProvider.of<FollowBloc>(context);
     final profileRepository = RepositoryProvider.of<ProfileRepository>(context);
-    final tripsRepository = RepositoryProvider.of<TripsRepository>(context);
     final TripModel trip =
         RepositoryProvider.of<TripViewRepository>(context).trip;
+    final tripsRepository = RepositoryProvider.of<TripsRepository>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFEAC498),

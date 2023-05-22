@@ -66,8 +66,9 @@ class _MainScreenState extends State<MainScreen> {
                         label: 'Поиск',
                       ),
                       BottomNavigationBarItem(
-                          icon: Icon(Icons.add_circle_outline_outlined),
-                          label: ''),
+                          icon: Icon(Icons.add_circle_outline, size: 40, grade: 1,),
+                          label: '',
+                      ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.person),
                         label: 'Профиль',
