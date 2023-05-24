@@ -15,6 +15,7 @@ import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/default_text_button.dart';
+import 'package:riandgo2/widgets/alerts/custom_snack_bar.dart';
 import 'package:riandgo2/widgets/text_fields/base_password_field.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
@@ -53,27 +54,15 @@ class LoginScreen extends StatelessWidget {
                   context, MaterialPageRoute(builder: (_) => const MainScreen()));
             }
             if (state is AuthFailState) {
-              const snackBar = SnackBar(
-                content: Text('Что-то пошло не так'),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              CustomSnackBar.showSnackBar(context, 'Что-то пошло не так');
             }
             if (state is AuthIncorrectlyFieldState) {
-              const snackBar = SnackBar(
-                content: Text('поля не заполнены'),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              CustomSnackBar.showSnackBar(context, 'Поля не заполнены');
             } else {
               if (state is AuthCorrectlyEmailState) {
                 authBloc.add(StartAuthEvent(
                     login: _emailController.text,
                     password: _passwordController.text));
-              }
-              if (state is AuthIncorrectlyEmailState) {
-                const snackBar = SnackBar(
-                  content: Text('email введен неверно'),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             }
           },
@@ -119,6 +108,7 @@ class LoginScreen extends StatelessWidget {
                     keyboardType: TextInputType.emailAddress,
                     hintText: 'email',
                     prefixIcon: const Icon(Icons.email_outlined, size: 19),
+                    outlineColor: (state is AuthIncorrectlyEmailState)? Colors.red : AppColors.lightGrey,
                   ),
                   BasePasswordField(
                     controller: _passwordController,

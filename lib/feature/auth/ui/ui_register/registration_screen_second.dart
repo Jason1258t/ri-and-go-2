@@ -5,6 +5,7 @@ import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/data/registration_repository.dart';
 import 'package:riandgo2/feature/carusel_slider/carusel.dart';
 import 'package:riandgo2/utils/utils.dart';
+import 'package:riandgo2/widgets/alerts/custom_snack_bar.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/default_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
@@ -110,10 +111,7 @@ class SecondRegistrationScreen extends StatelessWidget {
                                     firstPassword: _passwordControllerFirst.text,
                                     secondPassword: _passwordControllerSecond.text));
                               } else {
-                                const snackBar = SnackBar(
-                                  content: Text('поля не заполнены'),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                CustomSnackBar.showSnackBar(context, 'Что-то пошло не так');
                               }
                             },
                           ),
