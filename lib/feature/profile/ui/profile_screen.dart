@@ -145,7 +145,7 @@ class _ProfileState extends State<Profile> {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: SizedBox(
                           width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.275,
                           child: BlocConsumer<UserTripsBloc, UserTripsState>(
                             builder: (context, state) {
                               if (state is UserTripsLoadingState) {

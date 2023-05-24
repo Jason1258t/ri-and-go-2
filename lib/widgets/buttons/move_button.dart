@@ -72,13 +72,14 @@ class ContainerBox extends StatefulWidget {
 class _ContainerBoxState extends State<ContainerBox> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
       width: widget.width / 2,
       height: 30,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           color:
               widget.val ? const Color(0xffD9D9D9) : const Color(0xffFFB74B)),
+      duration: Duration(milliseconds: 300),
       child: Center(
           child: Text(
         widget.title,

@@ -11,6 +11,10 @@ abstract class CustomSnackBar {
           color: Color(0xff474763),
         ),
       ),
+      action: SnackBarAction(
+        label: 'Окей',
+        onPressed: () {},
+      ),
       backgroundColor: const Color(0xffFFAC7D),
       behavior: SnackBarBehavior.floating,
     );

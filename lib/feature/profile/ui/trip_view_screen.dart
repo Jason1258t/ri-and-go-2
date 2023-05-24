@@ -18,8 +18,6 @@ class TripViewScreen extends StatelessWidget {
         RepositoryProvider.of<TripViewRepository>(context).trip;
     Future<void> _showAlertDialog() async {
       final followBloc = BlocProvider.of<FollowBloc>(context);
-      final profileRepository =
-          RepositoryProvider.of<ProfileRepository>(context);
 
       return showDialog(
           context: context,

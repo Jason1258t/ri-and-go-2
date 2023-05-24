@@ -161,7 +161,7 @@ class _DriverCardState extends State<DriverCard> {
           children: [
             Container(
               width: 300,
-              height: 440,
+              height: 420,
               decoration: BoxDecoration(
                 color: const Color(0xffFFF2DE),
                 borderRadius: BorderRadius.circular(10),
@@ -221,7 +221,7 @@ class _DriverCardState extends State<DriverCard> {
                       keyboardType: TextInputType.name,
                       maxLines: 3,
                       hintText: 'Описание',
-                      height: 120,
+                      height: 100,
                     ),
                   ],
                 ),
