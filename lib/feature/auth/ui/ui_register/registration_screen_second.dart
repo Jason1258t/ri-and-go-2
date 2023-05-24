@@ -4,6 +4,7 @@ import 'package:riandgo2/feature/app/ui/main_screen.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/data/registration_repository.dart';
 import 'package:riandgo2/feature/carusel_slider/carusel.dart';
+import 'package:riandgo2/utils/animations.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/alerts/custom_snack_bar.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
@@ -41,7 +42,9 @@ class SecondRegistrationScreen extends StatelessWidget {
                     password: _passwordControllerFirst.text));
                 bloc.add(StartRegisterEvent());
               }
-
+              if (state is RegisterLoadingState) {
+                showDialog(context: context, builder: (_) =>  AlertDialog(content: AppAnimations.bouncingLine,));
+              }
               if (state is RegisterSuccessState) {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (_) => MainCarousel()));

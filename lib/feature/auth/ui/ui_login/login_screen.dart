@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_login/auth_bloc.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/ui/ui_register/registration_screen_first.dart';
+import 'package:riandgo2/utils/animations.dart';
 import 'package:riandgo2/utils/dialogs.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
@@ -45,8 +46,8 @@ class LoginScreen extends StatelessWidget {
             if (state is AuthLoadingState) {
               Dialogs.showModal(
                   context,
-                  const Center(
-                    child: CircularProgressIndicator(),
+                  Center(
+                    child: AppAnimations.bouncingLine,
                   ));
             }
             if (state is AuthSuccessState) {
