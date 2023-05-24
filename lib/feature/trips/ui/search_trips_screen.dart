@@ -68,7 +68,6 @@ class _SearchTripsState extends State<SearchTrips> {
           filter: TripFilter(
               departure: dp.isNotEmpty ? dp : null,
               arrive: ap.isNotEmpty ? ap : null)));
-      log('----------------------------фильтр  ${tripsRepository.getFilter().toJson().toString()}');
       BlocProvider.of<TripsBloc>(context)
           .add(TripsInitialLoadEvent(filter: tripsRepository.getFilter()));
       BlocProvider.of<NavigatorBloc>(context).add(NavigateSearchEvent());

@@ -37,13 +37,10 @@ class _EditTripState extends State<EditTrip> {
             content: TextField(
               onChanged: (value) {},
               controller: controller,
-              decoration: const InputDecoration(
-                //hintText: "", // TODo подгрущка с бд
-              ),
             ),
             actions: <Widget>[
               MaterialButton(
-                color: Colors.green,
+                color: Colors.amber,
                 textColor: Colors.white,
                 child: const Text('Сохранить'),
                 onPressed: () {
