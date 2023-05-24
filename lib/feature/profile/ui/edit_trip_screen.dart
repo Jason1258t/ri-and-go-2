@@ -77,17 +77,8 @@ class _EditTripState extends State<EditTrip> {
   @override
   Widget build(BuildContext context) {
     _initialControllersValues();
-    List<String> getRandomImage() {
-      int n = Random().nextInt(2);
-      if (n == 1) {
-        return ['https://sportishka.com/uploads/posts/2022-03/1647538575_4-sportishka-com-p-poezdka-s-semei-na-mashine-turizm-krasivo-4.jpg', 'https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg'];
-      } else {
-        return ['https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg'];
-      }
-    }
     
-    
-    final images = getRandomImage().map((e) => Image.network(e, width: 130, height: 90,)).toList();
+    final images = widget.tripModel.images!.map((e) => Image.network(e, width: 130, height: 90,)).toList();
     return BlocConsumer<UserTripsBloc, UserTripsState>(
   listener: (context, state) {
     // TODO: implement listener

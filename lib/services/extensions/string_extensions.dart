@@ -21,4 +21,12 @@ extension Capitalize<T> on String {
       return this;
     }
   }
+
+  String upperFirstSymbolInSentence() {
+    try {
+      return split('. ').map((e) => e.upperCaseFirst()).toList().join('. ');
+    } catch (e) {
+      return this;
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:riandgo2/models/TripEditModel.dart';
 import 'package:riandgo2/services/api_services.dart';
@@ -11,6 +12,7 @@ enum ProfileEditingStateEnum {wait, loading, success, fail}
 enum UserTripsStateEnum {loading, success, fail}
 enum AddTripStateEnum {wait, loading, success, fail}
 enum EditingTripStateEnum {wait, success, fail}
+enum UnFollowingStateEnum {loading, success, fail}
 
 class ProfileRepository {
   final ApiService apiService;
@@ -20,6 +22,7 @@ class ProfileRepository {
   BehaviorSubject<ProfileEditingStateEnum> profileEditState = BehaviorSubject<ProfileEditingStateEnum>.seeded(ProfileEditingStateEnum.wait);
   BehaviorSubject<AddTripStateEnum> addTripState = BehaviorSubject<AddTripStateEnum>.seeded(AddTripStateEnum.wait);
   BehaviorSubject<EditingTripStateEnum> tripEditingState = BehaviorSubject<EditingTripStateEnum>.seeded(EditingTripStateEnum.wait);
+  BehaviorSubject<UnFollowingStateEnum> unFollowState = BehaviorSubject<UnFollowingStateEnum>.seeded(UnFollowingStateEnum.loading);
 
   ProfileRepository({required this.apiService});
 
@@ -29,6 +32,28 @@ class ProfileRepository {
   late List<TripModel> followedTrips;
   late List<int> followedTripsIds;
   bool profileLoaded = false;
+
+  List? getFollowedTripByItemId(int itemId) {
+    for (var i = 0; i < followedTrips.length; i++) {
+      if (followedTrips[i].itemId == itemId) {
+        return [i, followedTrips[i]];
+      }
+    }
+    return null;
+  }
+
+  void unFollow(int itemId) {
+    unFollowState.add(UnFollowingStateEnum.loading);
+    try {
+      final int ind = getFollowedTripByItemId(itemId)![0];
+      apiService.unFollowTrip(tripId: itemId, userId: userId);
+      followedTrips.removeAt(ind);
+      unFollowState.add(UnFollowingStateEnum.success);
+    } catch (e) {
+      unFollowState.add(UnFollowingStateEnum.fail);
+    }
+  }
+
 
   bool isProfileLoaded() {
     return profileLoaded;

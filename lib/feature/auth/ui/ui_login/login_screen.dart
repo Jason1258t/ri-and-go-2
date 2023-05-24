@@ -18,6 +18,8 @@ import 'package:riandgo2/widgets/buttons/default_text_button.dart';
 import 'package:riandgo2/widgets/text_fields/base_password_field.dart';
 import 'package:riandgo2/widgets/text_fields/base_text_form_field.dart';
 
+import '../../../app/ui/main_screen.dart';
+
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -51,6 +53,8 @@ class LoginScreen extends StatelessWidget {
                 content: Text('Auth complete'),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => const MainScreen()));
             }
             if (state is AuthFailState) {
               const snackBar = SnackBar(

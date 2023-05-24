@@ -257,22 +257,8 @@ class ApiService {
 
   Future<List> loadTrips({required int userId}) async {
     try {
-      // List toReturn = [];
-      // for (var i = 0; i < tripIds.length; i ++) {
-      //   final resp = await _dio.get(tripGet + tripIds[i].toString());
-      //   final trip = resp.data;
-      //   final String name = await loadCreatorName(trip['creatorId']);
-      //   final int passengersCount =
-      //   await loadTripPassengersCount(trip['id']);
-      //   trip['creatorName'] = name;
-      //   trip['passengersCount'] = passengersCount;
-      //   toReturn.add(trip);
-      // }
-
-      //return toReturn;
-
-      final resp = await _dio.get(followedTripsGet + userId.toString());
-      return resp.data;
+      final resp = await _dio.get(followedTripsGet + userId.toString()).then((value) async => await loadTripsCreators(value.data));
+      return resp;
 
 
     } on DioError catch (e) {

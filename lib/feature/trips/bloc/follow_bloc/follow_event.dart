@@ -19,6 +19,11 @@ class UnFollowInitialEvent extends FollowEvent {
   UnFollowInitialEvent({required this.userId, required this.tripId});
 }
 
+class UnFollowProfileEvent extends FollowEvent {
+  final int itemId;
+  UnFollowProfileEvent({required this.itemId});
+}
+
 class FollowProcessingEvent extends FollowEvent {}
 
 class FollowSuccessEvent extends FollowEvent {}

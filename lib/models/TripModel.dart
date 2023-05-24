@@ -13,6 +13,7 @@ class TripModel {
   int passengersCount;
   bool followed;
   bool creator;
+  List<String>? images;
 
   TripModel(
       {required this.itemId,
@@ -28,12 +29,14 @@ class TripModel {
       required this.passengersCount,
       required this.description,
       this.followed = false,
-      this.creator = false});
+      this.creator = false,
+      this.images});
 }
 
 class AddTripModel {
   final String name;
   final String description;
+
   //final int creatorId;
   final bool isActive = true;
   final DateTime departureTime;
@@ -41,6 +44,7 @@ class AddTripModel {
   final String arrivalPlace;
   final bool tripType;
   final String? maxPassengers;
+  final String? imageUrl;
 
   AddTripModel(
       {required this.name,
@@ -50,10 +54,10 @@ class AddTripModel {
       required this.departurePlace,
       required this.arrivalPlace,
       required this.tripType,
+      required this.imageUrl,
       required this.maxPassengers});
 
-  Map<String, dynamic> toJson (int creatorId) =>
-      {
+  Map<String, dynamic> toJson(int creatorId) => {
         "name": name,
         "description": description,
         "creatorId": creatorId,
@@ -62,7 +66,9 @@ class AddTripModel {
         "departurePlace": departurePlace,
         "arrivalPlace": arrivalPlace,
         "tripType": tripType,
-        "maxPassengers": (maxPassengers != null) ?  int.parse(maxPassengers ?? '1') : null
+        "maxPassengers":
+            (maxPassengers != null) ? int.parse(maxPassengers ?? '1') : null,
+        'imageUrl': imageUrl,
       };
 }
 

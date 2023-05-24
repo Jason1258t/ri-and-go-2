@@ -17,6 +17,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AppRepository _appRepository;
   final RegistrationRepository _registrationRepository;
   late final StreamSubscription registerStateSubscription;
+  late final StreamSubscription appStateSubscription;
 
   RegisterBloc({
     required AppRepository appRepository,
@@ -39,11 +40,16 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         _appRepository.authState.stream.listen((AuthStateEnum event) {
       if (event == AuthStateEnum.wait) add(InitialRegisterEvent());
       if (event == AuthStateEnum.loading) add(RegisterLoadingEvent());
-      if (event == AuthStateEnum.success) {
-        _appRepository.checkLogin();
+      // if (event == AuthStateEnum.success) {
+      //   _appRepository.checkLogin();
+      //   add(SuccessRegisterEvent());
+      // }
+      if (event == AuthStateEnum.fail) add(RegisterFailEvent());
+    });
+    appStateSubscription = _appRepository.appState.stream.listen((event) {
+      if (event == AppStateEnum.registered) {
         add(SuccessRegisterEvent());
       }
-      if (event == AuthStateEnum.fail) add(RegisterFailEvent());
     });
   }
 

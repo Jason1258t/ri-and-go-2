@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/app/ui/main_screen.dart';
 import 'package:riandgo2/feature/auth/bloc/bloc_register/register_bloc.dart';
 import 'package:riandgo2/feature/auth/data/registration_repository.dart';
+import 'package:riandgo2/feature/carusel_slider/carusel.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/default_elevated_button.dart';
 import 'package:riandgo2/widgets/buttons/default_text_button.dart';
@@ -42,7 +43,7 @@ class SecondRegistrationScreen extends StatelessWidget {
 
               if (state is RegisterSuccessState) {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => const MainScreen()));
+                    context, MaterialPageRoute(builder: (_) => MainCarousel()));
               }
             },
             builder: (context, state) {

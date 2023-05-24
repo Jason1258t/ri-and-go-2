@@ -25,7 +25,6 @@ class TripsRepository {
 
   List<TripModel> tripsTrue = [];
 
-
   TripsRepository({required this.apiService});
 
   final BehaviorSubject<TripsStateEnum> tripsState =
@@ -41,6 +40,29 @@ class TripsRepository {
 
   void initUserId(int userId) {
     _userId = userId;
+  }
+
+  void removeFollowedTrip(int itemId) {
+    try {
+      for (var i = 0; i < tripsTrue.length; i++) {
+        if (tripsTrue[i].itemId == itemId) {
+          _followedTrips.remove(itemId);
+          tripsTrue[i].followed = false;
+          tripsTrue[i].passengersCount -= 1;
+        }
+      }
+      for (var i = 0; i < tripsFalse.length; i++) {
+        if (tripsFalse[i].itemId == itemId) {
+          _followedTrips.remove(itemId);
+          tripsTrue[i].followed = false;
+          tripsTrue[i].passengersCount -= 1;
+        }
+
+      }
+    } catch (e) {
+      rethrow;
+    }
+
   }
 
   void setTripList(List<TripModel> trips, bool tripsType) {
@@ -63,6 +85,20 @@ class TripsRepository {
     }
   }
 
+  TripModel? getTripByItemId(int itemId) {
+    for (var i in tripsTrue) {
+      if (i.itemId == itemId) {
+        return i;
+      }
+    }
+    for (var i in tripsFalse) {
+      if (i.itemId == itemId) {
+        return i;
+      }
+    }
+    return null;
+  }
+
   List<TripModel> getTrips() {
     if (_filter.type!) {
       return tripsTrue;
@@ -78,15 +114,16 @@ class TripsRepository {
   void followTrip(int id, int userId) {
     followState.add(FollowingStateEnum.loading);
     final ind = getTripIndex(id);
+    apiService.followTrip(tripId: id, userId: userId);
     if (ind != -1) {
       if (_filter.type!) {
+        tripsTrue[ind].passengersCount++;
         tripsTrue[ind].followed = true;
-        tripsTrue[ind].passengersCount++;
       } else {
+        tripsFalse[ind].passengersCount++;
         tripsFalse[ind].followed = true;
-        tripsTrue[ind].passengersCount++;
       }
-      apiService.followTrip(tripId: id, userId: userId);
+
       followState.add(FollowingStateEnum.success);
       _followedTrips.add(id);
     } else {
@@ -97,16 +134,16 @@ class TripsRepository {
   void unFollowTrip({required int tripId, required int userId}) {
     followState.add(FollowingStateEnum.loading);
     final ind = getTripIndex(tripId);
-
+    apiService.unFollowTrip(tripId: tripId, userId: userId);
     if (ind != -1) {
       if (_filter.type!) {
+        tripsTrue[ind].passengersCount -= 1;
         tripsTrue[ind].followed = false;
-        tripsTrue[ind].passengersCount--;
       } else {
+        tripsFalse[ind].passengersCount -= 1;
         tripsFalse[ind].followed = false;
-        tripsTrue[ind].passengersCount--;
       }
-      apiService.unFollowTrip(tripId: tripId, userId: userId);
+
       followState.add(FollowingStateEnum.success);
       _followedTrips.remove(tripId);
     } else {
@@ -166,7 +203,7 @@ class TripsRepository {
   List<String> getRandomImage() {
     List imageUrls = [
       'https://sportishka.com/uploads/posts/2022-03/1647538575_4-sportishka-com-p-poezdka-s-semei-na-mashine-turizm-krasivo-4.jpg',
-      'https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg',
+      //'https://aybaz.ru/wp-content/uploads/4/c/c/4ccfe1a1d3366c78552959f0c74d2622.jpeg',
       'https://krym-portal.ru/wp-content/uploads/2020/03/2112.jpg',
       'https://bestvietnam.ru/wp-content/uploads/2020/04/%D0%BF%D0%BE%D0%B5%D0%B7%D0%B4%D0%BA%D0%B0-%D0%B2-%D1%81%D1%82%D1%80%D0%B0%D0%BD%D1%83.jpg',
       'https://sportishka.com/uploads/posts/2022-03/1647538582_18-sportishka-com-p-poezdka-s-semei-na-mashine-turizm-krasivo-19.jpg',

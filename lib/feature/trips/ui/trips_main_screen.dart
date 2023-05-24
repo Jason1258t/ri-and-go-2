@@ -130,7 +130,7 @@ class _TripsConsumer extends StatelessWidget {
         builder: (context, state) {
           if (state is TripsLoadedState) {
             return SearchedTripsList(
-              trips: RepositoryProvider.of<TripsRepository>(context).getTrips(),
+              trips: RepositoryProvider.of<TripsRepository>(context).getTrips().reversed.toList(),
             );
           }
           if (state is TripsLoadingState) {

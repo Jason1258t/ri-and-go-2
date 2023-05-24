@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 import 'package:riandgo2/feature/add_card/bloc/add_trip_bloc.dart';
 import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
@@ -92,7 +93,7 @@ class _AddCardState extends State<AddCard> {
                     child: SizedBox(
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height * 0.60,
-                        child: val ? DriverCard() : PassengerCard()),
+                        child: !val ? DriverCard() : PassengerCard()),
                     onRightSwipe: () {
                       changeType(type: false);
                     },
@@ -149,7 +150,9 @@ class _DriverCardState extends State<DriverCard> {
                     widget._arrivalPlaceControllerPassenger.text.trim(),
                 tripType: false,
                 maxPassengers:
-                    widget._maxPassengersControllerDriver.text.trim());
+                    widget._maxPassengersControllerDriver.text.trim(),
+            imageUrl: RepositoryProvider.of<TripsRepository>(context).getRandomImage().join(' '));
+
             bloc.add(AddTripInitialEvent(trip: trip));
           } else {
             const snackBar = SnackBar(content: Text('не введена дата'));
@@ -278,7 +281,8 @@ class _PassengerCardState extends State<PassengerCard> {
                     widget._departurePlaceControllerDriver.text.trim(),
                 arrivalPlace: widget._arrivalPlaceControllerDriver.text.trim(),
                 tripType: true,
-                maxPassengers: '99');
+                maxPassengers: '99',
+            imageUrl: RepositoryProvider.of<TripsRepository>(context).getRandomImage().join(' '));
             bloc.add(AddTripInitialEvent(trip: trip));
           } else {
             const snackBar = SnackBar(content: Text('не введена дата'));

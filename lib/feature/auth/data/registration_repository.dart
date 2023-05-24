@@ -28,7 +28,7 @@ class RegistrationInfo {
   Map<String, dynamic> toJson() {
     return {
       'name': name!,
-      'phoneNumber': phone!,
+      'phoneNumber': phone!.replaceAll('+', ''),
       'email': email!,
       'password': password!,
       'contactUrl': ''

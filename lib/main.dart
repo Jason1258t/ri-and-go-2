@@ -141,7 +141,7 @@ class MyBlocProviders extends StatelessWidget {
         ),
         BlocProvider<FollowBloc>(
           create: (_) =>
-          FollowBloc(tripsRepository: RepositoryProvider.of<TripsRepository>(context))..add(FollowSubscriptionEvent()),
+          FollowBloc(tripsRepository: RepositoryProvider.of<TripsRepository>(context), profileRepository: RepositoryProvider.of<ProfileRepository>(context))..add(FollowSubscriptionEvent()),
           lazy: false,
         )
       ],

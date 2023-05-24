@@ -15,7 +15,7 @@ import '../feature/auth/data/registration_repository.dart';
 ///Реагирование на ошибки так же идет из блоков.
 ///Можно создать стрим ошибок и подписать блоки на него.
 
-enum AppStateEnum { auth, unAuth, loading }
+enum AppStateEnum { auth, unAuth, loading, registered }
 
 enum AuthStateEnum { wait, loading, success, fail }
 
@@ -80,6 +80,7 @@ class AppRepository {
       await prefs.setInt('id', authToken);
       await prefs.setString('password', password);
       userId = authToken;
+      //authState.add(AuthStateEnum.success);
       authState.add(AuthStateEnum.success);
     } catch (e) {
       authState.add(AuthStateEnum.fail);
@@ -104,7 +105,7 @@ class AppRepository {
         prefs.setInt('id', registrationData);
         await prefs.setString('password', regInfo.password!);
         userId = registrationData;
-        authState.add(AuthStateEnum.success);
+        appState.add(AppStateEnum.registered);
       }
     } catch (e) {
       authState.add(AuthStateEnum.fail);

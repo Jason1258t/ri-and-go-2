@@ -12,6 +12,7 @@ extension ModelsParser on Map<String, dynamic> {
 
   TripModel parseSingleTrip() {
     final String name = this['name'];
+    final String description = this['description'];
     final String arrival = this['arrivalPlace'];
     final String departure = this['departurePlace'];
     return TripModel(
@@ -26,7 +27,7 @@ extension ModelsParser on Map<String, dynamic> {
         arrivalPlace: arrival.capitalizeAll(),
         maxPassengers: this['maxPassengers'],
         passengersCount: this['passengersCount'] ?? 0,
-        description: this['description']);
+        description: description.upperFirstSymbolInSentence());
   }
 }
 
@@ -36,6 +37,8 @@ extension ListModelsParser on List {
       final String name = this[index]['name'];
       final String arrival = this[index]['arrivalPlace'];
       final String departure = this[index]['departurePlace'];
+      final String description = this[index]['description'];
+      final String images = this[index]['imageUrl'] ?? 'https://ih1.redbubble.net/image.343726250.4611/flat,1000x1000,075,f.jpg';
       return TripModel(
         itemId: this[index]['id'],
         itemName: name.upperCaseFirst(),
@@ -46,9 +49,10 @@ extension ListModelsParser on List {
         image: 'Assets/logo.png',
         departurePlace: departure.capitalizeAll(),
         arrivalPlace: arrival.capitalizeAll(),
-        description: this[index]['description'],
+        description: description.upperFirstSymbolInSentence(),
         maxPassengers: this[index]['maxPassengers'],
         passengersCount: this[index]['passengersCount'] ?? 0,
+        images: images.split(' ')
       );
     });
   }

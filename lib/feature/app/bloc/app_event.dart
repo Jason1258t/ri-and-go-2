@@ -7,6 +7,7 @@ class SubscripeAppEvent extends AppEvent {}
 class LogoutAppEvent extends AppEvent {}
 
 class AuthAppEvent extends AppEvent {}
+class RegisterAppEvent extends AppEvent {}
 
 class UnAuthAppEvent extends AppEvent {}
 

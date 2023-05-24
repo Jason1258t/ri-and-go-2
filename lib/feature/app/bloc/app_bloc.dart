@@ -22,6 +22,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<UnAuthAppEvent>(_unAuthEmit);
     on<LoadingAppEvent>(_loadingEmit);
     on<LogoutAppEvent>(_logout);
+    on<RegisterAppEvent>(_registerEmit);
   }
 
   Future<void> _subscribe(SubscripeAppEvent event, emit) async {
@@ -31,10 +32,12 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       if (event == AppStateEnum.auth) add(AuthAppEvent());
       if (event == AppStateEnum.unAuth) add(UnAuthAppEvent());
       if (event == AppStateEnum.loading) add(LoadingAppEvent());
+      if (event == AppStateEnum.registered) add(RegisterAppEvent());
     });
   }
 
   FutureOr<void> _authEmit(AuthAppEvent event, emit) => emit(AuthAppState());
+  FutureOr<void> _registerEmit(RegisterAppEvent event, emit) => emit(RegisteredAppState());
 
   FutureOr<void> _unAuthEmit(UnAuthAppEvent event, emit) => emit(UnAuthAppState());
 
