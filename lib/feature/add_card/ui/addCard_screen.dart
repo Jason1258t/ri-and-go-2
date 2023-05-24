@@ -87,7 +87,7 @@ class _AddCardState extends State<AddCard> {
                   ),
                   SwipeTo(
                     iconSize: 0,
-                    animationDuration: const Duration(milliseconds: 50),
+                    animationDuration: const Duration(milliseconds: 100),
                     child: SizedBox(
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height * 0.60,

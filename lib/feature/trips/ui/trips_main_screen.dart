@@ -100,7 +100,7 @@ class _TripScreenState extends State<TripScreen> {
                   ),
                   SwipeTo(
                     iconSize: 0,
-                    animationDuration: const Duration(milliseconds: 50),
+                    animationDuration: const Duration(milliseconds: 100),
                     child: SizedBox(
                       width: double.infinity,
                       height: MediaQuery.of(context).size.height * 0.75,
