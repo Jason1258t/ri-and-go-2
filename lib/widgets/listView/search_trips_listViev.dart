@@ -61,26 +61,26 @@ class _SearchedTripState extends State<SearchedTrip> {
 
   @override
   Widget build(BuildContext context) {
-    if (!viewType) {
-      return BaseSearchedTrip(
-        trip: widget.trip,
-        onPres: changeViewType,
-      );
-    } else {
-      return AdvancedSearchedTrip(
-        trip: widget.trip,
-        onPres: changeViewType,
-        onPressUrl: () {
-          BlocProvider.of<CreatorBloc>(context)
-              .add(CreatorInitialLoadEvent(userId: widget.trip.authorId));
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const CreaterInfo(),
-              ));
-        },
-      );
-    }
+    return AnimatedCrossFade(
+        firstChild: BaseSearchedTrip(
+          trip: widget.trip,
+          onPres: changeViewType,
+        ),
+        secondChild: AdvancedSearchedTrip(
+          trip: widget.trip,
+          onPres: changeViewType,
+          onPressUrl: () {
+            BlocProvider.of<CreatorBloc>(context)
+                .add(CreatorInitialLoadEvent(userId: widget.trip.authorId));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const CreaterInfo(),
+                ));
+          },
+        ),
+        crossFadeState: !viewType ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        duration: const Duration(milliseconds: 200));
   }
 }
 

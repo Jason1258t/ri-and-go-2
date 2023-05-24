@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:riandgo2/app.dart';
 import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
 import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
@@ -25,6 +26,7 @@ import 'package:riandgo2/feature/trips/bloc/follow_bloc/follow_bloc.dart';
 import 'package:riandgo2/repository/app_repository.dart';
 import 'package:riandgo2/services/api_services.dart';
 import 'package:riandgo2/services/custom_bloc_observer.dart';
+import 'package:riandgo2/utils/animations.dart';
 
 import 'feature/Trips/bloc/creator_bloc/creator_bloc.dart';
 import 'feature/add_card/bloc/add_trip_bloc.dart';
@@ -172,8 +174,8 @@ class AppStateWidget extends StatelessWidget {
             } else if (state is UnAuthAppState) {
               return LoginScreen();
             } else if (state is LoadingAppState) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: AppAnimations.bouncingSquare,
               );
             } else {
               return LoginScreen();

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animations/loading_animations.dart';
 import 'package:riandgo2/feature/app/bloc/app_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/feature/profile/ui/edit_profile_screen.dart';
+import 'package:riandgo2/utils/animations.dart';
 import 'package:riandgo2/utils/utils.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/lable/information_field.dart';
@@ -139,42 +141,45 @@ class _ProfileState extends State<Profile> {
                       width: MediaQuery.of(context).size.width * 0.85,
                     ),
                   ),
-                  BlocConsumer<UserTripsBloc, UserTripsState>(
-                    builder: (context, state) {
-                      if (state is UserTripsLoadingState) {
-                        return const CircularProgressIndicator();
-                      }
-                      if (state is UserTripsSuccessState) {
-                        return SwipeTo(
-                          iconSize: 0,
-                          animationDuration: const Duration(milliseconds: 50),
-                          child: SizedBox(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.33,
-                            child: val
-                                ? ListViewFollowedTrips(
-                                    trips: profileRepository.followedTrips)
-                                : ListViewTrips(
-                                    trips: profileRepository.userTrips,
-                                  ),
-                          ),
-                          onRightSwipe: () {
-                            changeType(type: false);
-                          },
-                          onLeftSwipe: () {
-                            changeType(type: true);
-                          },
-                        );
-                      }
-                      if (state is UserTripsSuccessChangeState) {
-                        tripBloc.add(UserTripsInitialEvent());
-                        return const CircularProgressIndicator();
-                      } else {
-                        return const Text('ошибка загрузки');
-                      }
-                    },
-                    listener: (context, state) {},
-                  )
+                  Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: SizedBox(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: BlocConsumer<UserTripsBloc, UserTripsState>(
+                            builder: (context, state) {
+                              if (state is UserTripsLoadingState) {
+                                return Center(child: AppAnimations.bouncingLine);
+                              }
+                              if (state is UserTripsSuccessState) {
+                                return SwipeTo(
+                                  iconSize: 0,
+                                  animationDuration:
+                                      const Duration(milliseconds: 50),
+                                  child: val
+                                      ? ListViewFollowedTrips(
+                                          trips:
+                                              profileRepository.followedTrips)
+                                      : ListViewTrips(
+                                          trips: profileRepository.userTrips,
+                                        ),
+                                  onRightSwipe: () {
+                                    changeType(type: false);
+                                  },
+                                  onLeftSwipe: () {
+                                    changeType(type: true);
+                                  },
+                                );
+                              }
+                              if (state is UserTripsSuccessChangeState) {
+                                tripBloc.add(UserTripsInitialEvent());
+                                return AppAnimations.bouncingSquare;
+                              } else {
+                                return const Text('ошибка загрузки');
+                              }
+                            },
+                            listener: (context, state) {},
+                          )))
                 ],
               ),
             );
@@ -191,8 +196,12 @@ class _ProfileState extends State<Profile> {
               ),
             );
           } else {
-            return const Scaffold(
-                body: Center(child: CircularProgressIndicator()));
+            return Scaffold(
+                body: Center(
+                    child: LoadingBouncingGrid.square(
+              backgroundColor: const Color(0xffFF8C33),
+              size: 80,
+            )));
           }
         });
   }

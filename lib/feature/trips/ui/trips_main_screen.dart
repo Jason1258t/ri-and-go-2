@@ -4,6 +4,7 @@ import 'package:riandgo2/feature/Trips/bloc/trips_bloc.dart';
 import 'package:riandgo2/feature/Trips/data/trip_repository.dart';
 import 'package:riandgo2/feature/Trips/ui/search_trips_screen.dart';
 import 'package:riandgo2/models/models.dart';
+import 'package:riandgo2/utils/animations.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/listView/search_trips_listViev.dart';
 import 'package:swipe_to/swipe_to.dart';
@@ -134,7 +135,7 @@ class _TripsConsumer extends StatelessWidget {
             );
           }
           if (state is TripsLoadingState) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: AppAnimations.bouncingLine);
           } else {
             return Center(
               child: Padding(

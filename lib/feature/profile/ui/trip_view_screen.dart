@@ -31,8 +31,7 @@ class TripViewScreen extends StatelessWidget {
                 TextButton(
                   child: const Text("Да"),
                   onPressed: () {
-                    followBloc.add(UnFollowProfileEvent(
-                        itemId: trip.itemId));
+                    followBloc.add(UnFollowProfileEvent(itemId: trip.itemId));
                     Navigator.pop(context);
                   }, // TODo напихнуть сюда отписку от поездки
                 ),
@@ -65,56 +64,55 @@ class TripViewScreen extends StatelessWidget {
           ),
           child: Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width * 0.9,
               height: MediaQuery.of(context).size.height * 0.65,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: trip.images!
-                          .map((e) => GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (_) => AlertDialog(
-                                            content: SizedBox(
-                                                width: 100,
-                                                child: Image.network(e)),
-                                          ));
-                                },
-                                child: Image.network(
-                                  e,
-                                  width: 150,
-                                  height: 100,
-                                ),
-                              ))
-                          .toList(),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(3.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: trip.images!
+                            .map((e) => GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialog(
+                                              content: SizedBox(
+                                                  width: 100,
+                                                  child: Image.network(e)),
+                                            ));
+                                  },
+                                  child: Image.network(
+                                    e,
+                                    width: 150,
+                                    height: 100,
+                                  ),
+                                ))
+                            .toList(),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  const Divider(
-                    thickness: 3,
-                  ),
-                  Container(
-                    width: 285,
-                    height: 45,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    const SizedBox(
+                      height: 18,
+                    ),
+                    // const Divider(
+                    //   thickness: 3,
+                    // ),
+                    Row(
                       children: [
-                        Image.asset('Assets/aboba.png'),
+                        Image.asset('Assets/aboba.png', width: 47,),
                         const SizedBox(
-                          width: 10,
+                          width: 30,
                         ),
-                        Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
@@ -124,111 +122,112 @@ class TripViewScreen extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Дата: ${trip.itemDate}',
-                      style: const TextStyle(fontSize: 16),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Описание: ${trip.description}",
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 13,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Откуда: ${trip.departurePlace}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Куда: ${trip.arrivalPlace}',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.people,
-                          size: 20,
-                        ),
-                        Text(
-                          '${trip.passengersCount}/${trip.maxPassengers}',
-                          style: const TextStyle(
-                              fontSize: 16, color: Color(0xff747474)),
                         ),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        trip.itemDate,
+                        style: const TextStyle(fontSize: 16, color: Color(0xff141414)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        "Описание: ${trip.description}",
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 13,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        'Откуда: ${trip.departurePlace}',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        'Куда: ${trip.arrivalPlace}',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.people,
+                            size: 20,
+                          ),
+                          Text(
+                            '${trip.passengersCount}/${trip.maxPassengers}',
+                            style: const TextStyle(
+                                fontSize: 16, color: Color(0xff747474)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Автор: ',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                BlocProvider.of<CreatorBloc>(context).add(
+                                    CreatorInitialLoadEvent(
+                                        userId: trip.authorId));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const CreaterInfo(),
+                                    ));
+                              },
+                              child: Text(
+                                trip.authorName,
+                                style: const TextStyle(
+                                    fontSize: 18, color: Color(0xff1EC67F)),
+                              ))
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Автор: ',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              BlocProvider.of<CreatorBloc>(context).add(
-                                  CreatorInitialLoadEvent(
-                                      userId: trip.authorId));
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const CreaterInfo(),
-                                  ));
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blueGrey),
+                            onPressed: () async {
+                              _showAlertDialog();
                             },
-                            child: Text(
-                              trip.authorName,
-                              style: const TextStyle(
-                                  fontSize: 18, color: Color(0xff1EC67F)),
-                            ))
+                            child: const Text('Прекратить отслеживание')),
                       ],
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blueGrey),
-                          onPressed: () async {
-                            _showAlertDialog();
-                          },
-                          child: const Text('Прекратить отслеживание')),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

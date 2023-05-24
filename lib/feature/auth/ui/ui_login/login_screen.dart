@@ -49,16 +49,12 @@ class LoginScreen extends StatelessWidget {
                   ));
             }
             if (state is AuthSuccessState) {
-              const snackBar = SnackBar(
-                content: Text('Auth complete'),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
               Navigator.push(
                   context, MaterialPageRoute(builder: (_) => const MainScreen()));
             }
             if (state is AuthFailState) {
               const snackBar = SnackBar(
-                content: Text('Auth fail'),
+                content: Text('Что-то пошло не так'),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }

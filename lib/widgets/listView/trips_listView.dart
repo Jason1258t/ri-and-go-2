@@ -108,7 +108,7 @@ class TripState extends State<ProfileTrip> {
             ));
       },
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.98,
+        width: MediaQuery.of(context).size.width * 0.95,
         margin: const EdgeInsets.only(bottom: 15),
         padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
         decoration: BoxDecoration(
@@ -127,22 +127,23 @@ class TripState extends State<ProfileTrip> {
                 children: [
                   Image.asset(
                     widget.image,
-                    width: 80,
-                    height: 80,
+
+                    height: 60,
                   ),
                   const SizedBox(
-                    width: 20,
+                    width: 10,
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.45,
+                        width: MediaQuery.of(context).size.width * 0.55,
                         child: Text(
                           widget.itemName,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
+                          style: const TextStyle(fontSize: 18),
                         ),
                       ),
                       const SizedBox(

@@ -58,7 +58,7 @@ class _AddCardState extends State<AddCard> {
                 }
                 if (state is AddTripFailState) {
                   const snackBar =
-                      SnackBar(content: Text('все пошло по пизде'));
+                      SnackBar(content: Text('что-то пошло не так'));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
