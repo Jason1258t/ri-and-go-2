@@ -47,7 +47,6 @@ class _TripScreenState extends State<TripScreen> {
       fl = false;
     }
 
-
     return RefreshIndicator(
       onRefresh: () async {
         loadTrips(true);
