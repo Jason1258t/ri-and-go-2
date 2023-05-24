@@ -6,12 +6,12 @@ abstract class CustomSnackBar {
       content: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           color: Color(0xff474763),
         ),
       ),
-      backgroundColor: Color(0xffFFAC7D),
+      backgroundColor: const Color(0xffFFAC7D),
       behavior: SnackBarBehavior.floating,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);

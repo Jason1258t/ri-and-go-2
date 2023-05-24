@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/main_info/profile_bloc.dart';
 import 'package:riandgo2/feature/profile/data/profile_repository.dart';
 import 'package:riandgo2/utils/utils.dart';
+import 'package:riandgo2/widgets/alerts/custom_snack_bar.dart';
 import 'package:riandgo2/widgets/buttons/save_text_button.dart';
 import 'package:riandgo2/widgets/show_elements/avatar.dart';
 
@@ -31,13 +32,11 @@ class _EditProfileState extends State<EditProfile> {
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is ProfileEditSuccessState) {
-            const snack = SnackBar(content: Text('Изменения внесены'));
-            ScaffoldMessenger.of(context).showSnackBar(snack);
+            CustomSnackBar.showSnackBar(context, 'Изменения внесены');
             Navigator.pop(context);
           }
           if (state is ProfileEditFailState) {
-            const snack = SnackBar(content: Text('ошибка, попробуйте позже'));
-            ScaffoldMessenger.of(context).showSnackBar(snack);
+            CustomSnackBar.showSnackBar(context, 'Ошибка');
           }
         },
         builder: (context, state) {

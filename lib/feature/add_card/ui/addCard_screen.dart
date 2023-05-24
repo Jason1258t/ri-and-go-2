@@ -8,6 +8,7 @@ import 'package:riandgo2/feature/app/bloc/navigator_bloc.dart';
 import 'package:riandgo2/feature/profile/bloc/trips_info/user_trips_bloc.dart';
 import 'package:riandgo2/models/models.dart';
 import 'package:riandgo2/utils/fonts.dart';
+import 'package:riandgo2/widgets/alerts/custom_snack_bar.dart';
 import 'package:riandgo2/widgets/buttons/move_button.dart';
 import 'package:riandgo2/widgets/buttons/save_text_button.dart';
 import 'package:riandgo2/widgets/input_widgets/date_input.dart';
@@ -49,17 +50,14 @@ class _AddCardState extends State<AddCard> {
             child: BlocListener<AddTripBloc, AddTripState>(
               listener: (context, state) {
                 if (state is AddTripSuccessState) {
-                  const snackBar = SnackBar(content: Text('Успешно'));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  CustomSnackBar.showSnackBar(context, 'Успешно');
                   BlocProvider.of<NavigatorBloc>(context)
                       .add(NavigateProfileEvent());
                   BlocProvider.of<UserTripsBloc>(context)
                       .add(UserTripsInitialEvent());
                 }
                 if (state is AddTripFailState) {
-                  const snackBar =
-                      SnackBar(content: Text('что-то пошло не так'));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  CustomSnackBar.showSnackBar(context, 'Что-то пошло не так');
                 }
               },
               child: Column(
