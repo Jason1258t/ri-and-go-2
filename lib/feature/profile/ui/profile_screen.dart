@@ -155,7 +155,7 @@ class _ProfileState extends State<Profile> {
                                 return SwipeTo(
                                   iconSize: 0,
                                   animationDuration:
-                                      const Duration(milliseconds: 50),
+                                      const Duration(milliseconds: 100),
                                   child: val
                                       ? ListViewFollowedTrips(
                                           trips:
