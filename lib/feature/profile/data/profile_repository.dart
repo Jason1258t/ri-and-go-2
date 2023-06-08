@@ -54,7 +54,6 @@ class ProfileRepository {
     }
   }
 
-
   bool isProfileLoaded() {
     return profileLoaded;
   }
