@@ -158,7 +158,7 @@ class AppStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
+      title: 'Ri&Go',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily: 'Nunito',

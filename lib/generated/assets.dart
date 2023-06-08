@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String assets3Byst7z3Rw = 'Assets/3_byst7z3Rw.jpg';
   static const String assetsAboba = 'Assets/aboba.png';
   static const String assetsAvatar = 'Assets/avatar.jpg.url';
   static const String assetsBriefcase = 'Assets/briefcase.png';
